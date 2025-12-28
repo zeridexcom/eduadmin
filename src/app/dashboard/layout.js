@@ -218,80 +218,6 @@ export default function DashboardLayout({ children }) {
 
     return (
         <Box sx={{ display: 'flex', minHeight: '100vh', bgcolor: 'background.default' }}>
-            {/* Glass Header */}
-            <AppBar
-                position="fixed"
-                color="inherit"
-                elevation={0}
-                sx={{
-                    position: 'fixed',
-                    top: 0,
-                    right: 0,
-                    left: { xs: 0, md: `${drawerWidth}px` },
-                    width: 'auto', // CSS Anchor strategy: left + right + width:auto
-                    bgcolor: 'rgba(250, 250, 250, 0.8)', // Semi-transparent based on bg
-                    backdropFilter: 'blur(8px)',
-                    borderBottom: '1px solid',
-                    borderColor: 'divider',
-                }}
-            >
-                <Toolbar sx={{ px: { xs: 2, md: 4 }, minHeight: { xs: 64, md: 72 } }}>
-                    <IconButton
-                        color="inherit"
-                        edge="start"
-                        onClick={handleDrawerToggle}
-                        sx={{ mr: 2, display: { md: 'none' } }}
-                    >
-                        <MenuIcon size={20} />
-                    </IconButton>
-
-                    {/* Header Slogan/Breadcrumb */}
-                    <Box sx={{ flexGrow: 1 }}>
-                        <Typography variant="h6" fontWeight={600} color="text.primary">
-                            {navItems.find(i => i.path === pathname)?.label || 'Overview'}
-                        </Typography>
-                    </Box>
-
-                    {/* Actions */}
-                    <Stack direction="row" spacing={2} alignItems="center">
-                        {/* Search Dropdown Placeholder - Visual Only */}
-                        <Box sx={{
-                            display: { xs: 'none', md: 'flex' },
-                            alignItems: 'center',
-                            bgcolor: 'white',
-                            border: '1px solid',
-                            borderColor: 'divider',
-                            borderRadius: '8px',
-                            px: 1.5,
-                            py: 0.5,
-                            width: 240,
-                            transition: 'all 0.2s',
-                            '&:hover': { borderColor: 'primary.main', boxShadow: '0 0 0 2px rgba(37, 99, 235, 0.1)' }
-                        }}>
-                            <Search size={16} color="#A1A1AA" />
-                            <InputBase
-                                placeholder="Search anything..."
-                                onKeyDown={(e) => e.key === 'Enter' && alert(`Searching for: ${e.target.value}`)}
-                                sx={{ ml: 1.5, fontSize: '0.875rem', width: '100%' }}
-                            />
-                        </Box>
-
-                        <IconButton
-                            onClick={() => alert('No new notifications')}
-                            sx={{
-                                color: 'text.secondary',
-                                border: '1px solid',
-                                borderColor: 'divider',
-                                borderRadius: '8px',
-                                '&:hover': { bgcolor: 'background.paper', color: 'primary.main' }
-                            }}
-                        >
-                            <Bell size={20} />
-                        </IconButton>
-                    </Stack>
-                </Toolbar>
-            </AppBar>
-
             {/* Quick Menu */}
             <Menu
                 anchorEl={anchorEl}
@@ -357,26 +283,93 @@ export default function DashboardLayout({ children }) {
             <Box
                 component="main"
                 sx={{
-                    flex: 1, // Shorthand for flex-grow: 1, flex-shrink: 1, flex-basis: 0%
+                    flex: 1,
                     display: 'flex',
                     flexDirection: 'column',
                     minWidth: 0,
                     overflowX: 'hidden',
+                    height: '100vh',
+                    overflowY: 'auto', // Main scrolling area
                 }}
             >
-                <Toolbar sx={{ minHeight: { xs: 64, md: 72 } }} />
+                {/* Sticky Glass Header */}
+                <AppBar
+                    position="sticky"
+                    color="inherit"
+                    elevation={0}
+                    sx={{
+                        top: 0,
+                        zIndex: 1100,
+                        bgcolor: 'rgba(250, 250, 250, 0.8)',
+                        backdropFilter: 'blur(8px)',
+                        borderBottom: '1px solid',
+                        borderColor: 'divider',
+                        width: '100%',
+                    }}
+                >
+                    <Toolbar sx={{ px: { xs: 2, md: 4 }, minHeight: { xs: 64, md: 72 } }}>
+                        <IconButton
+                            color="inherit"
+                            edge="start"
+                            onClick={handleDrawerToggle}
+                            sx={{ mr: 2, display: { md: 'none' } }}
+                        >
+                            <MenuIcon size={20} />
+                        </IconButton>
 
-                {/* Scrollable container with FULL width content */}
+                        <Box sx={{ flexGrow: 1 }}>
+                            <Typography variant="h6" fontWeight={600} color="text.primary">
+                                {navItems.find(i => i.path === pathname)?.label || 'Overview'}
+                            </Typography>
+                        </Box>
+
+                        <Stack direction="row" spacing={2} alignItems="center">
+                            <Box sx={{
+                                display: { xs: 'none', md: 'flex' },
+                                alignItems: 'center',
+                                bgcolor: 'white',
+                                border: '1px solid',
+                                borderColor: 'divider',
+                                borderRadius: '8px',
+                                px: 1.5,
+                                py: 0.5,
+                                width: 240,
+                                transition: 'all 0.2s',
+                                '&:hover': { borderColor: 'primary.main', boxShadow: '0 0 0 2px rgba(37, 99, 235, 0.1)' }
+                            }}>
+                                <Search size={16} color="#A1A1AA" />
+                                <InputBase
+                                    placeholder="Search anything..."
+                                    onKeyDown={(e) => e.key === 'Enter' && alert(`Searching for: ${e.target.value}`)}
+                                    sx={{ ml: 1.5, fontSize: '0.875rem', width: '100%' }}
+                                />
+                            </Box>
+
+                            <IconButton
+                                onClick={() => alert('No new notifications')}
+                                sx={{
+                                    color: 'text.secondary',
+                                    border: '1px solid',
+                                    borderColor: 'divider',
+                                    borderRadius: '8px',
+                                    '&:hover': { bgcolor: 'background.paper', color: 'primary.main' }
+                                }}
+                            >
+                                <Bell size={20} />
+                            </IconButton>
+                        </Stack>
+                    </Toolbar>
+                </AppBar>
+
+                {/* Content */}
                 <Box sx={{
+                    flex: 1,
                     width: '100%',
-                    maxWidth: 'none !important',
-                    minWidth: '100%',
                     px: { xs: 2, md: 4 },
                     py: 4,
                     display: 'flex',
                     flexDirection: 'column',
                     gap: 3,
-                    flexGrow: 1
                 }} className="animate-fade-in">
                     {children}
                 </Box>
