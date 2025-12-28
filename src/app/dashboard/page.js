@@ -163,7 +163,7 @@ export default function DashboardPage() {
     ], []);
 
     return (
-        <Box>
+        <Box sx={{ width: '100%', flexGrow: 1 }}>
             {/* Header Section */}
             <Box sx={{ mb: 5, display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
                 <Box>

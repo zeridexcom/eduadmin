@@ -359,16 +359,16 @@ export default function DashboardLayout({ children }) {
             >
                 <Toolbar sx={{ minHeight: { xs: 64, md: 72 } }} />
 
-                {/* Scrollable container with max-width content */}
+                {/* Scrollable container with FULL width content */}
                 <Box sx={{
                     width: '100%',
-                    maxWidth: '100%', // Full width as requested ("why is there empty space")
-                    mx: 'auto',
+                    // maxWidth removed entirely to prevent any constraint
                     px: { xs: 2, md: 4 },
                     py: 4,
                     display: 'flex',
                     flexDirection: 'column',
                     gap: 3,
+                    flexGrow: 1
                 }} className="animate-fade-in">
                     {children}
                 </Box>
