@@ -362,7 +362,7 @@ export default function DashboardLayout({ children }) {
                 {/* Scrollable container with max-width content */}
                 <Box sx={{
                     width: '100%',
-                    maxWidth: '1400px', // Tighter max-width for better centering
+                    maxWidth: '100%', // Full width as requested ("why is there empty space")
                     mx: 'auto',
                     px: { xs: 2, md: 4 },
                     py: 4,
