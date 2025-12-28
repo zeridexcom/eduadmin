@@ -18,33 +18,57 @@ import {
     Divider,
 } from '@mui/material';
 import {
-    ArrowBackOutlined,
-    EmailOutlined,
-    LocalPhoneOutlined,
-    LocationOnOutlined,
-    BusinessOutlined,
-    TranslateOutlined,
-    BadgeOutlined,
-} from '@mui/icons-material';
+    ArrowLeft,
+    Mail,
+    Phone,
+    MapPin,
+    Building,
+    GraduationCap,
+    Cake,
+    Eye,
+    Scale,
+    Ruler,
+} from 'lucide-react';
 
-const InfoSection = ({ title, emoji, children }) => (
+const InfoSection = ({ title, icon: Icon, color, children }) => (
     <Card>
-        <CardContent sx={{ p: 3 }}>
-            <Stack direction="row" spacing={2} alignItems="center" sx={{ mb: 4 }}>
-                <Box className="emoji-icon">{emoji}</Box>
-                <Typography variant="h4">{title}</Typography>
+        <CardContent sx={{ p: 2.5 }}>
+            <Stack direction="row" spacing={1.5} alignItems="center" sx={{ mb: 3 }}>
+                <Box sx={{
+                    width: 36,
+                    height: 36,
+                    bgcolor: color,
+                    border: '2px solid #000',
+                    boxShadow: '2px 2px 0 #000',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                }}>
+                    <Icon size={18} />
+                </Box>
+                <Typography variant="h4" sx={{ fontSize: '0.9rem' }}>{title}</Typography>
             </Stack>
-            <Stack spacing={3}>{children}</Stack>
+            <Stack spacing={2}>{children}</Stack>
         </CardContent>
     </Card>
 );
 
-const InfoRow = ({ label, value, emoji }) => (
-    <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-        <Box className="emoji-icon" sx={{ width: 40, height: 40, fontSize: '1rem' }}>{emoji}</Box>
+const InfoRow = ({ label, value, icon: Icon }) => (
+    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
+        <Box sx={{
+            width: 32,
+            height: 32,
+            bgcolor: '#F8F9FA',
+            border: '1.5px solid #000',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+        }}>
+            <Icon size={14} />
+        </Box>
         <Box>
-            <Typography variant="caption">{label}</Typography>
-            <Typography variant="body2" sx={{ fontWeight: 800 }}>{value || 'N/A'}</Typography>
+            <Typography variant="caption" sx={{ fontSize: '0.6rem' }}>{label}</Typography>
+            <Typography variant="body2" sx={{ fontWeight: 800, fontSize: '0.8rem' }}>{value || 'N/A'}</Typography>
         </Box>
     </Box>
 );
@@ -69,7 +93,7 @@ export default function UserDetailPage() {
     if (error) {
         return (
             <Box sx={{ maxWidth: 800, mx: 'auto' }}>
-                <Button startIcon={<ArrowBackOutlined />} onClick={() => router.push('/dashboard/users')} sx={{ mb: 3 }}>BACK</Button>
+                <Button startIcon={<ArrowLeft size={16} />} onClick={() => router.push('/dashboard/users')} sx={{ mb: 3 }}>BACK</Button>
                 <Alert severity="error">{error}</Alert>
             </Box>
         );
@@ -77,12 +101,12 @@ export default function UserDetailPage() {
 
     if (isLoading || !currentUser) {
         return (
-            <Box sx={{ maxWidth: 1000, mx: 'auto' }}>
-                <Skeleton variant="rectangular" width={200} height={40} sx={{ mb: 4 }} />
-                <Skeleton variant="rectangular" height={240} sx={{ mb: 4 }} />
-                <Grid container spacing={3}>
-                    <Grid item xs={12} md={6}><Skeleton variant="rectangular" height={350} /></Grid>
-                    <Grid item xs={12} md={6}><Skeleton variant="rectangular" height={350} /></Grid>
+            <Box sx={{ maxWidth: 900, mx: 'auto' }}>
+                <Skeleton variant="rectangular" width={150} height={36} sx={{ mb: 3 }} />
+                <Skeleton variant="rectangular" height={180} sx={{ mb: 3 }} />
+                <Grid container spacing={2}>
+                    <Grid item xs={12} md={6}><Skeleton variant="rectangular" height={280} /></Grid>
+                    <Grid item xs={12} md={6}><Skeleton variant="rectangular" height={280} /></Grid>
                 </Grid>
             </Box>
         );
@@ -91,76 +115,72 @@ export default function UserDetailPage() {
     const user = currentUser;
 
     return (
-        <Box className="animate-slide-up" sx={{ maxWidth: 1100, mx: 'auto' }}>
+        <Box className="animate-slide-up" sx={{ maxWidth: 900, mx: 'auto' }}>
             <Button
-                startIcon={<ArrowBackOutlined />}
+                startIcon={<ArrowLeft size={16} />}
                 onClick={() => router.push('/dashboard/users')}
-                sx={{ mb: 5 }}
+                sx={{ mb: 3 }}
             >
                 BACK TO USERS
             </Button>
 
             {/* Profile Banner */}
-            <Card sx={{ mb: 5, bgcolor: '#FFC900' }}>
-                <CardContent sx={{ p: { xs: 3, md: 5 } }}>
-                    <Stack direction={{ xs: 'column', md: 'row' }} spacing={4} alignItems="center">
+            <Card sx={{ mb: 3, bgcolor: '#00D4AA' }}>
+                <CardContent sx={{ p: { xs: 2.5, md: 3 } }}>
+                    <Stack direction={{ xs: 'column', md: 'row' }} spacing={3} alignItems="center">
                         <Avatar
                             src={user.image}
-                            sx={{ width: 120, height: 120, boxShadow: '6px 6px 0 #000' }}
+                            sx={{ width: 90, height: 90, boxShadow: '4px 4px 0 #000', border: '3px solid #000' }}
                         />
                         <Box sx={{ textAlign: { xs: 'center', md: 'left' }, flex: 1 }}>
-                            <Typography variant="h1" sx={{ mb: 1, fontSize: '2rem' }}>
+                            <Typography variant="h1" sx={{ mb: 0.5, fontSize: '1.4rem' }}>
                                 {fullName.toUpperCase()}
                             </Typography>
-                            <Typography variant="body1" sx={{ fontWeight: 700, mb: 3 }}>
+                            <Typography variant="body1" sx={{ fontWeight: 700, mb: 2, fontSize: '0.85rem' }}>
                                 @{user.username} • {user.role || 'MEMBER'}
                             </Typography>
-                            <Stack direction="row" spacing={1.5} justifyContent={{ xs: 'center', md: 'flex-start' }}>
-                                <Chip label={user.gender.toUpperCase()} />
-                                <Chip label={user.bloodGroup} sx={{ bgcolor: '#FF6B6B' }} />
-                                <Chip label={`AGE: ${user.age}`} sx={{ bgcolor: '#00D4AA' }} />
+                            <Stack direction="row" spacing={1} justifyContent={{ xs: 'center', md: 'flex-start' }}>
+                                <Chip label={user.gender.toUpperCase()} sx={{ bgcolor: '#FFC900', fontSize: '0.6rem' }} />
+                                <Chip label={user.bloodGroup} sx={{ bgcolor: '#FF6B6B', fontSize: '0.6rem' }} />
+                                <Chip label={`AGE: ${user.age}`} sx={{ bgcolor: '#A855F7', color: '#fff', fontSize: '0.6rem' }} />
                             </Stack>
                         </Box>
-                        <Button variant="contained" size="large" sx={{ px: 4 }}>CONTACT USER</Button>
+                        <Button variant="contained" sx={{ px: 3, py: 1 }}>CONTACT</Button>
                     </Stack>
                 </CardContent>
             </Card>
 
-            <Grid container spacing={4}>
+            <Grid container spacing={2.5}>
                 <Grid item xs={12} md={6}>
-                    <InfoSection title="PERSONAL" emoji="👤">
-                        <InfoRow label="BIRTHDAY" value={user.birthDate} emoji="🎂" />
-                        <InfoRow label="PHONE" value={user.phone} emoji="📱" />
-                        <InfoRow label="EMAIL" value={user.email} emoji="✉️" />
-                        <InfoRow label="ADDRESS" value={`${user.address?.address}, ${user.address?.city}`} emoji="🏠" />
+                    <InfoSection title="PERSONAL" icon={Mail} color="#FF6B6B">
+                        <InfoRow label="BIRTHDAY" value={user.birthDate} icon={Cake} />
+                        <InfoRow label="PHONE" value={user.phone} icon={Phone} />
+                        <InfoRow label="EMAIL" value={user.email} icon={Mail} />
+                        <InfoRow label="ADDRESS" value={`${user.address?.address}, ${user.address?.city}`} icon={MapPin} />
                     </InfoSection>
                 </Grid>
                 <Grid item xs={12} md={6}>
-                    <InfoSection title="PROFESSIONAL" emoji="💼">
-                        <InfoRow label="COMPANY" value={user.company?.name} emoji="🏢" />
-                        <InfoRow label="POSITION" value={user.company?.title} emoji="👔" />
-                        <InfoRow label="DEPARTMENT" value={user.company?.department} emoji="📊" />
-                        <InfoRow label="UNIVERSITY" value={user.university} emoji="🎓" />
+                    <InfoSection title="PROFESSIONAL" icon={Building} color="#A855F7">
+                        <InfoRow label="COMPANY" value={user.company?.name} icon={Building} />
+                        <InfoRow label="POSITION" value={user.company?.title} icon={Building} />
+                        <InfoRow label="DEPARTMENT" value={user.company?.department} icon={Building} />
+                        <InfoRow label="UNIVERSITY" value={user.university} icon={GraduationCap} />
                     </InfoSection>
                 </Grid>
                 <Grid item xs={12} md={4}>
-                    <InfoSection title="PHYSICAL" emoji="📏">
-                        <InfoRow label="HEIGHT" value={`${user.height} CM`} emoji="📐" />
-                        <InfoRow label="WEIGHT" value={`${user.weight} KG`} emoji="⚖️" />
-                        <InfoRow label="EYE COLOR" value={user.eyeColor?.toUpperCase()} emoji="👁️" />
+                    <InfoSection title="PHYSICAL" icon={Ruler} color="#FFC900">
+                        <InfoRow label="HEIGHT" value={`${user.height} CM`} icon={Ruler} />
+                        <InfoRow label="WEIGHT" value={`${user.weight} KG`} icon={Scale} />
+                        <InfoRow label="EYE COLOR" value={user.eyeColor?.toUpperCase()} icon={Eye} />
                     </InfoSection>
                 </Grid>
                 <Grid item xs={12} md={8}>
-                    <Card>
-                        <CardContent sx={{ p: 3 }}>
-                            <Typography variant="h4" sx={{ mb: 3 }}>NOTES 📝</Typography>
-                            <Typography variant="body2" sx={{ fontWeight: 600, mb: 3 }}>
-                                THIS USER BELONGS TO THE {user.company?.department?.toUpperCase() || 'N/A'} DEPARTMENT.
-                            </Typography>
-                            <Divider sx={{ borderColor: '#000', borderWidth: 1.5, my: 3 }} />
-                            <Typography variant="caption">SYSTEM UID</Typography>
-                            <Typography variant="body2" sx={{ fontWeight: 900, fontFamily: 'monospace' }}>
-                                {user.id}-{user.username?.toUpperCase()}
+                    <Card sx={{ bgcolor: '#F8F9FA' }}>
+                        <CardContent sx={{ p: 2.5 }}>
+                            <Typography variant="h4" sx={{ mb: 2, fontSize: '0.9rem' }}>SYSTEM INFO</Typography>
+                            <Typography variant="caption" sx={{ fontSize: '0.6rem' }}>UNIQUE ID</Typography>
+                            <Typography variant="body2" sx={{ fontWeight: 900, fontFamily: 'monospace', fontSize: '0.85rem' }}>
+                                USR-{user.id}-{user.username?.toUpperCase()}
                             </Typography>
                         </CardContent>
                     </Card>

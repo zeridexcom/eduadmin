@@ -23,73 +23,63 @@ import {
     useTheme,
     useMediaQuery,
     Chip,
-    CircularProgress,
     Stack,
     Button,
 } from '@mui/material';
 import {
+    LayoutDashboard,
+    Users,
+    Package,
+    LogOut,
+    Settings,
+    Bell,
     Menu as MenuIcon,
-    DashboardOutlined,
-    PeopleOutlined,
-    Inventory2Outlined,
-    LogoutOutlined,
-    SettingsOutlined,
-    NotificationsNone,
-} from '@mui/icons-material';
+    GraduationCap,
+} from 'lucide-react';
 
-const drawerWidth = 280;
+const drawerWidth = 260;
 
 // Navigation Item Component
 const NavItem = memo(function NavItem({ item, isActive, onClick }) {
     return (
-        <ListItem disablePadding sx={{ mb: 1.5 }}>
+        <ListItem disablePadding sx={{ mb: 1 }}>
             <ListItemButton
                 onClick={onClick}
                 sx={{
                     mx: 2,
-                    py: 1.5,
-                    border: '3px solid #000',
+                    py: 1.2,
+                    border: '2px solid #000',
                     bgcolor: isActive ? '#FFC900' : '#FFFFFF',
-                    boxShadow: isActive ? '4px 4px 0 #000' : 'none',
+                    boxShadow: isActive ? '3px 3px 0 #000' : 'none',
                     '&:hover': {
                         bgcolor: '#FFC900',
                         transform: 'translate(-2px, -2px)',
-                        boxShadow: '4px 4px 0 #000',
+                        boxShadow: '3px 3px 0 #000',
                     },
                     transition: 'all 0.15s ease',
                 }}
             >
-                <ListItemIcon sx={{ minWidth: 40, color: '#000' }}>
+                <ListItemIcon sx={{ minWidth: 36, color: '#000' }}>
                     {item.icon}
                 </ListItemIcon>
                 <ListItemText
                     primary={item.label}
                     primaryTypographyProps={{
-                        fontWeight: 800,
+                        fontWeight: 700,
+                        fontSize: '0.85rem',
                         textTransform: 'uppercase',
-                        letterSpacing: '0.05em',
+                        letterSpacing: '0.03em',
                     }}
                 />
-                {item.badge && (
-                    <Chip
-                        label={item.badge}
-                        size="small"
-                        sx={{
-                            height: 24,
-                            bgcolor: '#000',
-                            color: '#FFC900',
-                        }}
-                    />
-                )}
             </ListItemButton>
         </ListItem>
     );
 });
 
 const navItems = [
-    { label: 'Dashboard', icon: <DashboardOutlined />, path: '/dashboard' },
-    { label: 'Users', icon: <PeopleOutlined />, path: '/dashboard/users' },
-    { label: 'Products', icon: <Inventory2Outlined />, path: '/dashboard/products' },
+    { label: 'Dashboard', icon: <LayoutDashboard size={20} />, path: '/dashboard' },
+    { label: 'Users', icon: <Users size={20} />, path: '/dashboard/users' },
+    { label: 'Products', icon: <Package size={20} />, path: '/dashboard/products' },
 ];
 
 export default function DashboardLayout({ children }) {
@@ -137,7 +127,7 @@ export default function DashboardLayout({ children }) {
 
     if (status === 'loading') {
         return (
-            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh', bgcolor: '#FFC900' }}>
+            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh', bgcolor: '#F8F9FA' }}>
                 <Box className="brutal-loader" />
             </Box>
         );
@@ -148,13 +138,22 @@ export default function DashboardLayout({ children }) {
     const currentUser = session?.user || user;
 
     const drawer = (
-        <Box sx={{ height: '100%', display: 'flex', flexDirection: 'column', py: 4, bgcolor: '#FFFFFF' }}>
+        <Box sx={{ height: '100%', display: 'flex', flexDirection: 'column', py: 3, bgcolor: '#FFFFFF' }}>
             {/* Logo */}
-            <Box sx={{ px: 4, mb: 6, display: 'flex', alignItems: 'center', gap: 2 }}>
-                <Box className="emoji-icon" sx={{ fontSize: '1.8rem' }}>
-                    🏫
+            <Box sx={{ px: 3, mb: 4, display: 'flex', alignItems: 'center', gap: 1.5 }}>
+                <Box sx={{
+                    width: 40,
+                    height: 40,
+                    bgcolor: '#FFC900',
+                    border: '2px solid #000',
+                    boxShadow: '2px 2px 0 #000',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                }}>
+                    <GraduationCap size={22} />
                 </Box>
-                <Typography variant="h4" sx={{ fontWeight: 900, textTransform: 'uppercase' }}>
+                <Typography variant="h4" sx={{ fontWeight: 900, textTransform: 'uppercase', fontSize: '1.1rem' }}>
                     EduAdmin
                 </Typography>
             </Box>
@@ -163,9 +162,9 @@ export default function DashboardLayout({ children }) {
             <List sx={{ flex: 1 }}>
                 <Typography
                     variant="caption"
-                    sx={{ px: 4, mb: 2, display: 'block', fontWeight: 800, letterSpacing: '0.2em' }}
+                    sx={{ px: 3, mb: 1.5, display: 'block', fontWeight: 700, letterSpacing: '0.15em', fontSize: '0.65rem' }}
                 >
-                    NAVIGATION
+                    MENU
                 </Typography>
                 {navItems.map((item) => (
                     <NavItem
@@ -178,33 +177,34 @@ export default function DashboardLayout({ children }) {
             </List>
 
             {/* User Profile */}
-            <Box sx={{ px: 3, mt: 'auto' }}>
+            <Box sx={{ px: 2, mt: 'auto' }}>
                 <Box
                     sx={{
-                        p: 3,
-                        border: '3px solid #000',
-                        boxShadow: '4px 4px 0 #000',
+                        p: 2,
+                        border: '2px solid #000',
+                        boxShadow: '3px 3px 0 #000',
                         bgcolor: '#FFC900',
                     }}
                 >
-                    <Stack spacing={2}>
-                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                            <Avatar src={currentUser?.image} sx={{ width: 48, height: 48 }} />
+                    <Stack spacing={1.5}>
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
+                            <Avatar src={currentUser?.image} sx={{ width: 36, height: 36, border: '2px solid #000' }} />
                             <Box sx={{ minWidth: 0 }}>
-                                <Typography variant="body2" sx={{ fontWeight: 900 }} noWrap>
+                                <Typography variant="body2" sx={{ fontWeight: 800, fontSize: '0.8rem' }} noWrap>
                                     {currentUser?.name || 'ADMIN'}
                                 </Typography>
-                                <Typography variant="caption" noWrap sx={{ display: 'block', fontWeight: 600 }}>
+                                <Typography variant="caption" noWrap sx={{ display: 'block', fontWeight: 600, fontSize: '0.65rem' }}>
                                     {currentUser?.email}
                                 </Typography>
                             </Box>
                         </Box>
                         <Button
                             fullWidth
+                            size="small"
                             variant="outlined"
                             onClick={handleLogout}
-                            startIcon={<LogoutOutlined />}
-                            sx={{ bgcolor: '#FFFFFF' }}
+                            startIcon={<LogOut size={16} />}
+                            sx={{ bgcolor: '#FFFFFF', py: 0.8, fontSize: '0.75rem' }}
                         >
                             LOG OUT
                         </Button>
@@ -224,25 +224,25 @@ export default function DashboardLayout({ children }) {
                     ml: { md: `${drawerWidth}px` },
                 }}
             >
-                <Toolbar sx={{ px: { xs: 2, md: 4 }, minHeight: { xs: 70, md: 80 } }}>
+                <Toolbar sx={{ px: { xs: 2, md: 3 }, minHeight: { xs: 56, md: 64 } }}>
                     <IconButton
                         edge="start"
                         onClick={handleDrawerToggle}
                         sx={{ mr: 2, display: { md: 'none' } }}
                     >
-                        <MenuIcon />
+                        <MenuIcon size={20} />
                     </IconButton>
 
-                    <Typography variant="h5" sx={{ flexGrow: 1, fontWeight: 900, textTransform: 'uppercase' }}>
+                    <Typography variant="h5" sx={{ flexGrow: 1, fontWeight: 800, textTransform: 'uppercase', fontSize: '0.95rem' }}>
                         {navItems.find(i => i.path === pathname)?.label || 'OVERVIEW'}
                     </Typography>
 
-                    <Stack direction="row" spacing={2} alignItems="center">
-                        <IconButton sx={{ bgcolor: '#FFFFFF' }}>
-                            <NotificationsNone />
+                    <Stack direction="row" spacing={1.5} alignItems="center">
+                        <IconButton sx={{ bgcolor: '#FFFFFF', width: 36, height: 36 }}>
+                            <Bell size={18} />
                         </IconButton>
                         <IconButton onClick={handleMenuOpen} sx={{ p: 0 }}>
-                            <Avatar src={currentUser?.image} sx={{ width: 42, height: 42 }} />
+                            <Avatar src={currentUser?.image} sx={{ width: 36, height: 36, border: '2px solid #000' }} />
                         </IconButton>
                     </Stack>
                 </Toolbar>
@@ -255,16 +255,16 @@ export default function DashboardLayout({ children }) {
                 onClose={handleMenuClose}
                 transformOrigin={{ horizontal: 'right', vertical: 'top' }}
                 anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
-                PaperProps={{ sx: { mt: 2, minWidth: 200 } }}
+                PaperProps={{ sx: { mt: 1.5, minWidth: 180 } }}
             >
                 <MenuItem onClick={handleMenuClose}>
-                    <ListItemIcon><SettingsOutlined fontSize="small" /></ListItemIcon>
-                    <Typography sx={{ fontWeight: 700 }}>SETTINGS</Typography>
+                    <ListItemIcon><Settings size={16} /></ListItemIcon>
+                    <Typography sx={{ fontWeight: 700, fontSize: '0.85rem' }}>SETTINGS</Typography>
                 </MenuItem>
-                <Divider sx={{ my: 1, borderColor: '#000', borderWidth: 1.5 }} />
+                <Divider sx={{ my: 1, borderColor: '#000', borderWidth: 1 }} />
                 <MenuItem onClick={handleLogout} sx={{ color: '#FF3B3B' }}>
-                    <ListItemIcon><LogoutOutlined fontSize="small" sx={{ color: 'inherit' }} /></ListItemIcon>
-                    <Typography sx={{ fontWeight: 800 }}>LOG OUT 👋</Typography>
+                    <ListItemIcon><LogOut size={16} /></ListItemIcon>
+                    <Typography sx={{ fontWeight: 800, fontSize: '0.85rem' }}>LOG OUT</Typography>
                 </MenuItem>
             </Menu>
 
@@ -294,17 +294,21 @@ export default function DashboardLayout({ children }) {
                 </Drawer>
             </Box>
 
-            {/* Main Content */}
+            {/* Main Content - CENTERED */}
             <Box
                 component="main"
                 sx={{
                     flexGrow: 1,
-                    p: { xs: 2, md: 4 },
+                    p: { xs: 2, md: 3 },
                     width: { md: `calc(100% - ${drawerWidth}px)` },
+                    display: 'flex',
+                    justifyContent: 'center',
                 }}
             >
-                <Toolbar sx={{ minHeight: { xs: 70, md: 80 } }} />
-                <Box className="animate-slide-up">{children}</Box>
+                <Box sx={{ width: '100%', maxWidth: 1200 }}>
+                    <Toolbar sx={{ minHeight: { xs: 56, md: 64 } }} />
+                    <Box className="animate-slide-up">{children}</Box>
+                </Box>
             </Box>
         </Box>
     );

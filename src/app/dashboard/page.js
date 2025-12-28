@@ -16,70 +16,94 @@ import {
     IconButton,
 } from '@mui/material';
 import {
-    PeopleAltOutlined,
-    Inventory2Outlined,
-    TrendingUpOutlined,
-    ShoppingCartOutlined,
-    ArrowForward,
-    MoreHoriz,
-} from '@mui/icons-material';
+    Users,
+    Package,
+    TrendingUp,
+    ShoppingCart,
+    ArrowRight,
+    MoreHorizontal,
+    Sparkles,
+    Mail,
+    PartyPopper,
+    Palette,
+    Gem,
+} from 'lucide-react';
 
-const StatCard = ({ title, value, icon, emoji, color, onClick, index }) => (
+const StatCard = ({ title, value, icon: Icon, color, onClick, index }) => (
     <Card
         className={`animate-slide-up stagger-${index + 1}`}
         onClick={onClick}
-        sx={{ cursor: onClick ? 'pointer' : 'default', bgcolor: color || '#FFFFFF' }}
+        sx={{ cursor: onClick ? 'pointer' : 'default' }}
     >
-        <CardContent sx={{ p: 3 }}>
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 3 }}>
-                <Box className="emoji-icon" sx={{ bgcolor: '#FFC900' }}>
-                    {emoji}
+        <CardContent sx={{ p: 2.5 }}>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 2 }}>
+                <Box sx={{
+                    width: 40,
+                    height: 40,
+                    bgcolor: color,
+                    border: '2px solid #000',
+                    boxShadow: '2px 2px 0 #000',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                }}>
+                    <Icon size={20} />
                 </Box>
-                <IconButton sx={{ bgcolor: 'transparent', border: 'none', '&:hover': { bgcolor: 'rgba(0,0,0,0.05)' } }}>
-                    <MoreHoriz />
+                <IconButton size="small" sx={{ bgcolor: 'transparent', border: 'none', p: 0.5, '&:hover': { bgcolor: 'rgba(0,0,0,0.05)' } }}>
+                    <MoreHorizontal size={16} />
                 </IconButton>
             </Box>
-            <Typography variant="h2" sx={{ mb: 1, fontSize: '2.5rem' }}>
+            <Typography variant="h2" sx={{ mb: 0.5, fontSize: '1.8rem' }}>
                 {value}
             </Typography>
-            <Typography variant="body2" sx={{ fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em' }}>
+            <Typography variant="body2" sx={{ fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', fontSize: '0.7rem' }}>
                 {title}
             </Typography>
-            <Box sx={{ mt: 2, display: 'flex', alignItems: 'center', gap: 1 }}>
-                <Box className="brutal-tag brutal-tag-success">+12.5%</Box>
-                <Typography variant="caption" sx={{ fontWeight: 600 }}>VS LAST MONTH</Typography>
+            <Box sx={{ mt: 1.5, display: 'flex', alignItems: 'center', gap: 1 }}>
+                <Box sx={{ px: 1, py: 0.25, bgcolor: '#00D4AA', border: '1.5px solid #000', fontSize: '0.6rem', fontWeight: 800 }}>+12.5%</Box>
+                <Typography variant="caption" sx={{ fontWeight: 600, fontSize: '0.65rem' }}>VS LAST MONTH</Typography>
             </Box>
         </CardContent>
     </Card>
 );
 
-const ActivityItem = ({ emoji, title, time, index }) => (
+const ActivityItem = ({ icon: Icon, title, time, index }) => (
     <Box
         className={`animate-slide-left stagger-${index + 1}`}
         sx={{
             display: 'flex',
             alignItems: 'center',
-            gap: 2,
-            p: 2,
-            border: '3px solid #000',
+            gap: 1.5,
+            p: 1.5,
+            border: '2px solid #000',
             bgcolor: '#FFFFFF',
-            boxShadow: '4px 4px 0 #000',
+            boxShadow: '3px 3px 0 #000',
             cursor: 'pointer',
             transition: 'all 0.15s ease',
             '&:hover': {
                 transform: 'translate(-2px, -2px)',
-                boxShadow: '6px 6px 0 #000',
+                boxShadow: '5px 5px 0 #000',
                 bgcolor: '#FFC900',
             },
         }}
     >
-        <Box className="emoji-icon">{emoji}</Box>
-        <Box sx={{ flex: 1 }}>
-            <Typography variant="body2" sx={{ fontWeight: 800 }}>{title}</Typography>
-            <Typography variant="caption" sx={{ fontWeight: 600 }}>{time}</Typography>
+        <Box sx={{
+            width: 36,
+            height: 36,
+            bgcolor: '#FFC900',
+            border: '2px solid #000',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+        }}>
+            <Icon size={16} />
         </Box>
-        <IconButton size="small" sx={{ border: 'none', bgcolor: 'transparent' }}>
-            <ArrowForward fontSize="small" />
+        <Box sx={{ flex: 1 }}>
+            <Typography variant="body2" sx={{ fontWeight: 800, fontSize: '0.8rem' }}>{title}</Typography>
+            <Typography variant="caption" sx={{ fontWeight: 600, fontSize: '0.65rem' }}>{time}</Typography>
+        </Box>
+        <IconButton size="small" sx={{ border: 'none', bgcolor: 'transparent', p: 0.5 }}>
+            <ArrowRight size={14} />
         </IconButton>
     </Box>
 );
@@ -96,66 +120,68 @@ export default function DashboardPage() {
         {
             title: 'Total Users',
             value: '2,847',
-            emoji: '👥',
-            color: '#FFFFFF',
+            icon: Users,
+            color: '#FFC900',
             onClick: () => router.push('/dashboard/users'),
         },
         {
             title: 'Products',
             value: '1,234',
-            emoji: '📦',
-            color: '#FFFFFF',
+            icon: Package,
+            color: '#00D4AA',
             onClick: () => router.push('/dashboard/products'),
         },
         {
             title: 'Revenue',
             value: '$48K',
-            emoji: '💰',
-            color: '#00D4AA',
+            icon: TrendingUp,
+            color: '#FF6B6B',
         },
         {
             title: 'Orders',
             value: '892',
-            emoji: '🛒',
-            color: '#FFFFFF',
+            icon: ShoppingCart,
+            color: '#A855F7',
         },
     ], [router]);
+
+    const activities = useMemo(() => [
+        { icon: Palette, title: 'NEW COURSE PUBLISHED', time: '12 MINS AGO' },
+        { icon: Gem, title: 'PREMIUM SUBSCRIPTION SOLD', time: '45 MINS AGO' },
+        { icon: Mail, title: 'SUPPORT TICKET FROM MIKE', time: '2 HOURS AGO' },
+        { icon: PartyPopper, title: 'MILESTONE: 2K USERS!', time: '5 HOURS AGO' },
+    ], []);
 
     return (
         <Box>
             {/* Welcome Header */}
-            <Box sx={{ mb: 6 }}>
-                <Typography variant="h1" sx={{ mb: 2 }}>
+            <Box sx={{ mb: 4 }}>
+                <Typography variant="h1" sx={{ mb: 1, fontSize: '1.4rem' }}>
                     YO {firstName}! 👋
                 </Typography>
-                <Typography variant="body1" sx={{ fontWeight: 600 }}>
-                    HERE&apos;S YOUR DASHBOARD. LOOKING GOOD TODAY! 🔥
+                <Typography variant="body1" sx={{ fontWeight: 600, fontSize: '0.85rem' }}>
+                    HERE&apos;S YOUR DASHBOARD. LOOKING GOOD TODAY!
                 </Typography>
             </Box>
 
             {/* Stats Grid */}
-            <Grid container spacing={3} sx={{ mb: 6 }}>
+            <Grid container spacing={2.5} sx={{ mb: 4 }}>
                 {stats.map((stat, index) => (
-                    <Grid item xs={12} sm={6} lg={3} key={index}>
+                    <Grid item xs={6} lg={3} key={index}>
                         <StatCard {...stat} index={index} />
                     </Grid>
                 ))}
             </Grid>
 
-            <Grid container spacing={4}>
+            <Grid container spacing={3}>
                 {/* Activity Feed */}
                 <Grid item xs={12} lg={7}>
-                    <Box sx={{ mb: 3, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                        <Typography variant="h3">RECENT ACTIVITY 🔔</Typography>
-                        <Button variant="outlined" size="small" sx={{ bgcolor: '#FFC900' }}>VIEW ALL</Button>
+                    <Box sx={{ mb: 2, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                        <Typography variant="h3" sx={{ fontSize: '1rem' }}>RECENT ACTIVITY</Typography>
+                        <Button variant="outlined" size="small" sx={{ bgcolor: '#FFC900', fontSize: '0.7rem', py: 0.5 }}>VIEW ALL</Button>
                     </Box>
-                    <Stack spacing={2}>
-                        {[
-                            { emoji: '🎨', title: 'NEW COURSE PUBLISHED', time: '12 MINS AGO' },
-                            { emoji: '💎', title: 'PREMIUM SUBSCRIPTION SOLD', time: '45 MINS AGO' },
-                            { emoji: '📧', title: 'SUPPORT TICKET FROM MIKE', time: '2 HOURS AGO' },
-                            { emoji: '🎉', title: 'MILESTONE: 2K USERS!', time: '5 HOURS AGO' },
-                        ].map((item, i) => (
+                    <Stack spacing={1.5}>
+                        {activities.map((item, i) => (
                             <ActivityItem key={i} {...item} index={i} />
                         ))}
                     </Stack>
@@ -164,23 +190,24 @@ export default function DashboardPage() {
                 {/* Goals Section */}
                 <Grid item xs={12} lg={5}>
                     <Card>
-                        <CardContent sx={{ p: 3 }}>
-                            <Typography variant="h3" sx={{ mb: 4 }}>GOAL TRACKING 🎯</Typography>
-                            <Stack spacing={4}>
+                        <CardContent sx={{ p: 2.5 }}>
+                            <Typography variant="h3" sx={{ mb: 3, fontSize: '1rem' }}>GOAL TRACKING 🎯</Typography>
+                            <Stack spacing={3}>
                                 {[
                                     { label: 'REVENUE TARGET', value: 72, color: '#00D4AA' },
                                     { label: 'USER RETENTION', value: 85, color: '#FFC900' },
                                     { label: 'SUPPORT SPEED', value: 46, color: '#FF6B6B' },
                                 ].map((target, i) => (
                                     <Box key={i}>
-                                        <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1.5 }}>
-                                            <Typography variant="caption">{target.label}</Typography>
-                                            <Typography variant="caption" sx={{ fontWeight: 900 }}>{target.value}%</Typography>
+                                        <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
+                                            <Typography variant="caption" sx={{ fontSize: '0.65rem' }}>{target.label}</Typography>
+                                            <Typography variant="caption" sx={{ fontWeight: 900, fontSize: '0.7rem' }}>{target.value}%</Typography>
                                         </Box>
                                         <LinearProgress
                                             variant="determinate"
                                             value={target.value}
                                             sx={{
+                                                height: 8,
                                                 '& .MuiLinearProgress-bar': {
                                                     bgcolor: target.color,
                                                 },
@@ -190,10 +217,13 @@ export default function DashboardPage() {
                                 ))}
                             </Stack>
 
-                            <Box sx={{ mt: 5, p: 3, border: '3px dashed #000', bgcolor: '#FFC900' }}>
-                                <Typography variant="body2" sx={{ fontWeight: 900, mb: 1 }}>PRO TIP 💡</Typography>
-                                <Typography variant="caption" sx={{ fontWeight: 600, display: 'block' }}>
-                                    HIGHER USER RETENTION = 3X MORE REVENUE. REACH OUT TO INACTIVE USERS!
+                            <Box sx={{ mt: 4, p: 2, border: '2px dashed #000', bgcolor: '#FFC900' }}>
+                                <Stack direction="row" spacing={1} alignItems="center" sx={{ mb: 0.5 }}>
+                                    <Sparkles size={14} />
+                                    <Typography variant="body2" sx={{ fontWeight: 900, fontSize: '0.75rem' }}>PRO TIP</Typography>
+                                </Stack>
+                                <Typography variant="caption" sx={{ fontWeight: 600, display: 'block', fontSize: '0.7rem' }}>
+                                    HIGHER USER RETENTION = 3X MORE REVENUE!
                                 </Typography>
                             </Box>
                         </CardContent>

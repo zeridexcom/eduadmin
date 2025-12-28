@@ -28,20 +28,23 @@ import {
 } from '@mui/material';
 import {
     Search,
-    VisibilityOutlined,
-    RefreshOutlined,
-    FilterListOutlined,
-} from '@mui/icons-material';
+    Eye,
+    RefreshCw,
+    Filter,
+} from 'lucide-react';
 
 // Product Card Component
 const ProductCard = memo(function ProductCard({ product, onView, index }) {
+    const colors = ['#FFC900', '#00D4AA', '#FF6B6B', '#A855F7'];
+    const cardColor = colors[index % colors.length];
+
     return (
         <Card
             className={`animate-slide-up stagger-${(index % 8) + 1}`}
             sx={{ height: '100%', display: 'flex', flexDirection: 'column', cursor: 'pointer' }}
             onClick={() => onView(product.id)}
         >
-            <Box sx={{ position: 'relative', height: 200, bgcolor: '#FFC900', p: 2, overflow: 'hidden' }}>
+            <Box sx={{ position: 'relative', height: 160, bgcolor: cardColor, p: 1.5, overflow: 'hidden' }}>
                 <CardMedia
                     component="img"
                     image={product.thumbnail}
@@ -52,24 +55,24 @@ const ProductCard = memo(function ProductCard({ product, onView, index }) {
                     <Chip
                         label={`${Math.round(product.discountPercentage)}% OFF`}
                         size="small"
-                        sx={{ position: 'absolute', top: 12, left: 12, bgcolor: '#FF6B6B', color: '#000' }}
+                        sx={{ position: 'absolute', top: 8, left: 8, bgcolor: '#000', color: '#FFC900', fontSize: '0.55rem', height: 20 }}
                     />
                 )}
             </Box>
-            <CardContent sx={{ flex: 1, p: 2.5, display: 'flex', flexDirection: 'column' }}>
-                <Typography variant="caption" sx={{ mb: 1 }}>{product.category.toUpperCase()}</Typography>
-                <Typography variant="h4" sx={{ mb: 2, fontSize: '1rem', minHeight: '2.5em', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+            <CardContent sx={{ flex: 1, p: 2, display: 'flex', flexDirection: 'column' }}>
+                <Typography variant="caption" sx={{ mb: 0.5, fontSize: '0.6rem' }}>{product.category.toUpperCase()}</Typography>
+                <Typography variant="h4" sx={{ mb: 1.5, fontSize: '0.85rem', minHeight: '2.2em', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
                     {product.title.toUpperCase()}
                 </Typography>
-                <Stack direction="row" alignItems="center" spacing={1} sx={{ mb: 2 }}>
-                    <Rating value={product.rating} precision={0.5} size="small" readOnly />
-                    <Typography variant="caption" sx={{ fontWeight: 800 }}>{product.rating}</Typography>
+                <Stack direction="row" alignItems="center" spacing={0.5} sx={{ mb: 1.5 }}>
+                    <Rating value={product.rating} precision={0.5} size="small" readOnly sx={{ fontSize: '0.9rem' }} />
+                    <Typography variant="caption" sx={{ fontWeight: 800, fontSize: '0.65rem' }}>{product.rating}</Typography>
                 </Stack>
                 <Box sx={{ mt: 'auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                     <Box>
-                        <Typography variant="h3" sx={{ fontSize: '1.5rem' }}>${product.price}</Typography>
+                        <Typography variant="h3" sx={{ fontSize: '1.2rem' }}>${product.price}</Typography>
                         {product.discountPercentage > 0 && (
-                            <Typography variant="caption" sx={{ textDecoration: 'line-through' }}>
+                            <Typography variant="caption" sx={{ textDecoration: 'line-through', fontSize: '0.6rem' }}>
                                 ${(product.price / (1 - product.discountPercentage / 100)).toFixed(2)}
                             </Typography>
                         )}
@@ -77,9 +80,9 @@ const ProductCard = memo(function ProductCard({ product, onView, index }) {
                     <IconButton
                         size="small"
                         onClick={(e) => { e.stopPropagation(); onView(product.id); }}
-                        sx={{ bgcolor: '#FFC900' }}
+                        sx={{ bgcolor: '#00D4AA', width: 28, height: 28 }}
                     >
-                        <VisibilityOutlined fontSize="small" />
+                        <Eye size={14} />
                     </IconButton>
                 </Box>
             </CardContent>
@@ -89,15 +92,14 @@ const ProductCard = memo(function ProductCard({ product, onView, index }) {
 
 const ProductCardSkeleton = () => (
     <Card sx={{ height: '100%' }}>
-        <Skeleton variant="rectangular" height={200} />
-        <CardContent sx={{ p: 2.5 }}>
-            <Skeleton width={60} sx={{ mb: 1 }} />
-            <Skeleton width="90%" height={24} sx={{ mb: 1 }} />
-            <Skeleton width="70%" height={24} sx={{ mb: 2 }} />
-            <Skeleton width={100} sx={{ mb: 2 }} />
+        <Skeleton variant="rectangular" height={160} />
+        <CardContent sx={{ p: 2 }}>
+            <Skeleton width={50} sx={{ mb: 0.5 }} />
+            <Skeleton width="90%" height={20} sx={{ mb: 1 }} />
+            <Skeleton width={80} sx={{ mb: 1.5 }} />
             <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                <Skeleton width={70} height={32} />
-                <Skeleton variant="rectangular" width={32} height={32} />
+                <Skeleton width={60} height={28} />
+                <Skeleton variant="rectangular" width={28} height={28} />
             </Box>
         </CardContent>
     </Card>
@@ -157,64 +159,64 @@ export default function ProductsPage() {
     return (
         <Box>
             {/* Header */}
-            <Box sx={{ mb: 5, display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', gap: 2, flexWrap: 'wrap' }}>
+            <Box sx={{ mb: 3, display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', gap: 2, flexWrap: 'wrap' }}>
                 <Box>
-                    <Typography variant="h2" sx={{ mb: 1 }}>PRODUCT CATALOG 📦</Typography>
-                    <Typography variant="body1" sx={{ fontWeight: 600 }}>
-                        <Box component="span" sx={{ color: '#00D4AA', fontWeight: 900 }}>{total}</Box> PRODUCTS READY TO SELL
+                    <Typography variant="h2" sx={{ mb: 0.5, fontSize: '1.2rem' }}>PRODUCT CATALOG</Typography>
+                    <Typography variant="body1" sx={{ fontWeight: 600, fontSize: '0.8rem' }}>
+                        <Box component="span" sx={{ color: '#00D4AA', fontWeight: 900 }}>{total}</Box> PRODUCTS
                     </Typography>
                 </Box>
-                <Stack direction="row" spacing={2}>
+                <Stack direction="row" spacing={1.5}>
                     <TextField
                         size="small"
                         placeholder="SEARCH..."
                         value={localSearch}
                         onChange={(e) => handleSearch(e.target.value)}
-                        sx={{ minWidth: 220 }}
+                        sx={{ minWidth: 160, '& .MuiOutlinedInput-root': { py: 0 } }}
                         InputProps={{
-                            startAdornment: <InputAdornment position="start"><Search sx={{ fontSize: 20 }} /></InputAdornment>,
+                            startAdornment: <InputAdornment position="start"><Search size={16} /></InputAdornment>,
                         }}
                     />
-                    <FormControl size="small" sx={{ minWidth: 150 }}>
-                        <InputLabel>CATEGORY</InputLabel>
-                        <Select value={selectedCategory} label="CATEGORY" onChange={handleCategoryChange}>
+                    <FormControl size="small" sx={{ minWidth: 120 }}>
+                        <InputLabel sx={{ fontSize: '0.75rem' }}>CATEGORY</InputLabel>
+                        <Select value={selectedCategory} label="CATEGORY" onChange={handleCategoryChange} sx={{ fontSize: '0.75rem' }}>
                             <MenuItem value="">ALL</MenuItem>
                             {categories.map((cat) => (
-                                <MenuItem key={cat.slug || cat} value={cat.slug || cat} sx={{ textTransform: 'uppercase' }}>
+                                <MenuItem key={cat.slug || cat} value={cat.slug || cat} sx={{ textTransform: 'uppercase', fontSize: '0.75rem' }}>
                                     {(cat.name || cat).toUpperCase()}
                                 </MenuItem>
                             ))}
                         </Select>
                     </FormControl>
                     <Tooltip title="REFRESH">
-                        <IconButton onClick={handleRefresh} sx={{ bgcolor: '#FFC900' }}>
-                            <RefreshOutlined fontSize="small" />
+                        <IconButton onClick={handleRefresh} sx={{ bgcolor: '#A855F7', width: 36, height: 36 }}>
+                            <RefreshCw size={16} />
                         </IconButton>
                     </Tooltip>
                 </Stack>
             </Box>
 
-            {error && <Alert severity="error" sx={{ mb: 4 }}>{error}</Alert>}
+            {error && <Alert severity="error" sx={{ mb: 3 }}>{error}</Alert>}
 
             {/* Products Grid */}
-            <Grid container spacing={3}>
+            <Grid container spacing={2}>
                 {isLoading ? (
                     [...Array(limit)].map((_, i) => (
-                        <Grid item xs={12} sm={6} lg={4} xl={3} key={i}>
+                        <Grid item xs={6} sm={4} lg={3} key={i}>
                             <ProductCardSkeleton />
                         </Grid>
                     ))
                 ) : products.length === 0 ? (
                     <Grid item xs={12}>
-                        <Box sx={{ py: 10, textAlign: 'center' }}>
-                            <Typography variant="h2" sx={{ mb: 2, opacity: 0.3 }}>🛍️</Typography>
-                            <Typography variant="h4">NO PRODUCTS FOUND</Typography>
-                            <Button sx={{ mt: 3 }} onClick={handleRefresh}>CLEAR FILTERS</Button>
+                        <Box sx={{ py: 8, textAlign: 'center' }}>
+                            <Typography variant="h3" sx={{ mb: 1, opacity: 0.3, fontSize: '2rem' }}>🛍️</Typography>
+                            <Typography variant="h4" sx={{ fontSize: '0.95rem' }}>NO PRODUCTS FOUND</Typography>
+                            <Button sx={{ mt: 2 }} size="small" onClick={handleRefresh}>CLEAR FILTERS</Button>
                         </Box>
                     </Grid>
                 ) : (
                     products.map((product, i) => (
-                        <Grid item xs={12} sm={6} lg={4} xl={3} key={product.id}>
+                        <Grid item xs={6} sm={4} lg={3} key={product.id}>
                             <ProductCard product={product} index={i} onView={handleViewProduct} />
                         </Grid>
                     ))
@@ -223,12 +225,12 @@ export default function ProductsPage() {
 
             {/* Pagination */}
             {!isLoading && products.length > 0 && totalPages > 1 && (
-                <Box sx={{ display: 'flex', justifyContent: 'center', mt: 6 }}>
+                <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
                     <Pagination
                         count={totalPages}
                         page={currentPage}
                         onChange={handlePageChange}
-                        size="large"
+                        size="medium"
                     />
                 </Box>
             )}
