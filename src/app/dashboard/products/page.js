@@ -180,7 +180,7 @@ export default function ProductsPage() {
     const handleRefresh = useCallback(() => {
         setLocalSearch('');
         fetchProducts(0, limit);
-    }, [fetchUsers, limit]);
+    }, [fetchProducts, limit]);
 
     const currentPage = useMemo(() => Math.floor(skip / limit) + 1, [skip, limit]);
     const totalPages = useMemo(() => Math.ceil(total / limit), [total, limit]);
