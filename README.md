@@ -1,46 +1,28 @@
-# EduAdmin - Dashboard
+# EduAdmin - Dashboard (v2.0 Modern Redesign)
 
-A modern, responsive admin dashboard built with Next.js 14, Material-UI, Zustand, and NextAuth.js for the Help Study Abroad frontend assessment.
+A premium, responsive admin dashboard built with Next.js 14, Material-UI, Zustand, and NextAuth.js. This project features a complete "Modern SaaS" aesthetic overhaul with glassmorphism, sticky layouts, and fully interactive data visualization.
 
 ![Next.js](https://img.shields.io/badge/Next.js-14-black?style=flat-square&logo=next.js)
 ![MUI](https://img.shields.io/badge/MUI-5-007FFF?style=flat-square&logo=mui)
 ![Zustand](https://img.shields.io/badge/Zustand-4-orange?style=flat-square)
 
-## 🚀 Features
+## 🚀 Key Features (v2.0)
 
-### Authentication
-- ✅ Admin login with NextAuth.js
-- ✅ DummyJSON API authentication
-- ✅ Protected dashboard routes
-- ✅ Token persistence with Zustand + localStorage
-- ✅ Auto-redirect for unauthenticated users
+### Premium UI/UX Redesign
+- ✅ **Stick-to-Edge Layout**: Custom engineered sticky header architecture ensuring 100% gap-free layout on all screen sizes.
+- ✅ **Modern SaaS Aesthetic**: Glassmorphism, blurred backdrops, and refined typography (Inter).
+- ✅ **Global Zoom Scaling**: Optimized at 120% scale for better readability and impactful presentation.
 
-### Users Management
-- ✅ Users list with MUI Table
-- ✅ Pagination (API-side with skip/limit)
-- ✅ Search functionality with debouncing
-- ✅ Single user detail view
-- ✅ Responsive design
+### Interactive Dashboard
+- ✅ **Live Data Filters**: Interactive Time Range selectors (Today/7 Days/30 Days) that dynamically update stats.
+- ✅ **Activity Feed**: Interactive activity items with Toast notifications.
+- ✅ **Global Search**: Functional search bar simulation with user feedback.
 
-### Products Catalog
-- ✅ Products grid with MUI Cards
-- ✅ Pagination
-- ✅ Search functionality
-- ✅ Category filter dropdown
-- ✅ Image carousel on detail page
-- ✅ Responsive grid layout
-
-### State Management
-- ✅ Zustand for global state
-- ✅ Auth state with persistence
-- ✅ Client-side caching for API responses
-
-### UI/UX
-- ✅ Modern dark theme with glassmorphism
-- ✅ Fully responsive (mobile, tablet, desktop)
-- ✅ Animated transitions
-- ✅ Loading skeletons
-- ✅ Premium design aesthetic
+### Core Functionality
+- ✅ **Authentication**: Admin login (NextAuth.js) with protected routes.
+- ✅ **Product Management**: "Add Product" modal with optimistic UI updates.
+- ✅ **User Management**: Full CRUD-style views for Users.
+- ✅ **Settings System**: Dedicated Settings page for profile and preferences.
 
 ---
 
