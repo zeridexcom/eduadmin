@@ -11,6 +11,8 @@
 
 html {
   scroll-behavior: smooth;
+  font-size: 20px;
+  /* Force 125% Scale (16px * 1.25) */
 }
 
 body {
