@@ -224,8 +224,11 @@ export default function DashboardLayout({ children }) {
                 color="inherit"
                 elevation={0}
                 sx={{
-                    width: { md: `calc(100% - ${drawerWidth}px)` },
-                    ml: { md: `${drawerWidth}px` },
+                    position: 'fixed',
+                    top: 0,
+                    right: 0,
+                    left: { xs: 0, md: `${drawerWidth}px` },
+                    width: 'auto', // CSS Anchor strategy: left + right + width:auto
                     bgcolor: 'rgba(250, 250, 250, 0.8)', // Semi-transparent based on bg
                     backdropFilter: 'blur(8px)',
                     borderBottom: '1px solid',
