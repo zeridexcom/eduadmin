@@ -16,73 +16,106 @@ import {
     IconButton,
     Skeleton,
     Alert,
-    Tooltip,
     FormControl,
     InputLabel,
     Select,
     MenuItem,
     Rating,
-    Pagination,
     Button,
     Stack,
+    Pagination,
+    Divider
 } from '@mui/material';
 import {
     Search,
     Eye,
     RefreshCw,
     Filter,
+    Plus,
+    Tag
 } from 'lucide-react';
 
-// Product Card Component
 const ProductCard = memo(function ProductCard({ product, onView, index }) {
-    const colors = ['#FFC900', '#00D4AA', '#FF6B6B', '#A855F7'];
-    const cardColor = colors[index % colors.length];
-
     return (
         <Card
-            className={`animate-slide-up stagger-${(index % 8) + 1}`}
-            sx={{ height: '100%', display: 'flex', flexDirection: 'column', cursor: 'pointer' }}
+            className={`modern-card stagger-${(index % 8) + 1} animate-fade-in`}
+            sx={{
+                height: '100%',
+                display: 'flex',
+                flexDirection: 'column',
+                cursor: 'pointer',
+                borderRadius: '12px',
+                border: '1px solid',
+                borderColor: 'divider',
+                boxShadow: '0 1px 2px rgba(0,0,0,0.05)'
+            }}
             onClick={() => onView(product.id)}
         >
-            <Box sx={{ position: 'relative', height: 160, bgcolor: cardColor, p: 1.5, overflow: 'hidden' }}>
+            <Box sx={{ position: 'relative', height: 180, bgcolor: '#F8F8F8', display: 'flex', alignItems: 'center', justifyContent: 'center', p: 2 }}>
                 <CardMedia
                     component="img"
                     image={product.thumbnail}
                     alt={product.title}
-                    sx={{ height: '100%', objectFit: 'contain', transition: 'transform 0.2s', '&:hover': { transform: 'scale(1.1)' } }}
+                    sx={{
+                        maxHeight: '100%',
+                        maxWidth: '100%',
+                        objectFit: 'contain',
+                        filter: 'grayscale(0%)',
+                        transition: 'transform 0.3s ease',
+                        '&:hover': { transform: 'scale(1.05)' }
+                    }}
                 />
                 {product.discountPercentage > 0 && (
                     <Chip
-                        label={`${Math.round(product.discountPercentage)}% OFF`}
+                        label={`-${Math.round(product.discountPercentage)}%`}
                         size="small"
-                        sx={{ position: 'absolute', top: 8, left: 8, bgcolor: '#000', color: '#FFC900', fontSize: '0.55rem', height: 20 }}
+                        sx={{
+                            position: 'absolute',
+                            top: 10,
+                            right: 10,
+                            bgcolor: 'error.main',
+                            color: 'white',
+                            fontWeight: 700,
+                            fontSize: '0.75rem',
+                            height: 24
+                        }}
                     />
                 )}
             </Box>
             <CardContent sx={{ flex: 1, p: 2, display: 'flex', flexDirection: 'column' }}>
-                <Typography variant="caption" sx={{ mb: 0.5, fontSize: '0.6rem' }}>{product.category.toUpperCase()}</Typography>
-                <Typography variant="h4" sx={{ mb: 1.5, fontSize: '0.85rem', minHeight: '2.2em', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
-                    {product.title.toUpperCase()}
-                </Typography>
-                <Stack direction="row" alignItems="center" spacing={0.5} sx={{ mb: 1.5 }}>
-                    <Rating value={product.rating} precision={0.5} size="small" readOnly sx={{ fontSize: '0.9rem' }} />
-                    <Typography variant="caption" sx={{ fontWeight: 800, fontSize: '0.65rem' }}>{product.rating}</Typography>
+                <Stack direction="row" justifyContent="space-between" alignItems="flex-start" sx={{ mb: 1 }}>
+                    <Typography variant="subtitle2" color="text.secondary" sx={{ textTransform: 'uppercase', fontSize: '0.7rem', fontWeight: 600 }}>
+                        {product.category}
+                    </Typography>
+                    <Stack direction="row" alignItems="center" spacing={0.5}>
+                        <Rating value={product.rating} precision={0.5} size="small" readOnly sx={{ fontSize: '0.9rem', color: '#F59E0B' }} />
+                        <Typography variant="caption" color="text.secondary">({product.rating})</Typography>
+                    </Stack>
                 </Stack>
+
+                <Typography variant="body1" sx={{ fontWeight: 600, mb: 1, lineHeight: 1.3, flex: 1 }}>
+                    {product.title}
+                </Typography>
+
+                <Divider sx={{ my: 1.5 }} />
+
                 <Box sx={{ mt: 'auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                     <Box>
-                        <Typography variant="h3" sx={{ fontSize: '1.2rem' }}>${product.price}</Typography>
-                        {product.discountPercentage > 0 && (
-                            <Typography variant="caption" sx={{ textDecoration: 'line-through', fontSize: '0.6rem' }}>
-                                ${(product.price / (1 - product.discountPercentage / 100)).toFixed(2)}
-                            </Typography>
-                        )}
+                        <Stack direction="row" alignItems="baseline" spacing={1}>
+                            <Typography variant="h6" sx={{ fontWeight: 700 }}>${product.price}</Typography>
+                            {product.discountPercentage > 0 && (
+                                <Typography variant="caption" sx={{ textDecoration: 'line-through', color: 'text.secondary' }}>
+                                    ${(product.price / (1 - product.discountPercentage / 100)).toFixed(2)}
+                                </Typography>
+                            )}
+                        </Stack>
                     </Box>
                     <IconButton
                         size="small"
                         onClick={(e) => { e.stopPropagation(); onView(product.id); }}
-                        sx={{ bgcolor: '#00D4AA', width: 28, height: 28 }}
+                        sx={{ bgcolor: 'primary.main', color: 'white', '&:hover': { bgcolor: 'primary.dark' } }}
                     >
-                        <Eye size={14} />
+                        <Eye size={16} />
                     </IconButton>
                 </Box>
             </CardContent>
@@ -91,15 +124,15 @@ const ProductCard = memo(function ProductCard({ product, onView, index }) {
 });
 
 const ProductCardSkeleton = () => (
-    <Card sx={{ height: '100%' }}>
-        <Skeleton variant="rectangular" height={160} />
+    <Card sx={{ height: '100%', borderRadius: '12px', border: '1px solid', borderColor: 'divider' }}>
+        <Skeleton variant="rectangular" height={180} />
         <CardContent sx={{ p: 2 }}>
-            <Skeleton width={50} sx={{ mb: 0.5 }} />
-            <Skeleton width="90%" height={20} sx={{ mb: 1 }} />
-            <Skeleton width={80} sx={{ mb: 1.5 }} />
-            <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                <Skeleton width={60} height={28} />
-                <Skeleton variant="rectangular" width={28} height={28} />
+            <Skeleton width={60} height={20} sx={{ mb: 1 }} />
+            <Skeleton width="90%" height={24} sx={{ mb: 2 }} />
+            <Divider sx={{ my: 1.5 }} />
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <Skeleton width={80} height={32} />
+                <Skeleton variant="circular" width={32} height={32} />
             </Box>
         </CardContent>
     </Card>
@@ -139,6 +172,7 @@ export default function ProductsPage() {
 
     const handlePageChange = useCallback((event, page) => {
         const newSkip = (page - 1) * limit;
+        window.scrollTo({ top: 0, behavior: 'smooth' });
         if (searchQuery) searchProducts(searchQuery, newSkip, limit);
         else if (selectedCategory) filterByCategory(selectedCategory, newSkip, limit);
         else fetchProducts(newSkip, limit);
@@ -153,87 +187,113 @@ export default function ProductsPage() {
         fetchProducts(0, limit);
     }, [fetchProducts, limit]);
 
-    const currentPage = useMemo(() => Math.floor(skip / limit) + 1, [skip, limit]);
-    const totalPages = useMemo(() => Math.ceil(total / limit), [total, limit]);
+    const currentPage = Math.floor(skip / limit) + 1;
+    const totalPages = Math.ceil(total / limit);
 
     return (
-        <Box>
+        <Box className="animate-fade-in">
             {/* Header */}
-            <Box sx={{ mb: 5, display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', gap: 3, flexWrap: 'wrap' }}>
+            <Box sx={{ mb: 4, display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 2 }}>
                 <Box>
-                    <Typography variant="h2" sx={{ mb: 1, fontSize: '1.8rem' }}>PRODUCT CATALOG</Typography>
-                    <Typography variant="body1" sx={{ fontWeight: 600, fontSize: '1rem' }}>
-                        <Box component="span" sx={{ color: '#00D4AA', fontWeight: 900 }}>{total}</Box> PRODUCTS
+                    <Typography variant="h4" sx={{ fontWeight: 700, mb: 0.5 }}>Products</Typography>
+                    <Typography variant="body2" color="text.secondary">
+                        Manage your product catalog and inventory.
                     </Typography>
                 </Box>
-                <Stack direction="row" spacing={2} alignItems="center">
-                    <TextField
-                        size="medium"
-                        placeholder="SEARCH..."
-                        value={localSearch}
-                        onChange={(e) => handleSearch(e.target.value)}
-                        sx={{ minWidth: 200, '& .MuiOutlinedInput-root': { py: 0.5, fontSize: '1rem' } }}
-                        InputProps={{
-                            startAdornment: <InputAdornment position="start"><Search size={20} /></InputAdornment>,
-                        }}
-                    />
-                    <FormControl size="medium" sx={{ minWidth: 160 }}>
-                        <InputLabel sx={{ fontSize: '0.9rem' }}>CATEGORY</InputLabel>
-                        <Select value={selectedCategory} label="CATEGORY" onChange={handleCategoryChange} sx={{ fontSize: '0.9rem' }}>
-                            <MenuItem value="">ALL</MenuItem>
-                            {categories.map((cat) => (
-                                <MenuItem key={cat.slug || cat} value={cat.slug || cat} sx={{ textTransform: 'uppercase', fontSize: '0.85rem' }}>
-                                    {(cat.name || cat).toUpperCase()}
-                                </MenuItem>
-                            ))}
-                        </Select>
-                    </FormControl>
-                    <Tooltip title="REFRESH">
-                        <IconButton onClick={handleRefresh} sx={{ bgcolor: '#A855F7', width: 44, height: 44 }}>
-                            <RefreshCw size={20} />
-                        </IconButton>
-                    </Tooltip>
-                </Stack>
+                <Button
+                    variant="contained"
+                    startIcon={<Plus size={18} />}
+                    disableElevation
+                    sx={{ borderRadius: '8px', fontWeight: 600 }}
+                >
+                    Add Product
+                </Button>
             </Box>
+
+            {/* Filters */}
+            <Paper
+                elevation={0}
+                sx={{
+                    p: 2,
+                    mb: 4,
+                    border: '1px solid',
+                    borderColor: 'divider',
+                    borderRadius: '12px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 2,
+                    flexWrap: 'wrap'
+                }}
+            >
+                <TextField
+                    size="small"
+                    placeholder="Search products..."
+                    value={localSearch}
+                    onChange={(e) => handleSearch(e.target.value)}
+                    sx={{ width: { xs: '100%', sm: 300 } }}
+                    InputProps={{
+                        startAdornment: <InputAdornment position="start"><Search size={18} color="#71717A" /></InputAdornment>,
+                    }}
+                />
+                <FormControl size="small" sx={{ minWidth: 200 }}>
+                    <InputLabel>Category</InputLabel>
+                    <Select value={selectedCategory} label="Category" onChange={handleCategoryChange}>
+                        <MenuItem value="">All Categories</MenuItem>
+                        {categories.map((cat) => (
+                            <MenuItem key={cat.slug || cat} value={cat.slug || cat} sx={{ textTransform: 'capitalize' }}>
+                                {cat.name || cat}
+                            </MenuItem>
+                        ))}
+                    </Select>
+                </FormControl>
+
+                <Box sx={{ flexGrow: 1 }} />
+
+                <Chip icon={<Tag size={14} />} label={`${total} Products`} sx={{ fontWeight: 500 }} />
+
+                <Tooltip title="Refresh">
+                    <IconButton onClick={handleRefresh} size="small" sx={{ border: '1px solid', borderColor: 'divider' }}>
+                        <RefreshCw size={18} />
+                    </IconButton>
+                </Tooltip>
+            </Paper>
 
             {error && <Alert severity="error" sx={{ mb: 3 }}>{error}</Alert>}
 
-            {/* Products Grid */}
-            <Grid container spacing={2}>
+            {/* Grid */}
+            <Grid container spacing={3}>
                 {isLoading ? (
-                    [...Array(limit)].map((_, i) => (
-                        <Grid item xs={6} sm={4} lg={3} key={i}>
+                    Array.from(new Array(8)).map((_, i) => (
+                        <Grid item xs={12} sm={6} md={4} lg={3} key={i}>
                             <ProductCardSkeleton />
                         </Grid>
                     ))
-                ) : products.length === 0 ? (
-                    <Grid item xs={12}>
-                        <Box sx={{ py: 8, textAlign: 'center' }}>
-                            <Typography variant="h3" sx={{ mb: 1, opacity: 0.3, fontSize: '2rem' }}>🛍️</Typography>
-                            <Typography variant="h4" sx={{ fontSize: '0.95rem' }}>NO PRODUCTS FOUND</Typography>
-                            <Button sx={{ mt: 2 }} size="small" onClick={handleRefresh}>CLEAR FILTERS</Button>
-                        </Box>
-                    </Grid>
-                ) : (
-                    products.map((product, i) => (
-                        <Grid item xs={6} sm={4} lg={3} key={product.id}>
-                            <ProductCard product={product} index={i} onView={handleViewProduct} />
+                ) : products.length > 0 ? (
+                    products.map((product, index) => (
+                        <Grid item xs={12} sm={6} md={4} lg={3} key={product.id}>
+                            <ProductCard product={product} onView={handleViewProduct} index={index} />
                         </Grid>
                     ))
+                ) : (
+                    <Grid item xs={12}>
+                        <Box sx={{ textAlign: 'center', py: 8 }}>
+                            <Typography color="text.secondary">No products found.</Typography>
+                        </Box>
+                    </Grid>
                 )}
             </Grid>
 
             {/* Pagination */}
-            {!isLoading && products.length > 0 && totalPages > 1 && (
-                <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
-                    <Pagination
-                        count={totalPages}
-                        page={currentPage}
-                        onChange={handlePageChange}
-                        size="medium"
-                    />
-                </Box>
-            )}
+            <Box sx={{ mt: 5, display: 'flex', justifyContent: 'center' }}>
+                <Pagination
+                    count={totalPages}
+                    page={currentPage}
+                    onChange={handlePageChange}
+                    color="primary"
+                    size="large"
+                    shape="rounded"
+                />
+            </Box>
         </Box>
     );
 }

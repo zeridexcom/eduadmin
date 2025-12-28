@@ -6,7 +6,6 @@ import useUsersStore from '@/store/usersStore';
 import {
     Box,
     Card,
-    CardContent,
     Table,
     TableBody,
     TableCell,
@@ -24,6 +23,8 @@ import {
     Alert,
     Tooltip,
     Stack,
+    Button,
+    Paper
 } from '@mui/material';
 import {
     Search,
@@ -33,66 +34,81 @@ import {
     Building,
     RefreshCw,
     Filter,
+    MoreHorizontal,
+    ArrowUpDown
 } from 'lucide-react';
 
-// Memoized UserRow
 const UserRow = memo(function UserRow({ user, onView, index }) {
     return (
         <TableRow
             hover
-            className={`animate-slide-up stagger-${(index % 5) + 1}`}
-            sx={{ cursor: 'pointer' }}
+            sx={{
+                cursor: 'pointer',
+                transition: 'background-color 0.2s',
+                '&:hover': { bgcolor: 'rgba(0,0,0,0.01)' }
+            }}
             onClick={() => onView(user.id)}
         >
-            <TableCell sx={{ pl: 2 }}>
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
-                    <Avatar src={user.image} sx={{ width: 36, height: 36, border: '2px solid #000' }} />
+            <TableCell sx={{ pl: 3, py: 2 }}>
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                    <Avatar
+                        src={user.image}
+                        sx={{
+                            width: 40,
+                            height: 40,
+                            bgcolor: 'primary.light',
+                            border: '1px solid',
+                            borderColor: 'divider'
+                        }}
+                    />
                     <Box>
-                        <Typography variant="body2" sx={{ fontWeight: 800, fontSize: '0.8rem' }}>
+                        <Typography variant="subtitle2" sx={{ fontWeight: 600, color: 'text.primary' }}>
                             {user.firstName} {user.lastName}
                         </Typography>
-                        <Typography variant="caption" sx={{ fontWeight: 600, fontSize: '0.65rem' }}>
+                        <Typography variant="caption" sx={{ color: 'text.secondary' }}>
                             @{user.username}
                         </Typography>
                     </Box>
                 </Box>
             </TableCell>
             <TableCell>
-                <Stack direction="row" spacing={0.5} alignItems="center">
-                    <Mail size={12} />
-                    <Typography variant="body2" sx={{ fontWeight: 600, fontSize: '0.75rem' }}>{user.email}</Typography>
+                <Stack direction="row" spacing={1} alignItems="center" sx={{ color: 'text.secondary' }}>
+                    <Mail size={14} />
+                    <Typography variant="body2">{user.email}</Typography>
                 </Stack>
             </TableCell>
             <TableCell>
                 <Chip
-                    label={user.gender.toUpperCase()}
+                    label={user.gender}
                     size="small"
                     sx={{
-                        bgcolor: user.gender === 'male' ? '#00D4AA' : '#FF6B6B',
-                        color: '#000',
-                        fontSize: '0.6rem',
-                        height: 22,
+                        bgcolor: user.gender === 'male' ? '#EFF6FF' : '#FFF1F2',
+                        color: user.gender === 'male' ? '#1D4ED8' : '#BE123C',
+                        fontWeight: 500,
+                        textTransform: 'capitalize',
+                        borderRadius: '6px',
+                        height: 24
                     }}
                 />
             </TableCell>
             <TableCell>
-                <Typography variant="body2" sx={{ fontWeight: 600, fontSize: '0.75rem' }}>{user.phone}</Typography>
+                <Typography variant="body2" color="text.secondary">{user.phone}</Typography>
             </TableCell>
             <TableCell>
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                    <Building size={12} />
-                    <Typography variant="body2" noWrap sx={{ maxWidth: 100, fontWeight: 600, fontSize: '0.75rem' }}>
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                    <Building size={14} color="#71717A" />
+                    <Typography variant="body2" noWrap sx={{ maxWidth: 120 }}>
                         {user.company?.name || 'N/A'}
                     </Typography>
                 </Box>
             </TableCell>
-            <TableCell align="right" sx={{ pr: 2 }}>
+            <TableCell align="right" sx={{ pr: 3 }}>
                 <IconButton
                     size="small"
                     onClick={(e) => { e.stopPropagation(); onView(user.id); }}
-                    sx={{ bgcolor: '#00D4AA', width: 28, height: 28 }}
+                    sx={{ color: 'text.secondary', '&:hover': { color: 'primary.main', bgcolor: 'primary.lighter' } }}
                 >
-                    <Eye size={14} />
+                    <Eye size={16} />
                 </IconButton>
             </TableCell>
         </TableRow>
@@ -101,17 +117,17 @@ const UserRow = memo(function UserRow({ user, onView, index }) {
 
 const TableRowSkeleton = () => (
     <TableRow>
-        <TableCell sx={{ pl: 2 }}>
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
-                <Skeleton variant="rectangular" width={36} height={36} />
-                <Box><Skeleton width={80} /><Skeleton width={50} /></Box>
+        <TableCell sx={{ pl: 3 }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                <Skeleton variant="circular" width={40} height={40} />
+                <Box><Skeleton width={100} /><Skeleton width={60} /></Box>
             </Box>
         </TableCell>
-        <TableCell><Skeleton width={120} /></TableCell>
-        <TableCell><Skeleton width={50} /></TableCell>
-        <TableCell><Skeleton width={90} /></TableCell>
-        <TableCell><Skeleton width={80} /></TableCell>
-        <TableCell align="right" sx={{ pr: 2 }}><Skeleton variant="rectangular" width={28} height={28} /></TableCell>
+        <TableCell><Skeleton width={140} /></TableCell>
+        <TableCell><Skeleton width={60} /></TableCell>
+        <TableCell><Skeleton width={100} /></TableCell>
+        <TableCell><Skeleton width={100} /></TableCell>
+        <TableCell align="right" sx={{ pr: 3 }}><Skeleton variant="circular" width={32} height={32} /></TableCell>
     </TableRow>
 );
 
@@ -157,91 +173,100 @@ export default function UsersPage() {
         fetchUsers(0, limit);
     }, [fetchUsers, limit]);
 
-    const currentPage = useMemo(() => Math.floor(skip / limit), [skip, limit]);
+    const currentPage = Math.floor(skip / limit);
 
     return (
-        <Box>
+        <Box className="animate-fade-in">
             {/* Header */}
-            <Box sx={{ mb: 5, display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', gap: 3, flexWrap: 'wrap' }}>
+            <Box sx={{ mb: 4, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <Box>
-                    <Typography variant="h2" sx={{ mb: 1, fontSize: '1.8rem' }}>USER DIRECTORY</Typography>
-                    <Typography variant="body1" sx={{ fontWeight: 600, fontSize: '1rem' }}>
-                        MANAGING <Box component="span" sx={{ color: '#FF6B6B', fontWeight: 900 }}>{total}</Box> MEMBERS
+                    <Typography variant="h4" sx={{ fontWeight: 700, mb: 0.5 }}>Users</Typography>
+                    <Typography variant="body2" color="text.secondary">
+                        Manage your team members and their account permissions here.
                     </Typography>
                 </Box>
                 <Stack direction="row" spacing={2}>
-                    <TextField
-                        size="medium"
-                        placeholder="SEARCH..."
-                        value={localSearch}
-                        onChange={(e) => handleSearch(e.target.value)}
-                        sx={{ minWidth: 220, '& .MuiOutlinedInput-root': { py: 0.5, fontSize: '1rem' } }}
-                        InputProps={{
-                            startAdornment: (
-                                <InputAdornment position="start">
-                                    <Search size={20} />
-                                </InputAdornment>
-                            ),
-                        }}
-                    />
-                    <Tooltip title="FILTER">
-                        <IconButton sx={{ bgcolor: '#A855F7', width: 44, height: 44 }}>
-                            <Filter size={20} />
-                        </IconButton>
-                    </Tooltip>
-                    <Tooltip title="REFRESH">
-                        <IconButton onClick={handleRefresh} sx={{ bgcolor: '#00D4AA', width: 44, height: 44 }}>
-                            <RefreshCw size={20} />
-                        </IconButton>
-                    </Tooltip>
+                    <Button
+                        variant="outlined"
+                        startIcon={<RefreshCw size={16} />}
+                        onClick={handleRefresh}
+                        sx={{ borderColor: 'divider', color: 'text.secondary' }}
+                    >
+                        Refresh
+                    </Button>
+                    <Button
+                        variant="contained"
+                        startIcon={<Filter size={16} />}
+                        disableElevation
+                        sx={{ bgcolor: 'primary.main', '&:hover': { bgcolor: 'primary.dark' } }}
+                    >
+                        Filters
+                    </Button>
                 </Stack>
             </Box>
 
             {error && <Alert severity="error" sx={{ mb: 3 }}>{error}</Alert>}
 
-            {/* Users Table */}
-            <Card>
+            <Card elevation={0} sx={{ border: '1px solid', borderColor: 'divider', borderRadius: '12px', overflow: 'hidden' }}>
+                {/* Toolbar */}
+                <Box sx={{ p: 2, borderBottom: '1px solid', borderColor: 'divider', display: 'flex', alignItems: 'center' }}>
+                    <TextField
+                        size="small"
+                        placeholder="Search users..."
+                        value={localSearch}
+                        onChange={(e) => handleSearch(e.target.value)}
+                        sx={{ width: 300, '& .MuiOutlinedInput-root': { bgcolor: 'background.default' } }}
+                        InputProps={{
+                            startAdornment: (
+                                <InputAdornment position="start">
+                                    <Search size={18} color="#71717A" />
+                                </InputAdornment>
+                            ),
+                        }}
+                    />
+                    <Box sx={{ flexGrow: 1 }} />
+                    <Chip label={`${total} Total Users`} size="small" sx={{ bgcolor: 'background.default', fontWeight: 500 }} />
+                </Box>
+
                 <TableContainer>
-                    <Table size="small">
-                        <TableHead>
+                    <Table>
+                        <TableHead sx={{ bgcolor: 'background.default' }}>
                             <TableRow>
-                                <TableCell sx={{ pl: 2 }}>USER</TableCell>
-                                <TableCell>EMAIL</TableCell>
-                                <TableCell>GENDER</TableCell>
-                                <TableCell>PHONE</TableCell>
-                                <TableCell>COMPANY</TableCell>
-                                <TableCell align="right" sx={{ pr: 2 }}>ACTION</TableCell>
+                                <TableCell sx={{ fontWeight: 600, color: 'text.secondary', pl: 3 }}>USER</TableCell>
+                                <TableCell sx={{ fontWeight: 600, color: 'text.secondary' }}>EMAIL</TableCell>
+                                <TableCell sx={{ fontWeight: 600, color: 'text.secondary' }}>STATUS</TableCell>
+                                <TableCell sx={{ fontWeight: 600, color: 'text.secondary' }}>PHONE</TableCell>
+                                <TableCell sx={{ fontWeight: 600, color: 'text.secondary' }}>COMPANY</TableCell>
+                                <TableCell align="right" sx={{ pr: 3, fontWeight: 600, color: 'text.secondary' }}>ACTIONS</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
                             {isLoading ? (
-                                [...Array(limit)].map((_, i) => <TableRowSkeleton key={i} />)
-                            ) : users.length === 0 ? (
+                                Array.from(new Array(5)).map((_, i) => <TableRowSkeleton key={i} />)
+                            ) : users.length > 0 ? (
+                                users.map((user, index) => (
+                                    <UserRow key={user.id} user={user} onView={handleViewUser} index={index} />
+                                ))
+                            ) : (
                                 <TableRow>
                                     <TableCell colSpan={6} align="center" sx={{ py: 8 }}>
-                                        <Typography variant="h3" sx={{ mb: 1, opacity: 0.3, fontSize: '2rem' }}>📭</Typography>
-                                        <Typography variant="body1" sx={{ fontWeight: 800, fontSize: '0.85rem' }}>NO USERS FOUND</Typography>
+                                        <Typography color="text.secondary">No users found matching your search.</Typography>
                                     </TableCell>
                                 </TableRow>
-                            ) : (
-                                users.map((user, i) => <UserRow key={user.id} user={user} index={i} onView={handleViewUser} />)
                             )}
                         </TableBody>
                     </Table>
                 </TableContainer>
-
-                <Box sx={{ p: 1.5, borderTop: '2px solid #000' }}>
-                    <TablePagination
-                        component="div"
-                        count={total}
-                        page={currentPage}
-                        rowsPerPage={limit}
-                        rowsPerPageOptions={[10, 20, 50]}
-                        onPageChange={handlePageChange}
-                        onRowsPerPageChange={handleRowsPerPageChange}
-                        sx={{ '& .MuiTablePagination-selectLabel, & .MuiTablePagination-displayedRows': { fontWeight: 700, textTransform: 'uppercase', fontSize: '0.7rem' } }}
-                    />
-                </Box>
+                <TablePagination
+                    rowsPerPageOptions={[5, 10, 25]}
+                    component="div"
+                    count={total}
+                    rowsPerPage={limit}
+                    page={currentPage}
+                    onPageChange={handlePageChange}
+                    onRowsPerPageChange={handleRowsPerPageChange}
+                    sx={{ borderTop: '1px solid', borderColor: 'divider' }}
+                />
             </Card>
         </Box>
     );
