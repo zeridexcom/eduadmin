@@ -223,18 +223,18 @@ export default function DashboardPage() {
             </Box>
 
             {/* Stats Grid */}
-            <Grid container spacing={3} sx={{ mb: 4 }}>
+            <Grid container spacing={3} sx={{ mb: 4, width: '100%' }}>
                 {stats.map((stat, index) => (
-                    <Grid item xs={12} sm={6} lg={3} key={index}>
+                    <Grid item xs={12} sm={6} lg={3} xl={3} key={index}>
                         <StatCard {...stat} index={index} />
                     </Grid>
                 ))}
             </Grid>
 
             {/* Content Grid */}
-            <Grid container spacing={3}>
+            <Grid container spacing={3} sx={{ width: '100%' }}>
                 {/* Chart Section (Placeholder for now) */}
-                <Grid item xs={12} lg={8}>
+                <Grid item xs={12} lg={8} xl={9}>
                     <Card sx={{ height: '100%', minHeight: 400 }}>
                         <CardContent sx={{ p: 3 }}>
                             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 4 }}>
@@ -283,7 +283,7 @@ export default function DashboardPage() {
                 </Grid>
 
                 {/* Activity Feed */}
-                <Grid item xs={12} lg={4}>
+                <Grid item xs={12} lg={4} xl={3}>
                     <Card sx={{ height: '100%' }}>
                         <CardContent sx={{ p: 3 }}>
                             <Typography variant="h6" fontWeight={700} sx={{ mb: 3 }}>Recent Activity</Typography>

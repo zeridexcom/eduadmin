@@ -366,7 +366,8 @@ export default function DashboardLayout({ children }) {
                 {/* Scrollable container with FULL width content */}
                 <Box sx={{
                     width: '100%',
-                    // maxWidth removed entirely to prevent any constraint
+                    maxWidth: 'none !important',
+                    minWidth: '100%',
                     px: { xs: 2, md: 4 },
                     py: 4,
                     display: 'flex',
