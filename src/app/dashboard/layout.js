@@ -357,10 +357,10 @@ export default function DashboardLayout({ children }) {
             <Box
                 component="main"
                 sx={{
-                    flexGrow: 1,
-                    p: 0,
-                    minWidth: 0, // Critical for Flexbox text truncation/grid
-                    width: 'auto', // Let Flexbox handle it
+                    flex: 1, // Shorthand for flex-grow: 1, flex-shrink: 1, flex-basis: 0%
+                    display: 'flex',
+                    flexDirection: 'column',
+                    minWidth: 0,
                     overflowX: 'hidden',
                 }}
             >
