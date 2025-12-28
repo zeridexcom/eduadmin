@@ -309,10 +309,10 @@ export default function DashboardLayout({ children }) {
                 <Toolbar sx={{ minHeight: { xs: 70, md: 80 }, width: '100%' }} />
                 <Box
                     sx={{
-                        width: '100%',
-                        maxWidth: 1600, // Massive width for big screens
-                        px: { xs: 2.5, sm: 4, md: 6 }, // Bigger horizontal padding
-                        py: { xs: 3, md: 5 }, // Bigger vertical padding
+                        width: '94%', // Fluid width - fills almost everything!
+                        maxWidth: '2000px', // Cap it only on ultra-wide screens
+                        px: { xs: 0, md: 2 },
+                        py: { xs: 3, md: 5 },
                     }}
                     className="animate-slide-up"
                 >
