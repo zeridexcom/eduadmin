@@ -24,11 +24,9 @@ import {
     useMediaQuery,
     Chip,
     CircularProgress,
-    Fade,
     Stack,
     Button,
 } from '@mui/material';
-
 import {
     Menu as MenuIcon,
     DashboardOutlined,
@@ -41,38 +39,35 @@ import {
 
 const drawerWidth = 280;
 
-// Memoized navigation items component
+// Navigation Item Component
 const NavItem = memo(function NavItem({ item, isActive, onClick }) {
     return (
-        <ListItem disablePadding sx={{ mb: 1 }}>
+        <ListItem disablePadding sx={{ mb: 1.5 }}>
             <ListItemButton
                 onClick={onClick}
                 sx={{
                     mx: 2,
-                    borderRadius: 4,
                     py: 1.5,
-                    bgcolor: isActive ? 'rgba(255, 107, 107, 0.08)' : 'transparent',
-                    color: isActive ? '#FF6B6B' : '#636E72',
+                    border: '3px solid #000',
+                    bgcolor: isActive ? '#FFC900' : '#FFFFFF',
+                    boxShadow: isActive ? '4px 4px 0 #000' : 'none',
                     '&:hover': {
-                        bgcolor: 'rgba(255, 107, 107, 0.04)',
-                        color: '#FF6B6B',
+                        bgcolor: '#FFC900',
+                        transform: 'translate(-2px, -2px)',
+                        boxShadow: '4px 4px 0 #000',
                     },
-                    transition: 'all 0.2s ease',
+                    transition: 'all 0.15s ease',
                 }}
             >
-                <ListItemIcon
-                    sx={{
-                        minWidth: 40,
-                        color: 'inherit',
-                    }}
-                >
+                <ListItemIcon sx={{ minWidth: 40, color: '#000' }}>
                     {item.icon}
                 </ListItemIcon>
                 <ListItemText
                     primary={item.label}
                     primaryTypographyProps={{
-                        fontSize: '0.95rem',
-                        fontWeight: isActive ? 700 : 600,
+                        fontWeight: 800,
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.05em',
                     }}
                 />
                 {item.badge && (
@@ -80,11 +75,9 @@ const NavItem = memo(function NavItem({ item, isActive, onClick }) {
                         label={item.badge}
                         size="small"
                         sx={{
-                            height: 20,
-                            fontSize: '0.7rem',
-                            fontWeight: 700,
-                            bgcolor: '#FF6B6B',
-                            color: '#fff',
+                            height: 24,
+                            bgcolor: '#000',
+                            color: '#FFC900',
                         }}
                     />
                 )}
@@ -144,8 +137,8 @@ export default function DashboardLayout({ children }) {
 
     if (status === 'loading') {
         return (
-            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh', bgcolor: '#FFFAF5' }}>
-                <CircularProgress color="primary" />
+            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh', bgcolor: '#FFC900' }}>
+                <Box className="brutal-loader" />
             </Box>
         );
     }
@@ -155,33 +148,24 @@ export default function DashboardLayout({ children }) {
     const currentUser = session?.user || user;
 
     const drawer = (
-        <Box sx={{ height: '100%', display: 'flex', flexDirection: 'column', py: 4 }}>
+        <Box sx={{ height: '100%', display: 'flex', flexDirection: 'column', py: 4, bgcolor: '#FFFFFF' }}>
+            {/* Logo */}
             <Box sx={{ px: 4, mb: 6, display: 'flex', alignItems: 'center', gap: 2 }}>
-                <Box
-                    className="icon-container"
-                    sx={{
-                        width: 48,
-                        height: 48,
-                        borderRadius: 3,
-                        bgcolor: '#FFFFFF',
-                        border: '1.5px solid #FF6B6B',
-                        boxShadow: '0 8px 16px rgba(255, 107, 107, 0.12)',
-                        fontSize: '1.5rem',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                    }}
-                >
+                <Box className="emoji-icon" sx={{ fontSize: '1.8rem' }}>
                     🏫
                 </Box>
-                <Typography variant="h4" sx={{ color: '#2D3436', fontSize: '1.4rem', fontWeight: 800 }}>
+                <Typography variant="h4" sx={{ fontWeight: 900, textTransform: 'uppercase' }}>
                     EduAdmin
                 </Typography>
             </Box>
 
+            {/* Navigation */}
             <List sx={{ flex: 1 }}>
-                <Typography variant="caption" sx={{ px: 4, mb: 2, display: 'block', color: 'text.disabled', fontWeight: 800, letterSpacing: '0.15em' }}>
-                    PRIMARY
+                <Typography
+                    variant="caption"
+                    sx={{ px: 4, mb: 2, display: 'block', fontWeight: 800, letterSpacing: '0.2em' }}
+                >
+                    NAVIGATION
                 </Typography>
                 {navItems.map((item) => (
                     <NavItem
@@ -193,22 +177,26 @@ export default function DashboardLayout({ children }) {
                 ))}
             </List>
 
+            {/* User Profile */}
             <Box sx={{ px: 3, mt: 'auto' }}>
                 <Box
                     sx={{
-                        p: 2.5,
-                        borderRadius: 5,
-                        bgcolor: '#FFFFFF',
-                        boxShadow: '0 10px 30px rgba(0, 0, 0, 0.04)',
-                        border: '1px solid rgba(0, 0, 0, 0.03)',
+                        p: 3,
+                        border: '3px solid #000',
+                        boxShadow: '4px 4px 0 #000',
+                        bgcolor: '#FFC900',
                     }}
                 >
                     <Stack spacing={2}>
-                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
-                            <Avatar src={currentUser?.image} sx={{ width: 44, height: 44, border: '2px solid #FF6B6B' }} />
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                            <Avatar src={currentUser?.image} sx={{ width: 48, height: 48 }} />
                             <Box sx={{ minWidth: 0 }}>
-                                <Typography variant="body2" sx={{ fontWeight: 800, color: '#2D3436' }} noWrap>{currentUser?.name || 'Admin'}</Typography>
-                                <Typography variant="caption" color="text.secondary" noWrap sx={{ display: 'block' }}>{currentUser?.email}</Typography>
+                                <Typography variant="body2" sx={{ fontWeight: 900 }} noWrap>
+                                    {currentUser?.name || 'ADMIN'}
+                                </Typography>
+                                <Typography variant="caption" noWrap sx={{ display: 'block', fontWeight: 600 }}>
+                                    {currentUser?.email}
+                                </Typography>
                             </Box>
                         </Box>
                         <Button
@@ -216,9 +204,9 @@ export default function DashboardLayout({ children }) {
                             variant="outlined"
                             onClick={handleLogout}
                             startIcon={<LogoutOutlined />}
-                            sx={{ borderRadius: 3, borderColor: 'rgba(0,0,0,0.1)', color: '#636E72', fontWeight: 700 }}
+                            sx={{ bgcolor: '#FFFFFF' }}
                         >
-                            Log Out
+                            LOG OUT
                         </Button>
                     </Stack>
                 </Box>
@@ -227,7 +215,8 @@ export default function DashboardLayout({ children }) {
     );
 
     return (
-        <Box sx={{ display: 'flex', minHeight: '100vh', bgcolor: '#FFFAF5' }}>
+        <Box sx={{ display: 'flex', minHeight: '100vh', bgcolor: '#FFC900' }}>
+            {/* AppBar */}
             <AppBar
                 position="fixed"
                 sx={{
@@ -235,59 +224,51 @@ export default function DashboardLayout({ children }) {
                     ml: { md: `${drawerWidth}px` },
                 }}
             >
-                <Toolbar sx={{ px: { xs: 2, md: 4, lg: 6 }, minHeight: { xs: 70, md: 80 } }}>
+                <Toolbar sx={{ px: { xs: 2, md: 4 }, minHeight: { xs: 70, md: 80 } }}>
                     <IconButton
                         edge="start"
                         onClick={handleDrawerToggle}
-                        sx={{ mr: 2, display: { md: 'none' }, color: '#2D3436' }}
+                        sx={{ mr: 2, display: { md: 'none' } }}
                     >
                         <MenuIcon />
                     </IconButton>
 
-                    <Typography variant="h5" sx={{ color: '#2D3436', flexGrow: 1, fontWeight: 700 }}>
-                        {navItems.find(i => i.path === pathname)?.label || 'Overview'}
+                    <Typography variant="h5" sx={{ flexGrow: 1, fontWeight: 900, textTransform: 'uppercase' }}>
+                        {navItems.find(i => i.path === pathname)?.label || 'OVERVIEW'}
                     </Typography>
 
                     <Stack direction="row" spacing={2} alignItems="center">
-                        <IconButton sx={{ bgcolor: '#FFFFFF', border: '1px solid rgba(0,0,0,0.05)', boxShadow: '0 4px 12px rgba(0,0,0,0.03)' }}>
-                            <NotificationsNone sx={{ color: '#636E72' }} />
+                        <IconButton sx={{ bgcolor: '#FFFFFF' }}>
+                            <NotificationsNone />
                         </IconButton>
-                        <Box sx={{ width: '1px', height: 24, bgcolor: 'divider', mx: 1 }} />
-                        <IconButton onClick={handleMenuOpen} sx={{ p: 0.5 }}>
-                            <Avatar src={currentUser?.image} sx={{ width: 38, height: 38, border: '2.5px solid #FF6B6B' }} />
+                        <IconButton onClick={handleMenuOpen} sx={{ p: 0 }}>
+                            <Avatar src={currentUser?.image} sx={{ width: 42, height: 42 }} />
                         </IconButton>
                     </Stack>
                 </Toolbar>
             </AppBar>
 
+            {/* User Menu */}
             <Menu
                 anchorEl={anchorEl}
                 open={Boolean(anchorEl)}
                 onClose={handleMenuClose}
                 transformOrigin={{ horizontal: 'right', vertical: 'top' }}
                 anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
-                PaperProps={{
-                    sx: {
-                        mt: 2,
-                        minWidth: 220,
-                        borderRadius: 4,
-                        boxShadow: '0 20px 50px rgba(0,0,0,0.1)',
-                        border: '1px solid rgba(0,0,0,0.05)',
-                        p: 1,
-                    },
-                }}
+                PaperProps={{ sx: { mt: 2, minWidth: 200 } }}
             >
-                <MenuItem onClick={handleMenuClose} sx={{ borderRadius: 3, py: 1.2 }}>
+                <MenuItem onClick={handleMenuClose}>
                     <ListItemIcon><SettingsOutlined fontSize="small" /></ListItemIcon>
-                    <Typography variant="body2" sx={{ fontWeight: 600 }}>Account Settings</Typography>
+                    <Typography sx={{ fontWeight: 700 }}>SETTINGS</Typography>
                 </MenuItem>
-                <Divider sx={{ my: 1 }} />
-                <MenuItem onClick={handleLogout} sx={{ borderRadius: 3, py: 1.2, color: '#FF6B6B' }}>
+                <Divider sx={{ my: 1, borderColor: '#000', borderWidth: 1.5 }} />
+                <MenuItem onClick={handleLogout} sx={{ color: '#FF3B3B' }}>
                     <ListItemIcon><LogoutOutlined fontSize="small" sx={{ color: 'inherit' }} /></ListItemIcon>
-                    <Typography variant="body2" sx={{ fontWeight: 700 }}>Sign Out 👋</Typography>
+                    <Typography sx={{ fontWeight: 800 }}>LOG OUT 👋</Typography>
                 </MenuItem>
             </Menu>
 
+            {/* Sidebar Drawer */}
             <Box component="nav" sx={{ width: { md: drawerWidth }, flexShrink: { md: 0 } }}>
                 <Drawer
                     variant="temporary"
@@ -313,11 +294,17 @@ export default function DashboardLayout({ children }) {
                 </Drawer>
             </Box>
 
-            <Box component="main" sx={{ flexGrow: 1, p: { xs: 2, md: 4, lg: 6 }, width: { md: `calc(100% - ${drawerWidth}px)` } }}>
+            {/* Main Content */}
+            <Box
+                component="main"
+                sx={{
+                    flexGrow: 1,
+                    p: { xs: 2, md: 4 },
+                    width: { md: `calc(100% - ${drawerWidth}px)` },
+                }}
+            >
                 <Toolbar sx={{ minHeight: { xs: 70, md: 80 } }} />
-                <Fade in timeout={800}>
-                    <Box>{children}</Box>
-                </Fade>
+                <Box className="animate-slide-up">{children}</Box>
             </Box>
         </Box>
     );

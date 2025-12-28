@@ -16,8 +16,6 @@ import {
     IconButton,
     CircularProgress,
     Stack,
-    Fade,
-    Grow,
 } from '@mui/material';
 import {
     Visibility,
@@ -62,7 +60,7 @@ export default function LoginPage() {
         setLocalError('');
 
         if (!formData.username.trim() || !formData.password.trim()) {
-            setLocalError('Please enter both username and password');
+            setLocalError('FILL IN BOTH FIELDS! 🙄');
             return;
         }
 
@@ -73,7 +71,7 @@ export default function LoginPage() {
         });
 
         if (result?.error) {
-            setLocalError('Check your credentials and try again ✨');
+            setLocalError('WRONG CREDENTIALS! TRY AGAIN 💀');
         } else if (result?.ok) {
             await login(formData.username, formData.password);
             router.push('/dashboard');
@@ -89,8 +87,8 @@ export default function LoginPage() {
 
     if (status === 'loading') {
         return (
-            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh', bgcolor: '#FFFAF5' }}>
-                <CircularProgress color="primary" />
+            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh', bgcolor: '#FFC900' }}>
+                <Box className="brutal-loader" />
             </Box>
         );
     }
@@ -102,148 +100,146 @@ export default function LoginPage() {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                p: 2,
-                bgcolor: '#FFFAF5',
+                p: 3,
+                bgcolor: '#FFC900',
                 position: 'relative',
-                overflow: 'hidden',
             }}
         >
-            {/* Background Decorative Elements */}
-            <Box className="blob blob-1" sx={{ position: 'absolute', top: '-10%', left: '-5%', width: 400, height: 400, bgcolor: 'rgba(255, 107, 107, 0.05)' }} />
-            <Box className="blob blob-2" sx={{ position: 'absolute', bottom: '-10%', right: '-5%', width: 500, height: 500, bgcolor: 'rgba(78, 205, 196, 0.05)' }} />
+            {/* Decorative Pattern */}
+            <Box className="pattern-dots" sx={{ position: 'absolute', inset: 0, opacity: 0.3 }} />
 
-            <Grow in timeout={1000}>
-                <Card
-                    sx={{
-                        maxWidth: 440,
-                        width: '100%',
-                        borderRadius: 6,
-                        boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.08)',
-                        position: 'relative',
-                        zIndex: 1,
-                        overflow: 'visible',
-                        border: '1px solid rgba(0, 0, 0, 0.03)',
-                    }}
-                >
-                    <CardContent sx={{ p: { xs: 4, md: 6 } }}>
-                        <Box sx={{ textAlign: 'center', mb: 5 }}>
-                            <Box className="animate-bounce" sx={{ display: 'inline-flex', mb: 3 }}>
-                                <Box
-                                    className="icon-container"
-                                    sx={{
-                                        width: 72,
-                                        height: 72,
-                                        bgcolor: '#FFFFFF',
-                                        border: '1.5px solid #FF6B6B',
-                                        boxShadow: '0 10px 20px rgba(255, 107, 107, 0.15)',
-                                        fontSize: '2.5rem',
-                                        borderRadius: '50%',
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        justifyContent: 'center',
-                                    }}
-                                >
-                                    🏫
-                                </Box>
-                            </Box>
-                            <Typography variant="h2" sx={{ mb: 1.5, color: '#2D3436' }}>
-                                EduAdmin
-                            </Typography>
-                            <Typography variant="body1" color="text.secondary">
-                                Management with a touch of elegance ✨
+            <Card
+                className="animate-bounce-in"
+                sx={{
+                    maxWidth: 440,
+                    width: '100%',
+                    position: 'relative',
+                    zIndex: 1,
+                }}
+            >
+                <CardContent sx={{ p: { xs: 4, md: 5 } }}>
+                    {/* Logo & Header */}
+                    <Box sx={{ textAlign: 'center', mb: 5 }}>
+                        <Box
+                            className="emoji-icon-lg animate-wiggle"
+                            sx={{
+                                mx: 'auto',
+                                mb: 3,
+                                width: 80,
+                                height: 80,
+                                fontSize: '2.5rem',
+                            }}
+                        >
+                            🏫
+                        </Box>
+                        <Typography variant="h1" sx={{ mb: 1.5, fontSize: '2rem' }}>
+                            EDUADMIN
+                        </Typography>
+                        <Typography variant="body1" sx={{ fontWeight: 700 }}>
+                            THE ADMIN PANEL THAT SLAPS 🔥
+                        </Typography>
+                    </Box>
+
+                    {/* Error Alert */}
+                    {(error || localError) && (
+                        <Alert severity="error" sx={{ mb: 3 }}>
+                            {error || localError}
+                        </Alert>
+                    )}
+
+                    {/* Login Form */}
+                    <Stack component="form" onSubmit={handleSubmit} spacing={3}>
+                        <TextField
+                            fullWidth
+                            name="username"
+                            label="USERNAME"
+                            placeholder="Enter your username"
+                            value={formData.username}
+                            onChange={handleInputChange}
+                            InputProps={{
+                                startAdornment: (
+                                    <InputAdornment position="start">
+                                        <PersonOutline sx={{ color: '#000' }} />
+                                    </InputAdornment>
+                                ),
+                            }}
+                        />
+
+                        <TextField
+                            fullWidth
+                            name="password"
+                            label="PASSWORD"
+                            type={showPassword ? 'text' : 'password'}
+                            placeholder="••••••••"
+                            value={formData.password}
+                            onChange={handleInputChange}
+                            InputProps={{
+                                startAdornment: (
+                                    <InputAdornment position="start">
+                                        <LockOutlined sx={{ color: '#000' }} />
+                                    </InputAdornment>
+                                ),
+                                endAdornment: (
+                                    <InputAdornment position="end">
+                                        <IconButton onClick={handleTogglePassword} edge="end" size="small">
+                                            {showPassword ? <VisibilityOff /> : <Visibility />}
+                                        </IconButton>
+                                    </InputAdornment>
+                                ),
+                            }}
+                        />
+
+                        <Button
+                            type="submit"
+                            fullWidth
+                            variant="contained"
+                            size="large"
+                            disabled={isLoading}
+                            endIcon={isLoading ? <CircularProgress size={20} color="inherit" /> : <ArrowForward />}
+                        >
+                            {isLoading ? 'SIGNING IN...' : 'LET ME IN →'}
+                        </Button>
+
+                        {/* Divider */}
+                        <Box sx={{ position: 'relative', textAlign: 'center', py: 2 }}>
+                            <Box sx={{ position: 'absolute', top: '50%', left: 0, right: 0, height: 3, bgcolor: '#000' }} />
+                            <Typography
+                                variant="caption"
+                                sx={{
+                                    position: 'relative',
+                                    zIndex: 1,
+                                    px: 2,
+                                    bgcolor: '#fff',
+                                    display: 'inline-block',
+                                }}
+                            >
+                                OR BE LAZY
                             </Typography>
                         </Box>
 
-                        {(error || localError) && (
-                            <Fade in>
-                                <Alert severity="error" sx={{ mb: 3, borderRadius: 3 }}>
-                                    {error || localError}
-                                </Alert>
-                            </Fade>
-                        )}
+                        {/* Demo Button */}
+                        <Button
+                            variant="outlined"
+                            fullWidth
+                            onClick={fillDemoCredentials}
+                            startIcon={<AutoAwesome />}
+                            sx={{
+                                bgcolor: '#FFC900',
+                                '&:hover': { bgcolor: '#FFD633' },
+                            }}
+                        >
+                            AUTOFILL DEMO CREDS ⚡
+                        </Button>
+                    </Stack>
 
-                        <Stack component="form" onSubmit={handleSubmit} spacing={3}>
-                            <TextField
-                                fullWidth
-                                name="username"
-                                label="Username"
-                                placeholder="Enter your username"
-                                value={formData.username}
-                                onChange={handleInputChange}
-                                InputProps={{
-                                    startAdornment: (
-                                        <InputAdornment position="start">
-                                            <PersonOutline sx={{ color: 'text.secondary' }} />
-                                        </InputAdornment>
-                                    ),
-                                }}
-                            />
-
-                            <TextField
-                                fullWidth
-                                name="password"
-                                label="Password"
-                                type={showPassword ? 'text' : 'password'}
-                                placeholder="••••••••"
-                                value={formData.password}
-                                onChange={handleInputChange}
-                                InputProps={{
-                                    startAdornment: (
-                                        <InputAdornment position="start">
-                                            <LockOutlined sx={{ color: 'text.secondary' }} />
-                                        </InputAdornment>
-                                    ),
-                                    endAdornment: (
-                                        <InputAdornment position="end">
-                                            <IconButton onClick={handleTogglePassword} edge="end" size="small">
-                                                {showPassword ? <VisibilityOff /> : <Visibility />}
-                                            </IconButton>
-                                        </InputAdornment>
-                                    ),
-                                }}
-                            />
-
-                            <Button
-                                type="submit"
-                                fullWidth
-                                variant="contained"
-                                size="large"
-                                disabled={isLoading}
-                                endIcon={isLoading ? <CircularProgress size={20} color="inherit" /> : <ArrowForward />}
-                                sx={{
-                                    py: 1.8,
-                                    fontSize: '1rem',
-                                    borderRadius: 3,
-                                }}
-                            >
-                                {isLoading ? 'Signing in...' : 'Sign In'}
-                            </Button>
-
-                            <Box sx={{ position: 'relative', textAlign: 'center', my: 2 }}>
-                                <Typography variant="caption" sx={{ px: 2, bgcolor: '#fff', position: 'relative', zIndex: 1, color: 'text.disabled' }}>
-                                    OR TRY DEMO
-                                </Typography>
-                                <Box sx={{ position: 'absolute', top: '50%', left: 0, right: 0, height: '1px', bgcolor: 'divider' }} />
-                            </Box>
-
-                            <Button
-                                variant="outlined"
-                                fullWidth
-                                onClick={fillDemoCredentials}
-                                startIcon={<AutoAwesome sx={{ color: '#FF6B6B' }} />}
-                                sx={{
-                                    py: 1.5,
-                                    borderRadius: 3,
-                                    borderColor: 'rgba(0,0,0,0.1)',
-                                    '&:hover': { borderColor: '#2D3436' }
-                                }}
-                            >
-                                Quick Demo Access
-                            </Button>
-                        </Stack>
-                    </CardContent>
-                </Card>
-            </Grow>
+                    {/* Footer */}
+                    <Box sx={{ mt: 4, pt: 3, borderTop: '3px solid #000', textAlign: 'center' }}>
+                        <Typography variant="caption" sx={{ color: '#666' }}>
+                            BUILT WITH NEXT.JS + MUI + ZUSTAND
+                        </Typography>
+                    </Box>
+                </CardContent>
+            </Card>
         </Box>
     );
 }

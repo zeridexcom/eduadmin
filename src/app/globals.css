@@ -1,4 +1,7 @@
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+/* 
+ * GUMROAD / TRENDLLLY STYLE CSS
+ * Bold, Brutalist, Playful, FUN! 🎉
+ */
 
 * {
   margin: 0;
@@ -6,108 +9,122 @@
   box-sizing: border-box;
 }
 
-body {
-  min-height: 100vh;
-  background: #FFFAF5;
-  overflow-x: hidden;
-  font-family: 'Plus Jakarta Sans', sans-serif;
+html {
+  scroll-behavior: smooth;
 }
 
-/* Premium Scrollbar */
+body {
+  background-color: #FFC900;
+  color: #000000;
+  font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* === SCROLLBAR - BRUTALIST STYLE === */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 12px;
+  height: 12px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #F5F0EB;
-  border-radius: 10px;
+  background: #000;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #FF6B6B;
-  border-radius: 10px;
+  background: #FFC900;
+  border: 2px solid #000;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #E55555;
+  background: #FFD633;
 }
 
-/* Smooth Transitions */
-* {
-  transition-property: background-color, border-color, color, fill, stroke, opacity, box-shadow, transform;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  transition-duration: 200ms;
+/* === SELECTION === */
+::selection {
+  background: #000;
+  color: #FFC900;
 }
 
-/* Premium Animations */
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
+/* === ANIMATIONS === */
+@keyframes shake {
 
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes scaleIn {
-  from {
-    opacity: 0;
-    transform: scale(0.95);
-  }
-
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-@keyframes slideInRight {
-  from {
-    opacity: 0;
-    transform: translateX(20px);
-  }
-
-  to {
-    opacity: 1;
+  0%,
+  100% {
     transform: translateX(0);
   }
+
+  10%,
+  30%,
+  50%,
+  70%,
+  90% {
+    transform: translateX(-4px);
+  }
+
+  20%,
+  40%,
+  60%,
+  80% {
+    transform: translateX(4px);
+  }
 }
 
-@keyframes pulse {
+@keyframes bounce-in {
+  0% {
+    transform: scale(0.3);
+    opacity: 0;
+  }
 
-  0%,
+  50% {
+    transform: scale(1.05);
+  }
+
+  70% {
+    transform: scale(0.9);
+  }
+
   100% {
+    transform: scale(1);
     opacity: 1;
   }
+}
 
-  50% {
-    opacity: 0.7;
+@keyframes slide-up {
+  from {
+    transform: translateY(30px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
   }
 }
 
-@keyframes bounce {
+@keyframes slide-in-left {
+  from {
+    transform: translateX(-30px);
+    opacity: 0;
+  }
 
-  0%,
-  100% {
-    transform: translateY(0);
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes pop {
+  0% {
+    transform: scale(1);
   }
 
   50% {
-    transform: translateY(-8px);
+    transform: scale(1.1);
+  }
+
+  100% {
+    transform: scale(1);
   }
 }
 
@@ -119,190 +136,302 @@ body {
   }
 
   25% {
-    transform: rotate(-3deg);
+    transform: rotate(-5deg);
   }
 
   75% {
-    transform: rotate(3deg);
+    transform: rotate(5deg);
   }
 }
 
-@keyframes float {
+@keyframes pulse-shadow {
 
   0%,
   100% {
-    transform: translateY(0) rotate(0deg);
+    box-shadow: 4px 4px 0 #000;
   }
 
   50% {
-    transform: translateY(-15px) rotate(2deg);
+    box-shadow: 8px 8px 0 #000;
   }
 }
 
-.animate-fadeInUp {
-  animation: fadeInUp 0.5s ease-out;
+/* === ANIMATION CLASSES === */
+.animate-bounce-in {
+  animation: bounce-in 0.6s ease forwards;
 }
 
-.animate-fadeIn {
-  animation: fadeIn 0.4s ease-out;
+.animate-slide-up {
+  animation: slide-up 0.4s ease forwards;
 }
 
-.animate-scaleIn {
-  animation: scaleIn 0.4s ease-out;
+.animate-slide-left {
+  animation: slide-in-left 0.4s ease forwards;
 }
 
-.animate-slideInRight {
-  animation: slideInRight 0.5s ease-out;
-}
-
-.animate-bounce {
-  animation: bounce 2s ease-in-out infinite;
+.animate-pop {
+  animation: pop 0.3s ease;
 }
 
 .animate-wiggle {
-  animation: wiggle 3s ease-in-out infinite;
+  animation: wiggle 0.5s ease infinite;
 }
 
-.animate-float {
-  animation: float 4s ease-in-out infinite;
+.animate-shake {
+  animation: shake 0.5s ease;
 }
 
-/* Stagger animations for lists */
+/* Staggered animations */
 .stagger-1 {
-  animation-delay: 0.1s;
+  animation-delay: 0.05s;
 }
 
 .stagger-2 {
-  animation-delay: 0.2s;
+  animation-delay: 0.1s;
 }
 
 .stagger-3 {
-  animation-delay: 0.3s;
+  animation-delay: 0.15s;
 }
 
 .stagger-4 {
-  animation-delay: 0.4s;
+  animation-delay: 0.2s;
 }
 
 .stagger-5 {
-  animation-delay: 0.5s;
+  animation-delay: 0.25s;
 }
 
-/* Premium Hover Effects */
-.hover-lift {
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+.stagger-6 {
+  animation-delay: 0.3s;
 }
 
-.hover-lift:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+.stagger-7 {
+  animation-delay: 0.35s;
 }
 
-.hover-scale {
-  transition: transform 0.2s ease;
+.stagger-8 {
+  animation-delay: 0.4s;
 }
 
-.hover-scale:hover {
-  transform: scale(1.02);
+/* === BRUTALIST CARD STYLES === */
+.brutal-card {
+  background: #FFFFFF;
+  border: 3px solid #000;
+  box-shadow: 6px 6px 0 #000;
+  transition: all 0.15s ease;
 }
 
-.hover-glow:hover {
-  box-shadow: 0 0 30px rgba(255, 107, 107, 0.2);
+.brutal-card:hover {
+  transform: translate(-3px, -3px);
+  box-shadow: 9px 9px 0 #000;
 }
 
-/* Glass Effect */
-.glass {
-  background: rgba(255, 255, 255, 0.8);
-  backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+.brutal-card:active {
+  transform: translate(3px, 3px);
+  box-shadow: 3px 3px 0 #000;
 }
 
-/* Blob Shapes */
-.blob {
-  border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+/* === BRUTALIST BUTTON STYLES === */
+.brutal-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 24px;
+  background: #000;
+  color: #FFC900;
+  border: 3px solid #000;
+  box-shadow: 4px 4px 0 #000;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: all 0.15s ease;
 }
 
-.blob-1 {
-  animation: blob-morph-1 8s ease-in-out infinite;
+.brutal-btn:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0 #000;
 }
 
-.blob-2 {
-  animation: blob-morph-2 10s ease-in-out infinite;
+.brutal-btn:active {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0 #000;
 }
 
-@keyframes blob-morph-1 {
-
-  0%,
-  100% {
-    border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
-  }
-
-  50% {
-    border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%;
-  }
+.brutal-btn-outline {
+  background: #FFC900;
+  color: #000;
 }
 
-@keyframes blob-morph-2 {
-
-  0%,
-  100% {
-    border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
-  }
-
-  50% {
-    border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
-  }
+.brutal-btn-white {
+  background: #FFFFFF;
+  color: #000;
 }
 
-/* Selection */
-::selection {
+/* === EMOJI ICON CONTAINER === */
+.emoji-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  background: #FFC900;
+  border: 3px solid #000;
+  box-shadow: 3px 3px 0 #000;
+  font-size: 1.5rem;
+}
+
+.emoji-icon-lg {
+  width: 64px;
+  height: 64px;
+  font-size: 2rem;
+}
+
+/* === TAG / BADGE STYLES === */
+.brutal-tag {
+  display: inline-block;
+  padding: 4px 12px;
+  background: #FFC900;
+  border: 2px solid #000;
+  font-weight: 800;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.brutal-tag-dark {
+  background: #000;
+  color: #FFC900;
+}
+
+.brutal-tag-success {
+  background: #00D4AA;
+}
+
+.brutal-tag-error {
   background: #FF6B6B;
+}
+
+.brutal-tag-purple {
+  background: #A855F7;
   color: #FFFFFF;
 }
 
-/* Focus Ring */
-:focus-visible {
-  outline: 2px solid #FF6B6B;
-  outline-offset: 2px;
+/* === INPUT STYLES === */
+.brutal-input {
+  width: 100%;
+  padding: 12px 16px;
+  background: #FFFFFF;
+  border: 3px solid #000;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: all 0.15s ease;
 }
 
-/* Premium Card Styles */
-.card-interactive {
-  cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+.brutal-input:focus {
+  outline: none;
+  box-shadow: 4px 4px 0 #000;
 }
 
-.card-interactive:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
+.brutal-input::placeholder {
+  color: #666;
+  font-weight: 500;
 }
 
-.card-interactive:active {
-  transform: translateY(-2px);
+/* === AVATAR STYLES === */
+.brutal-avatar {
+  border: 3px solid #000;
+  box-shadow: 3px 3px 0 #000;
 }
 
-/* Cute Icon Container */
-.icon-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 16px;
-  transition: all 0.3s ease;
+/* === DIVIDER === */
+.brutal-divider {
+  height: 3px;
+  background: #000;
+  margin: 24px 0;
 }
 
-.icon-container:hover {
-  transform: scale(1.1) rotate(5deg);
+/* === LOADING SPINNER === */
+.brutal-loader {
+  width: 40px;
+  height: 40px;
+  background: #000;
+  animation: pop 0.5s ease infinite;
 }
 
-/* Notification Badge */
-.badge-pulse::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 8px;
-  height: 8px;
-  background: #FF6B6B;
-  border-radius: 50%;
-  animation: pulse 2s ease-in-out infinite;
+/* === FUN PATTERN BACKGROUNDS === */
+.pattern-dots {
+  background-image: radial-gradient(#000 1.5px, transparent 1.5px);
+  background-size: 20px 20px;
+}
+
+.pattern-lines {
+  background-image: repeating-linear-gradient(45deg,
+      transparent,
+      transparent 10px,
+      rgba(0, 0, 0, 0.05) 10px,
+      rgba(0, 0, 0, 0.05) 20px);
+}
+
+/* === HOVER EFFECTS === */
+.hover-grow:hover {
+  transform: scale(1.05);
+}
+
+.hover-shake:hover {
+  animation: shake 0.5s ease;
+}
+
+.hover-pop:hover {
+  animation: pop 0.3s ease;
+}
+
+/* === RESPONSIVE TYPOGRAPHY === */
+@media (max-width: 768px) {
+  .text-responsive-h1 {
+    font-size: 1.8rem;
+  }
+
+  .text-responsive-h2 {
+    font-size: 1.5rem;
+  }
+}
+
+/* === UTILITY CLASSES === */
+.uppercase {
+  text-transform: uppercase;
+}
+
+.bold {
+  font-weight: 800;
+}
+
+.black {
+  color: #000;
+}
+
+.yellow {
+  color: #FFC900;
+}
+
+.bg-yellow {
+  background-color: #FFC900;
+}
+
+.bg-black {
+  background-color: #000;
+}
+
+.bg-white {
+  background-color: #FFFFFF;
+}
+
+.border-black {
+  border: 3px solid #000;
+}
+
+.shadow-brutal {
+  box-shadow: 6px 6px 0 #000;
 }

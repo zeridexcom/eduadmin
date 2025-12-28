@@ -25,79 +25,51 @@ import {
     Pagination,
     Button,
     Stack,
-    Fade,
 } from '@mui/material';
 import {
     Search,
     VisibilityOutlined,
     RefreshOutlined,
     FilterListOutlined,
-    LocalMallOutlined,
 } from '@mui/icons-material';
 
-// Memoized ProductCard for performance
+// Product Card Component
 const ProductCard = memo(function ProductCard({ product, onView, index }) {
     return (
         <Card
-            className={`card-interactive animate-fadeInUp stagger-${(index % 8) + 1}`}
-            sx={{
-                height: '100%',
-                display: 'flex',
-                flexDirection: 'column',
-            }}
+            className={`animate-slide-up stagger-${(index % 8) + 1}`}
+            sx={{ height: '100%', display: 'flex', flexDirection: 'column', cursor: 'pointer' }}
             onClick={() => onView(product.id)}
         >
-            <Box sx={{ position: 'relative', overflow: 'hidden', height: 220, bgcolor: 'rgba(0,0,0,0.02)' }}>
+            <Box sx={{ position: 'relative', height: 200, bgcolor: '#FFC900', p: 2, overflow: 'hidden' }}>
                 <CardMedia
                     component="img"
                     image={product.thumbnail}
                     alt={product.title}
-                    sx={{
-                        height: '100%',
-                        objectFit: 'contain',
-                        p: 2,
-                        transition: 'transform 0.5s ease',
-                        '&:hover': { transform: 'scale(1.1)' }
-                    }}
+                    sx={{ height: '100%', objectFit: 'contain', transition: 'transform 0.2s', '&:hover': { transform: 'scale(1.1)' } }}
                 />
                 {product.discountPercentage > 0 && (
                     <Chip
                         label={`${Math.round(product.discountPercentage)}% OFF`}
                         size="small"
-                        sx={{
-                            position: 'absolute',
-                            top: 16,
-                            left: 16,
-                            fontWeight: 800,
-                            bgcolor: '#FF6B6B',
-                            color: '#fff',
-                            fontSize: '0.65rem',
-                            boxShadow: '0 4px 12px rgba(255, 107, 107, 0.25)',
-                        }}
+                        sx={{ position: 'absolute', top: 12, left: 12, bgcolor: '#FF6B6B', color: '#000' }}
                     />
                 )}
             </Box>
-            <CardContent sx={{ flex: 1, p: 3, display: 'flex', flexDirection: 'column' }}>
-                <Typography variant="caption" sx={{ color: 'text.disabled', fontWeight: 800, letterSpacing: '0.05em', textTransform: 'uppercase', mb: 1, display: 'block' }}>
-                    {product.category}
+            <CardContent sx={{ flex: 1, p: 2.5, display: 'flex', flexDirection: 'column' }}>
+                <Typography variant="caption" sx={{ mb: 1 }}>{product.category.toUpperCase()}</Typography>
+                <Typography variant="h4" sx={{ mb: 2, fontSize: '1rem', minHeight: '2.5em', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+                    {product.title.toUpperCase()}
                 </Typography>
-
-                <Typography variant="h4" sx={{ mb: 1, fontSize: '1.1rem', lineHeight: 1.4, minHeight: '2.8em', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
-                    {product.title}
-                </Typography>
-
-                <Stack direction="row" alignItems="center" spacing={1} sx={{ mb: 2.5 }}>
-                    <Rating value={product.rating} precision={0.5} size="small" readOnly sx={{ color: '#FFD93D' }} />
-                    <Typography variant="caption" sx={{ fontWeight: 700, color: 'text.secondary' }}>{product.rating}</Typography>
+                <Stack direction="row" alignItems="center" spacing={1} sx={{ mb: 2 }}>
+                    <Rating value={product.rating} precision={0.5} size="small" readOnly />
+                    <Typography variant="caption" sx={{ fontWeight: 800 }}>{product.rating}</Typography>
                 </Stack>
-
                 <Box sx={{ mt: 'auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                     <Box>
-                        <Typography variant="h3" sx={{ color: '#2D3436' }}>
-                            ${product.price}
-                        </Typography>
+                        <Typography variant="h3" sx={{ fontSize: '1.5rem' }}>${product.price}</Typography>
                         {product.discountPercentage > 0 && (
-                            <Typography variant="caption" sx={{ textDecoration: 'line-through', color: 'text.disabled', fontWeight: 600 }}>
+                            <Typography variant="caption" sx={{ textDecoration: 'line-through' }}>
                                 ${(product.price / (1 - product.discountPercentage / 100)).toFixed(2)}
                             </Typography>
                         )}
@@ -105,10 +77,7 @@ const ProductCard = memo(function ProductCard({ product, onView, index }) {
                     <IconButton
                         size="small"
                         onClick={(e) => { e.stopPropagation(); onView(product.id); }}
-                        sx={{
-                            bgcolor: 'rgba(0,0,0,0.03)',
-                            '&:hover': { bgcolor: '#2D3436', color: '#fff' }
-                        }}
+                        sx={{ bgcolor: '#FFC900' }}
                     >
                         <VisibilityOutlined fontSize="small" />
                     </IconButton>
@@ -119,16 +88,16 @@ const ProductCard = memo(function ProductCard({ product, onView, index }) {
 });
 
 const ProductCardSkeleton = () => (
-    <Card sx={{ height: '100%', border: 'none', boxShadow: '0 4px 12px rgba(0,0,0,0.03)' }}>
-        <Skeleton variant="rectangular" height={220} />
-        <CardContent sx={{ p: 3 }}>
+    <Card sx={{ height: '100%' }}>
+        <Skeleton variant="rectangular" height={200} />
+        <CardContent sx={{ p: 2.5 }}>
             <Skeleton width={60} sx={{ mb: 1 }} />
-            <Skeleton width="90%" height={24} sx={{ mb: 0.5 }} />
+            <Skeleton width="90%" height={24} sx={{ mb: 1 }} />
             <Skeleton width="70%" height={24} sx={{ mb: 2 }} />
             <Skeleton width={100} sx={{ mb: 2 }} />
             <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                <Skeleton width={80} height={32} />
-                <Skeleton variant="circular" width={32} height={32} />
+                <Skeleton width={70} height={32} />
+                <Skeleton variant="rectangular" width={32} height={32} />
             </Box>
         </CardContent>
     </Card>
@@ -187,50 +156,48 @@ export default function ProductsPage() {
 
     return (
         <Box>
+            {/* Header */}
             <Box sx={{ mb: 5, display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', gap: 2, flexWrap: 'wrap' }}>
                 <Box>
-                    <Typography variant="h2" sx={{ mb: 1 }}>Product Catalog</Typography>
-                    <Typography variant="body1" color="text.secondary">
-                        Discover <Box component="span" sx={{ color: '#4ECDC4', fontWeight: 800 }}>{total}</Box> unique items in our marketplace.
+                    <Typography variant="h2" sx={{ mb: 1 }}>PRODUCT CATALOG 📦</Typography>
+                    <Typography variant="body1" sx={{ fontWeight: 600 }}>
+                        <Box component="span" sx={{ color: '#00D4AA', fontWeight: 900 }}>{total}</Box> PRODUCTS READY TO SELL
                     </Typography>
                 </Box>
-                <Stack direction="row" spacing={1.5}>
+                <Stack direction="row" spacing={2}>
                     <TextField
                         size="small"
-                        placeholder="Search products..."
+                        placeholder="SEARCH..."
                         value={localSearch}
                         onChange={(e) => handleSearch(e.target.value)}
-                        sx={{ minWidth: 260 }}
+                        sx={{ minWidth: 220 }}
                         InputProps={{
-                            startAdornment: (
-                                <InputAdornment position="start">
-                                    <Search sx={{ color: 'text.disabled', fontSize: 20 }} />
-                                </InputAdornment>
-                            ),
+                            startAdornment: <InputAdornment position="start"><Search sx={{ fontSize: 20 }} /></InputAdornment>,
                         }}
                     />
-                    <FormControl size="small" sx={{ minWidth: 160 }}>
-                        <InputLabel>Category</InputLabel>
-                        <Select value={selectedCategory} label="Category" onChange={handleCategoryChange}>
-                            <MenuItem value="">All Items</MenuItem>
+                    <FormControl size="small" sx={{ minWidth: 150 }}>
+                        <InputLabel>CATEGORY</InputLabel>
+                        <Select value={selectedCategory} label="CATEGORY" onChange={handleCategoryChange}>
+                            <MenuItem value="">ALL</MenuItem>
                             {categories.map((cat) => (
-                                <MenuItem key={cat.slug || cat} value={cat.slug || cat} sx={{ textTransform: 'capitalize' }}>
-                                    {cat.name || cat}
+                                <MenuItem key={cat.slug || cat} value={cat.slug || cat} sx={{ textTransform: 'uppercase' }}>
+                                    {(cat.name || cat).toUpperCase()}
                                 </MenuItem>
                             ))}
                         </Select>
                     </FormControl>
-                    <Tooltip title="Refresh Catalog">
-                        <IconButton onClick={handleRefresh} sx={{ bgcolor: '#fff', border: '1px solid rgba(0,0,0,0.08)' }}>
+                    <Tooltip title="REFRESH">
+                        <IconButton onClick={handleRefresh} sx={{ bgcolor: '#FFC900' }}>
                             <RefreshOutlined fontSize="small" />
                         </IconButton>
                     </Tooltip>
                 </Stack>
             </Box>
 
-            {error && <Alert severity="error" sx={{ mb: 4, borderRadius: 4 }}>{error}</Alert>}
+            {error && <Alert severity="error" sx={{ mb: 4 }}>{error}</Alert>}
 
-            <Grid container spacing={4}>
+            {/* Products Grid */}
+            <Grid container spacing={3}>
                 {isLoading ? (
                     [...Array(limit)].map((_, i) => (
                         <Grid item xs={12} sm={6} lg={4} xl={3} key={i}>
@@ -239,10 +206,10 @@ export default function ProductsPage() {
                     ))
                 ) : products.length === 0 ? (
                     <Grid item xs={12}>
-                        <Box sx={{ py: 12, textAlign: 'center' }}>
-                            <Typography variant="h1" sx={{ mb: 2, opacity: 0.1, fontSize: '6rem' }}>🛍️</Typography>
-                            <Typography variant="h3" sx={{ color: 'text.disabled' }}>No products match your search</Typography>
-                            <Button sx={{ mt: 3, fontWeight: 700 }} onClick={handleRefresh}>Clear All Filters</Button>
+                        <Box sx={{ py: 10, textAlign: 'center' }}>
+                            <Typography variant="h2" sx={{ mb: 2, opacity: 0.3 }}>🛍️</Typography>
+                            <Typography variant="h4">NO PRODUCTS FOUND</Typography>
+                            <Button sx={{ mt: 3 }} onClick={handleRefresh}>CLEAR FILTERS</Button>
                         </Box>
                     </Grid>
                 ) : (
@@ -254,14 +221,13 @@ export default function ProductsPage() {
                 )}
             </Grid>
 
+            {/* Pagination */}
             {!isLoading && products.length > 0 && totalPages > 1 && (
-                <Box sx={{ display: 'flex', justifyContent: 'center', mt: 8 }}>
+                <Box sx={{ display: 'flex', justifyContent: 'center', mt: 6 }}>
                     <Pagination
                         count={totalPages}
                         page={currentPage}
                         onChange={handlePageChange}
-                        variant="outlined"
-                        shape="rounded"
                         size="large"
                     />
                 </Box>
