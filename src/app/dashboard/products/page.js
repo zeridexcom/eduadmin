@@ -24,153 +24,94 @@ import {
     Rating,
     Pagination,
     Button,
+    Stack,
+    Fade,
 } from '@mui/material';
 import {
     Search,
-    Visibility,
-    FilterList,
-    Refresh,
-    ShoppingCart,
-    Category,
+    VisibilityOutlined,
+    RefreshOutlined,
+    FilterListOutlined,
+    LocalMallOutlined,
 } from '@mui/icons-material';
 
 // Memoized ProductCard for performance
-const ProductCard = memo(function ProductCard({ product, onView }) {
+const ProductCard = memo(function ProductCard({ product, onView, index }) {
     return (
         <Card
+            className={`card-interactive animate-fadeInUp stagger-${(index % 8) + 1}`}
             sx={{
                 height: '100%',
                 display: 'flex',
                 flexDirection: 'column',
-                cursor: 'pointer',
-                border: '2px solid #1A1A2E',
-                boxShadow: '4px 4px 0px #1A1A2E',
-                transition: 'all 0.2s ease',
-                '&:hover': {
-                    transform: 'translate(-4px, -4px)',
-                    boxShadow: '8px 8px 0px #1A1A2E',
-                    '& .product-image': {
-                        transform: 'scale(1.05)',
-                    },
-                },
             }}
             onClick={() => onView(product.id)}
         >
-            <Box sx={{ position: 'relative', overflow: 'hidden', borderBottom: '2px solid #1A1A2E' }}>
+            <Box sx={{ position: 'relative', overflow: 'hidden', height: 220, bgcolor: 'rgba(0,0,0,0.02)' }}>
                 <CardMedia
                     component="img"
-                    height="180"
                     image={product.thumbnail}
                     alt={product.title}
-                    className="product-image"
                     sx={{
-                        objectFit: 'cover',
-                        transition: 'transform 0.3s ease',
-                        backgroundColor: '#FAFAFA',
+                        height: '100%',
+                        objectFit: 'contain',
+                        p: 2,
+                        transition: 'transform 0.5s ease',
+                        '&:hover': { transform: 'scale(1.1)' }
                     }}
                 />
                 {product.discountPercentage > 0 && (
                     <Chip
-                        label={`-${Math.round(product.discountPercentage)}% 🔥`}
+                        label={`${Math.round(product.discountPercentage)}% OFF`}
                         size="small"
                         sx={{
                             position: 'absolute',
-                            top: 12,
-                            left: 12,
-                            fontWeight: 700,
-                            background: '#FF90E8',
-                            color: '#1A1A2E',
-                            border: '2px solid #1A1A2E',
+                            top: 16,
+                            left: 16,
+                            fontWeight: 800,
+                            bgcolor: '#FF6B6B',
+                            color: '#fff',
+                            fontSize: '0.65rem',
+                            boxShadow: '0 4px 12px rgba(255, 107, 107, 0.25)',
                         }}
                     />
                 )}
-                <Chip
-                    label={product.stock > 0 ? `${product.stock} left` : 'Sold out'}
-                    size="small"
-                    sx={{
-                        position: 'absolute',
-                        top: 12,
-                        right: 12,
-                        fontWeight: 700,
-                        background: product.stock > 0 ? '#90F6D7' : '#FF6B6B',
-                        color: '#1A1A2E',
-                        border: '2px solid #1A1A2E',
-                    }}
-                />
             </Box>
-            <CardContent sx={{ flex: 1, display: 'flex', flexDirection: 'column', p: 2.5 }}>
-                <Chip
-                    label={product.category}
-                    size="small"
-                    sx={{
-                        alignSelf: 'flex-start',
-                        mb: 1.5,
-                        fontWeight: 600,
-                        background: '#FFC900',
-                        color: '#1A1A2E',
-                        textTransform: 'capitalize',
-                    }}
-                />
+            <CardContent sx={{ flex: 1, p: 3, display: 'flex', flexDirection: 'column' }}>
+                <Typography variant="caption" sx={{ color: 'text.disabled', fontWeight: 800, letterSpacing: '0.05em', textTransform: 'uppercase', mb: 1, display: 'block' }}>
+                    {product.category}
+                </Typography>
 
-                <Typography
-                    variant="h6"
-                    sx={{
-                        fontWeight: 700,
-                        mb: 1,
-                        overflow: 'hidden',
-                        textOverflow: 'ellipsis',
-                        display: '-webkit-box',
-                        WebkitLineClamp: 2,
-                        WebkitBoxOrient: 'vertical',
-                        lineHeight: 1.3,
-                        minHeight: '2.6em',
-                        color: '#1A1A2E',
-                    }}
-                >
+                <Typography variant="h4" sx={{ mb: 1, fontSize: '1.1rem', lineHeight: 1.4, minHeight: '2.8em', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
                     {product.title}
                 </Typography>
 
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2 }}>
-                    <Rating
-                        value={product.rating}
-                        precision={0.1}
-                        size="small"
-                        readOnly
-                        sx={{ '& .MuiRating-iconFilled': { color: '#FFC900' } }}
-                    />
-                    <Typography variant="caption" sx={{ fontWeight: 600 }}>
-                        ({product.rating?.toFixed(1)}) ⭐
-                    </Typography>
-                </Box>
+                <Stack direction="row" alignItems="center" spacing={1} sx={{ mb: 2.5 }}>
+                    <Rating value={product.rating} precision={0.5} size="small" readOnly sx={{ color: '#FFD93D' }} />
+                    <Typography variant="caption" sx={{ fontWeight: 700, color: 'text.secondary' }}>{product.rating}</Typography>
+                </Stack>
 
                 <Box sx={{ mt: 'auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                     <Box>
-                        <Typography variant="h5" sx={{ fontWeight: 800, color: '#1A1A2E' }}>
+                        <Typography variant="h3" sx={{ color: '#2D3436' }}>
                             ${product.price}
                         </Typography>
                         {product.discountPercentage > 0 && (
-                            <Typography variant="caption" sx={{ textDecoration: 'line-through', color: 'text.secondary' }}>
+                            <Typography variant="caption" sx={{ textDecoration: 'line-through', color: 'text.disabled', fontWeight: 600 }}>
                                 ${(product.price / (1 - product.discountPercentage / 100)).toFixed(2)}
                             </Typography>
                         )}
                     </Box>
-                    <Tooltip title="View Details">
-                        <IconButton
-                            onClick={(e) => { e.stopPropagation(); onView(product.id); }}
-                            sx={{
-                                background: 'linear-gradient(135deg, #FF90E8 0%, #FFC900 100%)',
-                                color: '#1A1A2E',
-                                border: '2px solid #1A1A2E',
-                                boxShadow: '2px 2px 0px #1A1A2E',
-                                '&:hover': {
-                                    transform: 'translate(-1px, -1px)',
-                                    boxShadow: '3px 3px 0px #1A1A2E',
-                                },
-                            }}
-                        >
-                            <Visibility />
-                        </IconButton>
-                    </Tooltip>
+                    <IconButton
+                        size="small"
+                        onClick={(e) => { e.stopPropagation(); onView(product.id); }}
+                        sx={{
+                            bgcolor: 'rgba(0,0,0,0.03)',
+                            '&:hover': { bgcolor: '#2D3436', color: '#fff' }
+                        }}
+                    >
+                        <VisibilityOutlined fontSize="small" />
+                    </IconButton>
                 </Box>
             </CardContent>
         </Card>
@@ -178,16 +119,16 @@ const ProductCard = memo(function ProductCard({ product, onView }) {
 });
 
 const ProductCardSkeleton = () => (
-    <Card sx={{ height: '100%', border: '2px solid #E0E0E0' }}>
-        <Skeleton variant="rectangular" height={180} />
-        <CardContent sx={{ p: 2.5 }}>
-            <Skeleton width={80} height={24} sx={{ mb: 1.5 }} />
-            <Skeleton width="90%" height={28} />
-            <Skeleton width="60%" height={28} sx={{ mb: 1 }} />
-            <Skeleton width={100} height={20} sx={{ mb: 2 }} />
+    <Card sx={{ height: '100%', border: 'none', boxShadow: '0 4px 12px rgba(0,0,0,0.03)' }}>
+        <Skeleton variant="rectangular" height={220} />
+        <CardContent sx={{ p: 3 }}>
+            <Skeleton width={60} sx={{ mb: 1 }} />
+            <Skeleton width="90%" height={24} sx={{ mb: 0.5 }} />
+            <Skeleton width="70%" height={24} sx={{ mb: 2 }} />
+            <Skeleton width={100} sx={{ mb: 2 }} />
             <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                <Skeleton width={80} height={40} />
-                <Skeleton variant="circular" width={40} height={40} />
+                <Skeleton width={80} height={32} />
+                <Skeleton variant="circular" width={32} height={32} />
             </Box>
         </CardContent>
     </Card>
@@ -214,7 +155,7 @@ export default function ProductsPage() {
         const timeout = setTimeout(() => {
             if (value.trim()) searchProducts(value, 0, limit);
             else fetchProducts(0, limit);
-        }, 500);
+        }, 400);
         setSearchTimeout(timeout);
     }, [searchTimeout, searchProducts, fetchProducts, limit]);
 
@@ -239,40 +180,39 @@ export default function ProductsPage() {
     const handleRefresh = useCallback(() => {
         setLocalSearch('');
         fetchProducts(0, limit);
-    }, [fetchProducts, limit]);
+    }, [fetchUsers, limit]);
 
     const currentPage = useMemo(() => Math.floor(skip / limit) + 1, [skip, limit]);
     const totalPages = useMemo(() => Math.ceil(total / limit), [total, limit]);
 
     return (
         <Box>
-            {/* Header */}
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 3, flexWrap: 'wrap', gap: 2 }}>
+            <Box sx={{ mb: 5, display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', gap: 2, flexWrap: 'wrap' }}>
                 <Box>
-                    <Typography variant="h4" sx={{ fontWeight: 800, color: '#1A1A2E' }}>
-                        📦 Products
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary" sx={{ fontWeight: 500 }}>
-                        Explore our awesome catalog ({total} items) ✨
+                    <Typography variant="h2" sx={{ mb: 1 }}>Product Catalog</Typography>
+                    <Typography variant="body1" color="text.secondary">
+                        Discover <Box component="span" sx={{ color: '#4ECDC4', fontWeight: 800 }}>{total}</Box> unique items in our marketplace.
                     </Typography>
                 </Box>
-            </Box>
-
-            {/* Filters Card */}
-            <Card sx={{ mb: 3, p: 2.5, border: '2px solid #1A1A2E', boxShadow: '4px 4px 0px #1A1A2E' }}>
-                <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap', alignItems: 'center' }}>
+                <Stack direction="row" spacing={1.5}>
                     <TextField
                         size="small"
-                        placeholder="🔍 Search products..."
+                        placeholder="Search products..."
                         value={localSearch}
                         onChange={(e) => handleSearch(e.target.value)}
-                        sx={{ flex: 1, minWidth: 200 }}
+                        sx={{ minWidth: 260 }}
+                        InputProps={{
+                            startAdornment: (
+                                <InputAdornment position="start">
+                                    <Search sx={{ color: 'text.disabled', fontSize: 20 }} />
+                                </InputAdornment>
+                            ),
+                        }}
                     />
-
-                    <FormControl size="small" sx={{ minWidth: 180 }}>
-                        <InputLabel>🏷️ Category</InputLabel>
-                        <Select value={selectedCategory} label="🏷️ Category" onChange={handleCategoryChange}>
-                            <MenuItem value="">All Categories</MenuItem>
+                    <FormControl size="small" sx={{ minWidth: 160 }}>
+                        <InputLabel>Category</InputLabel>
+                        <Select value={selectedCategory} label="Category" onChange={handleCategoryChange}>
+                            <MenuItem value="">All Items</MenuItem>
                             {categories.map((cat) => (
                                 <MenuItem key={cat.slug || cat} value={cat.slug || cat} sx={{ textTransform: 'capitalize' }}>
                                     {cat.name || cat}
@@ -280,77 +220,49 @@ export default function ProductsPage() {
                             ))}
                         </Select>
                     </FormControl>
-
-                    <Tooltip title="Refresh">
-                        <IconButton
-                            onClick={handleRefresh}
-                            sx={{
-                                background: '#90F6D7',
-                                border: '2px solid #1A1A2E',
-                                boxShadow: '2px 2px 0px #1A1A2E',
-                                '&:hover': {
-                                    background: '#B8FFE8',
-                                    transform: 'translate(-1px, -1px)',
-                                    boxShadow: '3px 3px 0px #1A1A2E',
-                                },
-                            }}
-                        >
-                            <Refresh />
+                    <Tooltip title="Refresh Catalog">
+                        <IconButton onClick={handleRefresh} sx={{ bgcolor: '#fff', border: '1px solid rgba(0,0,0,0.08)' }}>
+                            <RefreshOutlined fontSize="small" />
                         </IconButton>
                     </Tooltip>
-                </Box>
-            </Card>
+                </Stack>
+            </Box>
 
-            {error && <Alert severity="error" sx={{ mb: 3, borderRadius: 3, border: '2px solid #FF6B6B' }}>{error}</Alert>}
+            {error && <Alert severity="error" sx={{ mb: 4, borderRadius: 4 }}>{error}</Alert>}
 
-            {/* Products Grid */}
-            <Grid container spacing={3}>
+            <Grid container spacing={4}>
                 {isLoading ? (
-                    [...Array(8)].map((_, index) => (
-                        <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
+                    [...Array(limit)].map((_, i) => (
+                        <Grid item xs={12} sm={6} lg={4} xl={3} key={i}>
                             <ProductCardSkeleton />
                         </Grid>
                     ))
                 ) : products.length === 0 ? (
                     <Grid item xs={12}>
-                        <Card sx={{ p: 8, textAlign: 'center', border: '2px solid #1A1A2E', boxShadow: '4px 4px 0px #1A1A2E' }}>
-                            <Typography sx={{ fontSize: '4rem', mb: 2 }}>🔍</Typography>
-                            <Typography variant="h6" sx={{ fontWeight: 700, mb: 1 }}>No products found</Typography>
-                            <Typography color="text.secondary" sx={{ mb: 3 }}>Try adjusting your filters</Typography>
-                            <Button variant="outlined" onClick={handleRefresh} sx={{ border: '2px solid #1A1A2E', color: '#1A1A2E', fontWeight: 700, '&:hover': { border: '2px solid #1A1A2E', background: '#1A1A2E', color: '#fff' } }}>
-                                Clear Filters 🧹
-                            </Button>
-                        </Card>
+                        <Box sx={{ py: 12, textAlign: 'center' }}>
+                            <Typography variant="h1" sx={{ mb: 2, opacity: 0.1, fontSize: '6rem' }}>🛍️</Typography>
+                            <Typography variant="h3" sx={{ color: 'text.disabled' }}>No products match your search</Typography>
+                            <Button sx={{ mt: 3, fontWeight: 700 }} onClick={handleRefresh}>Clear All Filters</Button>
+                        </Box>
                     </Grid>
                 ) : (
-                    products.map((product) => (
-                        <Grid item xs={12} sm={6} md={4} lg={3} key={product.id}>
-                            <ProductCard product={product} onView={handleViewProduct} />
+                    products.map((product, i) => (
+                        <Grid item xs={12} sm={6} lg={4} xl={3} key={product.id}>
+                            <ProductCard product={product} index={i} onView={handleViewProduct} />
                         </Grid>
                     ))
                 )}
             </Grid>
 
-            {/* Pagination */}
             {!isLoading && products.length > 0 && totalPages > 1 && (
-                <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
+                <Box sx={{ display: 'flex', justifyContent: 'center', mt: 8 }}>
                     <Pagination
                         count={totalPages}
                         page={currentPage}
                         onChange={handlePageChange}
+                        variant="outlined"
+                        shape="rounded"
                         size="large"
-                        showFirstButton
-                        showLastButton
-                        sx={{
-                            '& .MuiPaginationItem-root': {
-                                fontWeight: 700,
-                                border: '2px solid #1A1A2E',
-                                '&.Mui-selected': {
-                                    background: 'linear-gradient(135deg, #FF90E8 0%, #FFC900 100%)',
-                                    color: '#1A1A2E',
-                                },
-                            },
-                        }}
                     />
                 </Box>
             )}

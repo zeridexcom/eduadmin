@@ -24,15 +24,17 @@ import {
     useMediaQuery,
     Chip,
     CircularProgress,
+    Fade,
+    Stack,
 } from '@mui/material';
 import {
     Menu as MenuIcon,
-    Dashboard,
-    People,
-    Inventory2,
-    Logout,
-    ChevronLeft,
-    Settings,
+    DashboardOutlined,
+    PeopleOutlined,
+    Inventory2Outlined,
+    LogoutOutlined,
+    SettingsOutlined,
+    NotificationsNone,
 } from '@mui/icons-material';
 
 const drawerWidth = 280;
@@ -45,26 +47,21 @@ const NavItem = memo(function NavItem({ item, isActive, onClick }) {
                 onClick={onClick}
                 sx={{
                     mx: 2,
-                    borderRadius: 3,
+                    borderRadius: 4,
                     py: 1.5,
-                    border: isActive ? '2px solid #1A1A2E' : '2px solid transparent',
-                    background: isActive
-                        ? 'linear-gradient(135deg, rgba(255, 144, 232, 0.3) 0%, rgba(255, 201, 0, 0.3) 100%)'
-                        : 'transparent',
-                    boxShadow: isActive ? '3px 3px 0px #1A1A2E' : 'none',
+                    bgcolor: isActive ? 'rgba(255, 107, 107, 0.08)' : 'transparent',
+                    color: isActive ? '#FF6B6B' : '#636E72',
                     '&:hover': {
-                        background: isActive
-                            ? 'linear-gradient(135deg, rgba(255, 144, 232, 0.4) 0%, rgba(255, 201, 0, 0.4) 100%)'
-                            : 'rgba(255, 144, 232, 0.1)',
-                        transform: 'translateX(4px)',
+                        bgcolor: 'rgba(255, 107, 107, 0.04)',
+                        color: '#FF6B6B',
                     },
                     transition: 'all 0.2s ease',
                 }}
             >
                 <ListItemIcon
                     sx={{
-                        minWidth: 44,
-                        color: isActive ? '#1A1A2E' : 'text.secondary',
+                        minWidth: 40,
+                        color: 'inherit',
                     }}
                 >
                     {item.icon}
@@ -72,8 +69,8 @@ const NavItem = memo(function NavItem({ item, isActive, onClick }) {
                 <ListItemText
                     primary={item.label}
                     primaryTypographyProps={{
+                        fontSize: '0.95rem',
                         fontWeight: isActive ? 700 : 600,
-                        color: isActive ? '#1A1A2E' : 'text.secondary',
                     }}
                 />
                 {item.badge && (
@@ -81,11 +78,11 @@ const NavItem = memo(function NavItem({ item, isActive, onClick }) {
                         label={item.badge}
                         size="small"
                         sx={{
-                            height: 22,
+                            height: 20,
                             fontSize: '0.7rem',
                             fontWeight: 700,
-                            background: '#FF90E8',
-                            color: '#1A1A2E',
+                            bgcolor: '#FF6B6B',
+                            color: '#fff',
                         }}
                     />
                 )}
@@ -95,9 +92,9 @@ const NavItem = memo(function NavItem({ item, isActive, onClick }) {
 });
 
 const navItems = [
-    { label: 'Dashboard', icon: <Dashboard />, path: '/dashboard', emoji: '🏠' },
-    { label: 'Users', icon: <People />, path: '/dashboard/users', badge: 'New', emoji: '👥' },
-    { label: 'Products', icon: <Inventory2 />, path: '/dashboard/products', emoji: '📦' },
+    { label: 'Dashboard', icon: <DashboardOutlined />, path: '/dashboard' },
+    { label: 'Users', icon: <PeopleOutlined />, path: '/dashboard/users' },
+    { label: 'Products', icon: <Inventory2Outlined />, path: '/dashboard/products' },
 ];
 
 export default function DashboardLayout({ children }) {
@@ -145,16 +142,8 @@ export default function DashboardLayout({ children }) {
 
     if (status === 'loading') {
         return (
-            <Box
-                sx={{
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    minHeight: '100vh',
-                    background: 'linear-gradient(135deg, #FF90E8 0%, #FFC900 50%, #90F6D7 100%)',
-                }}
-            >
-                <CircularProgress sx={{ color: '#fff' }} />
+            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh', bgcolor: '#FFFAF5' }}>
+                <CircularProgress color="primary" />
             </Box>
         );
     }
@@ -164,51 +153,34 @@ export default function DashboardLayout({ children }) {
     const currentUser = session?.user || user;
 
     const drawer = (
-        <Box sx={{ height: '100%', display: 'flex', flexDirection: 'column', py: 2 }}>
-            {/* Logo Section */}
-            <Box
-                sx={{
-                    p: 3,
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: 2,
-                }}
-            >
+        <Box sx={{ height: '100%', display: 'flex', flexDirection: 'column', py: 4 }}>
+            <Box sx={{ px: 4, mb: 6, display: 'flex', alignItems: 'center', gap: 2 }}>
                 <Box
+                    className="icon-container"
                     sx={{
-                        width: 50,
-                        height: 50,
+                        width: 48,
+                        height: 48,
                         borderRadius: 3,
-                        background: 'linear-gradient(135deg, #FF90E8 0%, #FFC900 100%)',
+                        bgcolor: '#FFFFFF',
+                        border: '1.5px solid #FF6B6B',
+                        boxShadow: '0 8px 16px rgba(255, 107, 107, 0.12)',
+                        fontSize: '1.5rem',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        border: '2px solid #1A1A2E',
-                        boxShadow: '3px 3px 0px #1A1A2E',
-                        fontSize: '1.5rem',
                     }}
                 >
-                    🎓
+                    🏫
                 </Box>
-                <Box>
-                    <Typography variant="h6" sx={{ fontWeight: 800, color: '#1A1A2E' }}>
-                        EduAdmin
-                    </Typography>
-                    <Typography variant="caption" color="text.secondary" sx={{ fontWeight: 600 }}>
-                        Dashboard ✨
-                    </Typography>
-                </Box>
-                {isMobile && (
-                    <IconButton onClick={handleDrawerToggle} sx={{ ml: 'auto' }}>
-                        <ChevronLeft />
-                    </IconButton>
-                )}
+                <Typography variant="h4" sx={{ color: '#2D3436', fontSize: '1.4rem', fontWeight: 800 }}>
+                    EduAdmin
+                </Typography>
             </Box>
 
-            <Divider sx={{ mx: 3, my: 1 }} />
-
-            {/* Navigation */}
-            <List sx={{ flex: 1, py: 2 }}>
+            <List sx={{ flex: 1 }}>
+                <Typography variant="caption" sx={{ px: 4, mb: 2, display: 'block', color: 'text.disabled', fontWeight: 800, letterSpacing: '0.15em' }}>
+                    PRIMARY
+                </Typography>
                 {navItems.map((item) => (
                     <NavItem
                         key={item.path}
@@ -219,77 +191,73 @@ export default function DashboardLayout({ children }) {
                 ))}
             </List>
 
-            {/* User Profile Section */}
-            <Box
-                sx={{
-                    mx: 2,
-                    p: 2,
-                    borderRadius: 3,
-                    background: 'linear-gradient(135deg, rgba(144, 246, 215, 0.3) 0%, rgba(255, 201, 0, 0.3) 100%)',
-                    border: '2px solid #1A1A2E',
-                }}
-            >
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
-                    <Avatar
-                        src={currentUser?.image}
-                        alt={currentUser?.name}
-                        sx={{
-                            width: 44,
-                            height: 44,
-                            border: '2px solid #1A1A2E',
-                        }}
-                    />
-                    <Box sx={{ flex: 1, minWidth: 0 }}>
-                        <Typography variant="body2" sx={{ fontWeight: 700 }} noWrap>
-                            {currentUser?.name || 'Admin User'} 👋
-                        </Typography>
-                        <Typography variant="caption" color="text.secondary" noWrap>
-                            {currentUser?.email}
-                        </Typography>
-                    </Box>
+            <Box sx={{ px: 3, mt: 'auto' }}>
+                <Box
+                    sx={{
+                        p: 2.5,
+                        borderRadius: 5,
+                        bgcolor: '#FFFFFF',
+                        boxShadow: '0 10px 30px rgba(0, 0, 0, 0.04)',
+                        border: '1px solid rgba(0, 0, 0, 0.03)',
+                    }}
+                >
+                    <Stack spacing={2}>
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
+                            <Avatar src={currentUser?.image} sx={{ width: 44, height: 44, border: '2px solid #FF6B6B' }} />
+                            <Box sx={{ minWidth: 0 }}>
+                                <Typography variant="body2" sx={{ fontWeight: 800, color: '#2D3436' }} noWrap>{currentUser?.name || 'Admin'}</Typography>
+                                <Typography variant="caption" color="text.secondary" noWrap sx={{ display: 'block' }}>{currentUser?.email}</Typography>
+                            </Box>
+                        </Box>
+                        <Button
+                            fullWidth
+                            variant="outlined"
+                            onClick={handleLogout}
+                            startIcon={<LogoutOutlined />}
+                            sx={{ borderRadius: 3, borderColor: 'rgba(0,0,0,0.1)', color: '#636E72', fontWeight: 700 }}
+                        >
+                            Log Out
+                        </Button>
+                    </Stack>
                 </Box>
             </Box>
         </Box>
     );
 
     return (
-        <Box sx={{ display: 'flex', minHeight: '100vh', background: '#FEFEFE' }}>
-            {/* App Bar */}
+        <Box sx={{ display: 'flex', minHeight: '100vh', bgcolor: '#FFFAF5' }}>
             <AppBar
                 position="fixed"
                 sx={{
                     width: { md: `calc(100% - ${drawerWidth}px)` },
                     ml: { md: `${drawerWidth}px` },
-                    background: '#FFFFFF',
-                    borderBottom: '2px solid #F0F0F0',
                 }}
             >
-                <Toolbar sx={{ justifyContent: 'space-between' }}>
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                        <IconButton
-                            edge="start"
-                            onClick={handleDrawerToggle}
-                            sx={{ display: { md: 'none' }, color: '#1A1A2E' }}
-                        >
-                            <MenuIcon />
-                        </IconButton>
-                        <Typography variant="h6" sx={{ fontWeight: 700, color: '#1A1A2E' }}>
-                            {navItems.find(item => item.path === pathname)?.emoji}{' '}
-                            {navItems.find(item => item.path === pathname)?.label || 'Dashboard'}
-                        </Typography>
-                    </Box>
-
-                    <IconButton onClick={handleMenuOpen}>
-                        <Avatar
-                            src={currentUser?.image}
-                            alt={currentUser?.name}
-                            sx={{ width: 40, height: 40, border: '2px solid #FF90E8' }}
-                        />
+                <Toolbar sx={{ px: { xs: 2, md: 4, lg: 6 }, minHeight: { xs: 70, md: 80 } }}>
+                    <IconButton
+                        edge="start"
+                        onClick={handleDrawerToggle}
+                        sx={{ mr: 2, display: { md: 'none' }, color: '#2D3436' }}
+                    >
+                        <MenuIcon />
                     </IconButton>
+
+                    <Typography variant="h5" sx={{ color: '#2D3436', flexGrow: 1, fontWeight: 700 }}>
+                        {navItems.find(i => i.path === pathname)?.label || 'Overview'}
+                    </Typography>
+
+                    <Stack direction="row" spacing={2} alignItems="center">
+                        <IconButton sx={{ bgcolor: '#FFFFFF', border: '1px solid rgba(0,0,0,0.05)', boxShadow: '0 4px 12px rgba(0,0,0,0.03)' }}>
+                            <NotificationsNone sx={{ color: '#636E72' }} />
+                        </IconButton>
+                        <Box sx={{ width: '1px', height: 24, bgcolor: 'divider', mx: 1 }} />
+                        <IconButton onClick={handleMenuOpen} sx={{ p: 0.5 }}>
+                            <Avatar src={currentUser?.image} sx={{ width: 38, height: 38, border: '2.5px solid #FF6B6B' }} />
+                        </IconButton>
+                    </Stack>
                 </Toolbar>
             </AppBar>
 
-            {/* User Menu */}
             <Menu
                 anchorEl={anchorEl}
                 open={Boolean(anchorEl)}
@@ -298,34 +266,26 @@ export default function DashboardLayout({ children }) {
                 anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
                 PaperProps={{
                     sx: {
-                        mt: 1.5,
-                        minWidth: 200,
-                        borderRadius: 3,
-                        border: '2px solid #1A1A2E',
-                        boxShadow: '4px 4px 0px #1A1A2E',
+                        mt: 2,
+                        minWidth: 220,
+                        borderRadius: 4,
+                        boxShadow: '0 20px 50px rgba(0,0,0,0.1)',
+                        border: '1px solid rgba(0,0,0,0.05)',
+                        p: 1,
                     },
                 }}
             >
-                <Box sx={{ px: 2, py: 1.5 }}>
-                    <Typography variant="subtitle2" sx={{ fontWeight: 700 }}>
-                        {currentUser?.name} 👋
-                    </Typography>
-                    <Typography variant="caption" color="text.secondary">
-                        {currentUser?.email}
-                    </Typography>
-                </Box>
-                <Divider />
-                <MenuItem onClick={handleMenuClose}>
-                    <ListItemIcon><Settings fontSize="small" /></ListItemIcon>
-                    Settings ⚙️
+                <MenuItem onClick={handleMenuClose} sx={{ borderRadius: 3, py: 1.2 }}>
+                    <ListItemIcon><SettingsOutlined fontSize="small" /></ListItemIcon>
+                    <Typography variant="body2" sx={{ fontWeight: 600 }}>Account Settings</Typography>
                 </MenuItem>
-                <MenuItem onClick={handleLogout} sx={{ color: '#FF6B6B' }}>
-                    <ListItemIcon><Logout fontSize="small" sx={{ color: '#FF6B6B' }} /></ListItemIcon>
-                    Logout 👋
+                <Divider sx={{ my: 1 }} />
+                <MenuItem onClick={handleLogout} sx={{ borderRadius: 3, py: 1.2, color: '#FF6B6B' }}>
+                    <ListItemIcon><LogoutOutlined fontSize="small" sx={{ color: 'inherit' }} /></ListItemIcon>
+                    <Typography variant="body2" sx={{ fontWeight: 700 }}>Sign Out 👋</Typography>
                 </MenuItem>
             </Menu>
 
-            {/* Sidebar */}
             <Box component="nav" sx={{ width: { md: drawerWidth }, flexShrink: { md: 0 } }}>
                 <Drawer
                     variant="temporary"
@@ -351,19 +311,11 @@ export default function DashboardLayout({ children }) {
                 </Drawer>
             </Box>
 
-            {/* Main Content */}
-            <Box
-                component="main"
-                sx={{
-                    flexGrow: 1,
-                    width: { md: `calc(100% - ${drawerWidth}px)` },
-                    minHeight: '100vh',
-                    pt: { xs: 9, md: 10 },
-                    pb: 4,
-                    px: { xs: 2, md: 4 },
-                }}
-            >
-                {children}
+            <Box component="main" sx={{ flexGrow: 1, p: { xs: 2, md: 4, lg: 6 }, width: { md: `calc(100% - ${drawerWidth}px)` } }}>
+                <Toolbar sx={{ minHeight: { xs: 70, md: 80 } }} />
+                <Fade in timeout={800}>
+                    <Box>{children}</Box>
+                </Fade>
             </Box>
         </Box>
     );

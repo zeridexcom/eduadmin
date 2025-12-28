@@ -13,110 +13,89 @@ import {
     Avatar,
     Button,
     LinearProgress,
+    Stack,
+    IconButton,
 } from '@mui/material';
 import {
-    People,
-    Inventory2,
-    TrendingUp,
-    ShoppingCart,
-    East,
+    PeopleAltOutlined,
+    Inventory2Outlined,
+    TrendingUpOutlined,
+    ShoppingCartOutlined,
+    ArrowForward,
+    MoreHoriz,
 } from '@mui/icons-material';
 
-// Fun stat card with Gumroad style
-const StatCard = ({ title, value, icon, emoji, color, gradient, onClick }) => (
+const StatCard = ({ title, value, icon, color, onClick }) => (
     <Card
+        className="card-interactive"
         onClick={onClick}
-        sx={{
-            height: '100%',
-            cursor: onClick ? 'pointer' : 'default',
-            border: '2px solid #1A1A2E',
-            boxShadow: '4px 4px 0px #1A1A2E',
-            transition: 'all 0.2s ease',
-            '&:hover': {
-                transform: 'translate(-2px, -2px)',
-                boxShadow: '8px 8px 0px #1A1A2E',
-            },
-            '&:active': onClick ? {
-                transform: 'translate(2px, 2px)',
-                boxShadow: '2px 2px 0px #1A1A2E',
-            } : {},
-        }}
     >
-        <CardContent sx={{ p: 3 }}>
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 2 }}>
+        <CardContent sx={{ p: 3.5 }}>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
                 <Box
+                    className="icon-container"
                     sx={{
-                        width: 56,
-                        height: 56,
-                        borderRadius: 3,
-                        background: gradient,
+                        width: 52,
+                        height: 52,
+                        bgcolor: `${color}12`,
+                        color: color,
+                        border: `1.5px solid ${color}33`,
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        border: '2px solid #1A1A2E',
                         fontSize: '1.5rem',
                     }}
                 >
-                    {emoji}
+                    {icon}
                 </Box>
-                <Typography variant="caption" sx={{
-                    background: 'rgba(144, 246, 215, 0.3)',
-                    px: 1.5,
-                    py: 0.5,
-                    borderRadius: 2,
-                    fontWeight: 700,
-                }}>
-                    +12% ↑
-                </Typography>
+                <IconButton size="small" sx={{ bgcolor: 'rgba(0,0,0,0.02)' }}>
+                    <MoreHoriz fontSize="small" />
+                </IconButton>
             </Box>
-            <Typography variant="h3" sx={{ fontWeight: 800, mb: 0.5, color: '#1A1A2E' }}>
+            <Typography variant="h2" sx={{ color: '#2D3436', mb: 0.5 }}>
                 {value}
             </Typography>
             <Typography variant="body2" color="text.secondary" sx={{ fontWeight: 600 }}>
                 {title}
             </Typography>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mt: 2 }}>
+                <Typography variant="caption" sx={{ color: '#6BCB77', fontWeight: 800 }}>+12.5%</Typography>
+                <Typography variant="caption" color="text.disabled">vs last month</Typography>
+            </Box>
         </CardContent>
     </Card>
 );
 
-// Quick action button
-const QuickAction = ({ emoji, title, subtitle, onClick, gradient }) => (
-    <Card
-        onClick={onClick}
+const ActivityItem = ({ emoji, title, time, index }) => (
+    <Box
+        className={`animate-slideInRight stagger-${index + 1}`}
         sx={{
-            cursor: 'pointer',
-            border: '2px solid #1A1A2E',
-            boxShadow: '4px 4px 0px #1A1A2E',
-            transition: 'all 0.2s ease',
+            display: 'flex',
+            alignItems: 'center',
+            gap: 2,
+            p: 2.5,
+            borderRadius: 4,
+            bgcolor: '#FFFFFF',
+            border: '1.5px solid rgba(0,0,0,0.03)',
             '&:hover': {
-                transform: 'translate(-2px, -2px)',
-                boxShadow: '8px 8px 0px #1A1A2E',
+                bgcolor: '#FFFAF5',
+                transform: 'translateX(6px)',
+                borderColor: '#FF6B6B33',
             },
+            cursor: 'pointer',
         }}
     >
-        <CardContent sx={{ p: 3, display: 'flex', alignItems: 'center', gap: 2 }}>
-            <Box
-                sx={{
-                    width: 50,
-                    height: 50,
-                    borderRadius: 3,
-                    background: gradient,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    fontSize: '1.5rem',
-                    border: '2px solid #1A1A2E',
-                }}
-            >
-                {emoji}
-            </Box>
-            <Box sx={{ flex: 1 }}>
-                <Typography variant="body1" sx={{ fontWeight: 700 }}>{title}</Typography>
-                <Typography variant="caption" color="text.secondary">{subtitle}</Typography>
-            </Box>
-            <East sx={{ color: 'text.secondary' }} />
-        </CardContent>
-    </Card>
+        <Box sx={{ fontSize: '1.8rem', width: 44, height: 44, display: 'flex', alignItems: 'center', justifyContent: 'center', bgcolor: 'rgba(0,0,0,0.02)', borderRadius: 3 }}>
+            {emoji}
+        </Box>
+        <Box sx={{ flex: 1 }}>
+            <Typography variant="body2" sx={{ fontWeight: 800, color: '#2D3436' }}>{title}</Typography>
+            <Typography variant="caption" color="text.disabled">{time}</Typography>
+        </Box>
+        <IconButton size="small">
+            <ArrowForward fontSize="inherit" />
+        </IconButton>
+    </Box>
 );
 
 export default function DashboardPage() {
@@ -125,85 +104,61 @@ export default function DashboardPage() {
     const { user } = useAuthStore();
 
     const currentUser = session?.user || user;
-    const firstName = currentUser?.name?.split(' ')[0] || 'Friend';
+    const firstName = currentUser?.name?.split(' ')[0] || 'Admin';
 
     const stats = useMemo(() => [
         {
-            title: 'Total Users',
+            title: 'Total Community',
             value: '2,847',
-            emoji: '👥',
-            gradient: 'linear-gradient(135deg, #FF90E8 0%, #FFB8F0 100%)',
+            icon: <PeopleAltOutlined />,
+            color: '#FF6B6B',
             onClick: () => router.push('/dashboard/users'),
         },
         {
-            title: 'Products',
+            title: 'Active Inventory',
             value: '1,234',
-            emoji: '📦',
-            gradient: 'linear-gradient(135deg, #90F6D7 0%, #B8FFE8 100%)',
+            icon: <Inventory2Outlined />,
+            color: '#4ECDC4',
             onClick: () => router.push('/dashboard/products'),
         },
         {
-            title: 'Revenue',
-            value: '$48.2K',
-            emoji: '💰',
-            gradient: 'linear-gradient(135deg, #FFC900 0%, #FFD740 100%)',
+            title: 'Total Earnings',
+            value: '$48,290',
+            icon: <TrendingUpOutlined />,
+            color: '#6C9BCF',
         },
         {
-            title: 'Orders',
+            title: 'Recent Orders',
             value: '892',
-            emoji: '🛒',
-            gradient: 'linear-gradient(135deg, #A29BFE 0%, #C4BAFF 100%)',
+            icon: <ShoppingCartOutlined />,
+            color: '#FFD93D',
         },
     ], [router]);
 
     return (
-        <Box>
-            {/* Welcome Section */}
-            <Card
-                sx={{
-                    mb: 4,
-                    background: 'linear-gradient(135deg, #FF90E8 0%, #FFC900 50%, #90F6D7 100%)',
-                    border: '3px solid #1A1A2E',
-                    boxShadow: '6px 6px 0px #1A1A2E',
-                    overflow: 'visible',
-                }}
-            >
-                <CardContent sx={{ py: 4, px: { xs: 3, md: 4 } }}>
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 3, flexWrap: 'wrap' }}>
-                        <Avatar
-                            src={currentUser?.image}
-                            alt={currentUser?.name}
-                            sx={{
-                                width: 90,
-                                height: 90,
-                                border: '4px solid #1A1A2E',
-                                boxShadow: '4px 4px 0px #1A1A2E',
-                            }}
-                        />
-                        <Box>
-                            <Typography
-                                variant="h3"
-                                sx={{
-                                    fontWeight: 800,
-                                    color: '#1A1A2E',
-                                    mb: 0.5,
-                                }}
-                            >
-                                Hey {firstName}! 👋
-                            </Typography>
-                            <Typography sx={{ color: '#1A1A2E', fontWeight: 500, opacity: 0.8 }}>
-                                Welcome back! Here&apos;s what&apos;s happening today ✨
-                            </Typography>
-                        </Box>
-                    </Box>
-                </CardContent>
-            </Card>
+        <Box className="animate-fadeIn">
+            {/* Welcome Header */}
+            <Box sx={{ mb: 6, display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 4 }}>
+                <Box>
+                    <Typography variant="h1" sx={{ color: '#2D3436', mb: 1.5 }}>
+                        Welcome back, {firstName} <Box component="span" className="animate-wiggle" sx={{ display: 'inline-block' }}>👋</Box>
+                    </Typography>
+                    <Typography variant="body1" color="text.secondary" sx={{ fontWeight: 500 }}>
+                        Here&apos;s a quick look at how your educational dashboard is performing today.
+                    </Typography>
+                </Box>
+                <Button
+                    variant="contained"
+                    size="large"
+                    startIcon={<ShoppingCartOutlined />}
+                    sx={{ py: 1.5, px: 4, borderRadius: 3 }}
+                >
+                    Generate Report
+                </Button>
+            </Box>
 
             {/* Stats Grid */}
-            <Typography variant="h5" sx={{ fontWeight: 800, mb: 3, color: '#1A1A2E' }}>
-                📊 Overview
-            </Typography>
-            <Grid container spacing={3} sx={{ mb: 4 }}>
+            <Grid container spacing={3.5} sx={{ mb: 6 }}>
                 {stats.map((stat, index) => (
                     <Grid item xs={12} sm={6} lg={3} key={index}>
                         <StatCard {...stat} />
@@ -211,124 +166,63 @@ export default function DashboardPage() {
                 ))}
             </Grid>
 
-            {/* Quick Actions */}
-            <Typography variant="h5" sx={{ fontWeight: 800, mb: 3, color: '#1A1A2E' }}>
-                ⚡ Quick Actions
-            </Typography>
-            <Grid container spacing={3} sx={{ mb: 4 }}>
-                <Grid item xs={12} md={6}>
-                    <QuickAction
-                        emoji="👥"
-                        title="Browse Users"
-                        subtitle="View and manage all registered users"
-                        onClick={() => router.push('/dashboard/users')}
-                        gradient="linear-gradient(135deg, #FF90E8 0%, #FFB8F0 100%)"
-                    />
-                </Grid>
-                <Grid item xs={12} md={6}>
-                    <QuickAction
-                        emoji="📦"
-                        title="Explore Products"
-                        subtitle="Check out the product catalog"
-                        onClick={() => router.push('/dashboard/products')}
-                        gradient="linear-gradient(135deg, #90F6D7 0%, #B8FFE8 100%)"
-                    />
-                </Grid>
-            </Grid>
-
-            {/* Recent Activity & Performance */}
-            <Grid container spacing={3}>
-                <Grid item xs={12} md={7}>
-                    <Card sx={{
-                        height: '100%',
-                        border: '2px solid #1A1A2E',
-                        boxShadow: '4px 4px 0px #1A1A2E',
-                    }}>
-                        <CardContent sx={{ p: 3 }}>
-                            <Typography variant="h6" sx={{ fontWeight: 700, mb: 3 }}>
-                                📝 Recent Activity
-                            </Typography>
-                            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-                                {[
-                                    { emoji: '🆕', text: 'New user joined: John Doe', time: '2 min ago', color: '#FF90E8' },
-                                    { emoji: '📦', text: 'Product updated: iPhone 15', time: '15 min ago', color: '#90F6D7' },
-                                    { emoji: '🛒', text: 'New order #1234 placed', time: '1 hour ago', color: '#FFC900' },
-                                    { emoji: '👋', text: 'User logged in: jane_smith', time: '2 hours ago', color: '#A29BFE' },
-                                ].map((activity, index) => (
-                                    <Box
-                                        key={index}
-                                        sx={{
-                                            display: 'flex',
-                                            alignItems: 'center',
-                                            gap: 2,
-                                            p: 2,
-                                            borderRadius: 3,
-                                            background: '#FAFAFA',
-                                            border: '1px solid #F0F0F0',
-                                            transition: 'all 0.2s ease',
-                                            '&:hover': {
-                                                background: `${activity.color}20`,
-                                                transform: 'translateX(4px)',
-                                            },
-                                        }}
-                                    >
-                                        <Box sx={{ fontSize: '1.5rem' }}>{activity.emoji}</Box>
-                                        <Box sx={{ flex: 1 }}>
-                                            <Typography variant="body2" sx={{ fontWeight: 600 }}>
-                                                {activity.text}
-                                            </Typography>
-                                        </Box>
-                                        <Typography variant="caption" color="text.secondary" sx={{ fontWeight: 500 }}>
-                                            {activity.time}
-                                        </Typography>
-                                    </Box>
-                                ))}
-                            </Box>
-                        </CardContent>
-                    </Card>
+            <Grid container spacing={4}>
+                {/* Activity Feed */}
+                <Grid item xs={12} lg={7}>
+                    <Box sx={{ mb: 3, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                        <Typography variant="h3">Recent Activity ✨</Typography>
+                        <Button size="small" sx={{ fontWeight: 700 }}>View All</Button>
+                    </Box>
+                    <Stack spacing={2}>
+                        {[
+                            { emoji: '🎨', title: 'New design course published', time: '12 minutes ago' },
+                            { emoji: '💎', title: 'Premium subscription purchased', time: '45 minutes ago' },
+                            { emoji: '📧', title: 'New support inquiry from Mike', time: '2 hours ago' },
+                            { emoji: '🎉', title: 'Community milestone: 2K users', time: '5 hours ago' },
+                        ].map((item, i) => (
+                            <ActivityItem key={i} {...item} index={i} />
+                        ))}
+                    </Stack>
                 </Grid>
 
-                <Grid item xs={12} md={5}>
-                    <Card sx={{
-                        height: '100%',
-                        border: '2px solid #1A1A2E',
-                        boxShadow: '4px 4px 0px #1A1A2E',
-                    }}>
+                {/* Goals / Targets */}
+                <Grid item xs={12} lg={5}>
+                    <Card sx={{ height: '100%', p: 1 }}>
                         <CardContent sx={{ p: 3 }}>
-                            <Typography variant="h6" sx={{ fontWeight: 700, mb: 3 }}>
-                                📈 Performance
-                            </Typography>
-                            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+                            <Typography variant="h3" sx={{ mb: 4 }}>Goal Tracking 🎯</Typography>
+                            <Stack spacing={4}>
                                 {[
-                                    { label: 'User Growth', value: 78, emoji: '👥', color: '#FF90E8' },
-                                    { label: 'Sales Target', value: 65, emoji: '💰', color: '#90F6D7' },
-                                    { label: 'Product Views', value: 92, emoji: '👀', color: '#FFC900' },
-                                ].map((metric, index) => (
-                                    <Box key={index}>
-                                        <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
-                                            <Typography variant="body2" sx={{ fontWeight: 600 }}>
-                                                {metric.emoji} {metric.label}
-                                            </Typography>
-                                            <Typography variant="body2" sx={{ fontWeight: 700 }}>
-                                                {metric.value}%
-                                            </Typography>
+                                    { label: 'Revenue Target', value: 72, color: '#FF6B6B' },
+                                    { label: 'User Retention', value: 85, color: '#4ECDC4' },
+                                    { label: 'Support Speed', value: 46, color: '#FFD93D' },
+                                ].map((target, i) => (
+                                    <Box key={i}>
+                                        <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1.5 }}>
+                                            <Typography variant="body2" sx={{ fontWeight: 800, color: '#2D3436' }}>{target.label}</Typography>
+                                            <Typography variant="body2" sx={{ fontWeight: 800, color: target.color }}>{target.value}%</Typography>
                                         </Box>
                                         <LinearProgress
                                             variant="determinate"
-                                            value={metric.value}
+                                            value={target.value}
                                             sx={{
-                                                height: 12,
-                                                borderRadius: 6,
-                                                backgroundColor: '#F0F0F0',
-                                                border: '1px solid #E0E0E0',
+                                                height: 10,
+                                                borderRadius: 5,
+                                                bgcolor: 'rgba(0,0,0,0.03)',
                                                 '& .MuiLinearProgress-bar': {
-                                                    borderRadius: 6,
-                                                    background: metric.color,
-                                                },
+                                                    bgcolor: target.color,
+                                                    borderRadius: 5,
+                                                }
                                             }}
                                         />
                                     </Box>
                                 ))}
+                            </Stack>
+
+                            <Box sx={{ mt: 6, p: 3, borderRadius: 5, bgcolor: 'rgba(78, 205, 196, 0.05)', border: '1px dashed #4ECDC4' }}>
+                                <Typography variant="body2" sx={{ fontWeight: 800, color: '#3DBDB5', mb: 1 }}>Tip of the day! 💡</Typography>
+                                <Typography variant="caption" color="text.secondary" sx={{ display: 'block', lineHeight: 1.6 }}>
+                                    Higher user retention leads to 3x more long-term revenue. Try reaching out to your inactive users.
+                                </Typography>
                             </Box>
                         </CardContent>
                     </Card>

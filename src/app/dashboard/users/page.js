@@ -23,48 +23,45 @@ import {
     Skeleton,
     Alert,
     Tooltip,
+    Grow,
+    Stack,
 } from '@mui/material';
 import {
     Search,
-    Visibility,
-    Email,
-    Phone,
-    Business,
-    Male,
-    Female,
-    Refresh,
+    VisibilityOutlined,
+    EmailOutlined,
+    LocalPhoneOutlined,
+    BusinessOutlined,
+    RefreshOutlined,
+    FilterListOutlined,
 } from '@mui/icons-material';
 
 // Memoized UserRow for performance
-const UserRow = memo(function UserRow({ user, onView }) {
-    const isMale = user.gender?.toLowerCase() === 'male';
-
+const UserRow = memo(function UserRow({ user, onView, index }) {
     return (
         <TableRow
             hover
+            className={`animate-fadeInUp stagger-${(index % 5) + 1}`}
             sx={{
                 cursor: 'pointer',
-                transition: 'all 0.2s ease',
                 '&:hover': {
-                    background: 'rgba(255, 144, 232, 0.08) !important',
-                    transform: 'scale(1.01)',
+                    bgcolor: 'rgba(255, 107, 107, 0.03) !important',
                 },
             }}
             onClick={() => onView(user.id)}
         >
-            <TableCell>
+            <TableCell sx={{ pl: 4 }}>
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
                     <Avatar
                         src={user.image}
-                        alt={`${user.firstName} ${user.lastName}`}
                         sx={{
-                            width: 48,
-                            height: 48,
-                            border: '2px solid #1A1A2E',
+                            width: 44,
+                            height: 44,
+                            border: '2px solid rgba(255, 107, 107, 0.2)',
                         }}
                     />
                     <Box>
-                        <Typography variant="body2" sx={{ fontWeight: 700 }}>
+                        <Typography variant="body2" sx={{ fontWeight: 800, color: '#2D3436' }}>
                             {user.firstName} {user.lastName}
                         </Typography>
                         <Typography variant="caption" color="text.secondary">
@@ -74,58 +71,46 @@ const UserRow = memo(function UserRow({ user, onView }) {
                 </Box>
             </TableCell>
             <TableCell>
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                    <Email sx={{ fontSize: 16, color: '#FF90E8' }} />
-                    <Typography variant="body2">{user.email}</Typography>
-                </Box>
+                <Stack direction="row" spacing={1} alignItems="center">
+                    <EmailOutlined sx={{ fontSize: 16, color: 'text.disabled' }} />
+                    <Typography variant="body2" sx={{ fontWeight: 500 }}>{user.email}</Typography>
+                </Stack>
             </TableCell>
             <TableCell>
                 <Chip
-                    size="small"
-                    icon={isMale ? <Male sx={{ fontSize: 16 }} /> : <Female sx={{ fontSize: 16 }} />}
                     label={user.gender}
+                    size="small"
                     sx={{
-                        fontWeight: 600,
-                        background: isMale ? 'rgba(108, 92, 231, 0.1)' : 'rgba(255, 144, 232, 0.2)',
-                        color: isMale ? '#6C5CE7' : '#E870D0',
-                        border: `2px solid ${isMale ? '#6C5CE7' : '#FF90E8'}`,
+                        fontWeight: 800,
+                        fontSize: '0.75rem',
+                        bgcolor: user.gender === 'male' ? 'rgba(108, 155, 207, 0.1)' : 'rgba(255, 107, 107, 0.1)',
+                        color: user.gender === 'male' ? '#6C9BCF' : '#FF6B6B',
                         textTransform: 'capitalize',
-                        '& .MuiChip-icon': { color: 'inherit' },
                     }}
                 />
             </TableCell>
             <TableCell>
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                    <Phone sx={{ fontSize: 16, color: '#90F6D7' }} />
-                    <Typography variant="body2">{user.phone}</Typography>
-                </Box>
+                <Typography variant="body2" sx={{ fontWeight: 500 }}>{user.phone}</Typography>
             </TableCell>
             <TableCell>
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                    <Business sx={{ fontSize: 16, color: '#FFC900' }} />
-                    <Typography variant="body2" noWrap sx={{ maxWidth: 150 }}>
-                        {user.company?.name || 'N/A'}
+                    <BusinessOutlined sx={{ fontSize: 16, color: 'text.disabled' }} />
+                    <Typography variant="body2" noWrap sx={{ maxWidth: 150, fontWeight: 500 }}>
+                        {user.company?.name || 'Private'}
                     </Typography>
                 </Box>
             </TableCell>
-            <TableCell align="right">
-                <Tooltip title="View Details">
-                    <IconButton
-                        onClick={(e) => { e.stopPropagation(); onView(user.id); }}
-                        sx={{
-                            background: 'linear-gradient(135deg, #FF90E8 0%, #FFC900 100%)',
-                            color: '#1A1A2E',
-                            border: '2px solid #1A1A2E',
-                            boxShadow: '2px 2px 0px #1A1A2E',
-                            '&:hover': {
-                                transform: 'translate(-1px, -1px)',
-                                boxShadow: '3px 3px 0px #1A1A2E',
-                            },
-                        }}
-                    >
-                        <Visibility />
-                    </IconButton>
-                </Tooltip>
+            <TableCell align="right" sx={{ pr: 4 }}>
+                <IconButton
+                    size="small"
+                    onClick={(e) => { e.stopPropagation(); onView(user.id); }}
+                    sx={{
+                        bgcolor: 'rgba(0,0,0,0.02)',
+                        '&:hover': { bgcolor: '#FF6B6B', color: '#fff' }
+                    }}
+                >
+                    <VisibilityOutlined fontSize="small" />
+                </IconButton>
             </TableCell>
         </TableRow>
     );
@@ -133,20 +118,17 @@ const UserRow = memo(function UserRow({ user, onView }) {
 
 const TableRowSkeleton = () => (
     <TableRow>
-        <TableCell>
+        <TableCell sx={{ pl: 4 }}>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                <Skeleton variant="circular" width={48} height={48} />
-                <Box>
-                    <Skeleton width={120} height={20} />
-                    <Skeleton width={80} height={16} />
-                </Box>
+                <Skeleton variant="circular" width={44} height={44} />
+                <Box><Skeleton width={100} /><Skeleton width={60} /></Box>
             </Box>
         </TableCell>
-        <TableCell><Skeleton width={180} /></TableCell>
-        <TableCell><Skeleton width={80} /></TableCell>
-        <TableCell><Skeleton width={120} /></TableCell>
+        <TableCell><Skeleton width={150} /></TableCell>
+        <TableCell><Skeleton width={70} /></TableCell>
+        <TableCell><Skeleton width={110} /></TableCell>
         <TableCell><Skeleton width={100} /></TableCell>
-        <TableCell align="right"><Skeleton variant="circular" width={40} height={40} /></TableCell>
+        <TableCell align="right" sx={{ pr: 4 }}><Skeleton variant="circular" width={32} height={32} /></TableCell>
     </TableRow>
 );
 
@@ -167,7 +149,7 @@ export default function UsersPage() {
         const timeout = setTimeout(() => {
             if (value.trim()) searchUsers(value, 0, limit);
             else fetchUsers(0, limit);
-        }, 500);
+        }, 400);
         setSearchTimeout(timeout);
     }, [searchTimeout, searchUsers, fetchUsers, limit]);
 
@@ -196,102 +178,87 @@ export default function UsersPage() {
 
     return (
         <Box>
-            {/* Header */}
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3, flexWrap: 'wrap', gap: 2 }}>
+            {/* Header Container */}
+            <Box sx={{ mb: 5, display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', gap: 2, flexWrap: 'wrap' }}>
                 <Box>
-                    <Typography variant="h4" sx={{ fontWeight: 800, color: '#1A1A2E' }}>
-                        👥 Users
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary" sx={{ fontWeight: 500 }}>
-                        Manage all your awesome users here ✨
+                    <Typography variant="h2" sx={{ mb: 1 }}>Community Directory</Typography>
+                    <Typography variant="body1" color="text.secondary">
+                        Managing <Box component="span" sx={{ color: '#FF6B6B', fontWeight: 800 }}>{total}</Box> registered members in your platform.
                     </Typography>
                 </Box>
-                <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
+                <Stack direction="row" spacing={1.5}>
                     <TextField
                         size="small"
-                        placeholder="Search users..."
+                        placeholder="Search by name..."
                         value={localSearch}
                         onChange={(e) => handleSearch(e.target.value)}
-                        sx={{
-                            width: { xs: '100%', sm: 280 },
-                            '& .MuiOutlinedInput-root': {
-                                border: '2px solid #E5E7EB',
-                                '&:hover': { borderColor: '#FF90E8' },
-                            },
-                        }}
+                        sx={{ minWidth: 260 }}
                         InputProps={{
                             startAdornment: (
                                 <InputAdornment position="start">
-                                    <Search sx={{ color: '#FF90E8' }} />
+                                    <Search sx={{ color: 'text.disabled', fontSize: 20 }} />
                                 </InputAdornment>
                             ),
                         }}
                     />
-                    <Tooltip title="Refresh">
-                        <IconButton
-                            onClick={handleRefresh}
-                            sx={{
-                                background: '#90F6D7',
-                                border: '2px solid #1A1A2E',
-                                boxShadow: '2px 2px 0px #1A1A2E',
-                                '&:hover': {
-                                    background: '#B8FFE8',
-                                    transform: 'translate(-1px, -1px)',
-                                    boxShadow: '3px 3px 0px #1A1A2E',
-                                },
-                            }}
-                        >
-                            <Refresh />
+                    <Tooltip title="Filter List">
+                        <IconButton sx={{ bgcolor: '#fff', border: '1px solid rgba(0,0,0,0.08)' }}>
+                            <FilterListOutlined fontSize="small" />
                         </IconButton>
                     </Tooltip>
-                </Box>
+                    <Tooltip title="Refresh Data">
+                        <IconButton onClick={handleRefresh} sx={{ bgcolor: '#fff', border: '1px solid rgba(0,0,0,0.08)' }}>
+                            <RefreshOutlined fontSize="small" />
+                        </IconButton>
+                    </Tooltip>
+                </Stack>
             </Box>
 
-            {error && <Alert severity="error" sx={{ mb: 3, borderRadius: 3, border: '2px solid #FF6B6B' }}>{error}</Alert>}
+            {error && <Alert severity="error" sx={{ mb: 4, borderRadius: 4 }}>{error}</Alert>}
 
-            {/* Users Table */}
-            <Card sx={{ border: '2px solid #1A1A2E', boxShadow: '4px 4px 0px #1A1A2E' }}>
-                <CardContent sx={{ p: 0 }}>
-                    <TableContainer>
-                        <Table>
-                            <TableHead>
+            {/* Users Table Card */}
+            <Card sx={{ border: 'none', boxShadow: '0 20px 60px rgba(0,0,0,0.03)', overflow: 'hidden' }}>
+                <TableContainer>
+                    <Table>
+                        <TableHead>
+                            <TableRow>
+                                <TableCell sx={{ pl: 4 }}>Member Details</TableCell>
+                                <TableCell>Email Address</TableCell>
+                                <TableCell>Classification</TableCell>
+                                <TableCell>Phone Number</TableCell>
+                                <TableCell>Organization</TableCell>
+                                <TableCell align="right" sx={{ pr: 4 }}>Action</TableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {isLoading ? (
+                                [...Array(limit)].map((_, i) => <TableRowSkeleton key={i} />)
+                            ) : users.length === 0 ? (
                                 <TableRow>
-                                    <TableCell sx={{ fontWeight: 700 }}>👤 User</TableCell>
-                                    <TableCell sx={{ fontWeight: 700 }}>📧 Email</TableCell>
-                                    <TableCell sx={{ fontWeight: 700 }}>⚧ Gender</TableCell>
-                                    <TableCell sx={{ fontWeight: 700 }}>📞 Phone</TableCell>
-                                    <TableCell sx={{ fontWeight: 700 }}>🏢 Company</TableCell>
-                                    <TableCell sx={{ fontWeight: 700 }} align="right">Action</TableCell>
+                                    <TableCell colSpan={6} align="center" sx={{ py: 12 }}>
+                                        <Typography variant="h2" sx={{ mb: 1, opacity: 0.1, fontSize: '4rem' }}>📭</Typography>
+                                        <Typography variant="body1" sx={{ fontWeight: 800, color: 'text.disabled' }}>No members found</Typography>
+                                    </TableCell>
                                 </TableRow>
-                            </TableHead>
-                            <TableBody>
-                                {isLoading ? (
-                                    [...Array(5)].map((_, index) => <TableRowSkeleton key={index} />)
-                                ) : users.length === 0 ? (
-                                    <TableRow>
-                                        <TableCell colSpan={6} align="center" sx={{ py: 8 }}>
-                                            <Typography sx={{ fontSize: '3rem', mb: 2 }}>🔍</Typography>
-                                            <Typography color="text.secondary" sx={{ fontWeight: 600 }}>No users found</Typography>
-                                        </TableCell>
-                                    </TableRow>
-                                ) : (
-                                    users.map((user) => <UserRow key={user.id} user={user} onView={handleViewUser} />)
-                                )}
-                            </TableBody>
-                        </Table>
-                    </TableContainer>
+                            ) : (
+                                users.map((user, i) => <UserRow key={user.id} user={user} index={i} onView={handleViewUser} />)
+                            )}
+                        </TableBody>
+                    </Table>
+                </TableContainer>
 
+                <Box sx={{ p: 2, borderTop: '1px solid rgba(0,0,0,0.05)' }}>
                     <TablePagination
                         component="div"
                         count={total}
                         page={currentPage}
                         rowsPerPage={limit}
-                        rowsPerPageOptions={[5, 10, 25, 50]}
+                        rowsPerPageOptions={[10, 20, 50]}
                         onPageChange={handlePageChange}
                         onRowsPerPageChange={handleRowsPerPageChange}
-                        sx={{ borderTop: '2px solid #F0F0F0' }}
+                        sx={{ border: 'none' }}
                     />
-                </CardContent>
+                </Box>
             </Card>
         </Box>
     );

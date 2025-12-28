@@ -15,17 +15,19 @@ import {
     Alert,
     Rating,
     IconButton,
-    MobileStepper,
+    Stack,
+    Divider,
 } from '@mui/material';
 import {
-    ArrowBack,
-    ShoppingCart,
-    Favorite,
-    Share,
-    LocalShipping,
-    Verified,
-    KeyboardArrowLeft,
-    KeyboardArrowRight,
+    ArrowBackOutlined,
+    ShoppingCartOutlined,
+    FavoriteBorderOutlined,
+    ShareOutlined,
+    LocalShippingOutlined,
+    VerifiedOutlined,
+    KeyboardArrowLeftOutlined,
+    KeyboardArrowRightOutlined,
+    Inventory2Outlined,
 } from '@mui/icons-material';
 
 // Image Carousel
@@ -38,89 +40,89 @@ const ImageCarousel = ({ images = [], title }) => {
 
     if (images.length === 0) {
         return (
-            <Box sx={{ height: 400, display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#FAFAFA', borderRadius: 3, border: '2px solid #E0E0E0' }}>
+            <Box sx={{ height: 500, display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#FFFFFF', borderRadius: 6, border: '1px solid rgba(0,0,0,0.04)' }}>
                 <Typography color="text.secondary">📷 No images available</Typography>
             </Box>
         );
     }
 
     return (
-        <Box>
-            <Box sx={{ height: { xs: 300, md: 400 }, borderRadius: 4, overflow: 'hidden', position: 'relative', background: '#FAFAFA', border: '3px solid #1A1A2E', boxShadow: '6px 6px 0px #1A1A2E' }}>
+        <Box sx={{ position: 'sticky', top: 100 }}>
+            <Box sx={{
+                height: { xs: 350, md: 500 },
+                borderRadius: 6,
+                overflow: 'hidden',
+                position: 'relative',
+                background: '#FFFFFF',
+                boxShadow: '0 20px 60px rgba(0,0,0,0.04)',
+                border: '1px solid rgba(0,0,0,0.03)',
+                p: 4
+            }}>
                 <Box
                     component="img"
                     src={images[activeStep]}
                     alt={`${title} - Image ${activeStep + 1}`}
-                    sx={{ width: '100%', height: '100%', objectFit: 'contain' }}
+                    sx={{ width: '100%', height: '100%', objectFit: 'contain', transition: 'all 0.5s ease' }}
                 />
+
+                {maxSteps > 1 && (
+                    <Box sx={{ position: 'absolute', bottom: 20, left: 0, right: 0, display: 'flex', justifyContent: 'center', gap: 1.5 }}>
+                        <IconButton
+                            size="small"
+                            onClick={handleBack}
+                            disabled={activeStep === 0}
+                            sx={{ bgcolor: '#fff', border: '1px solid rgba(0,0,0,0.08)', '&:hover': { bgcolor: '#FF6B6B', color: '#fff' } }}
+                        >
+                            <KeyboardArrowLeftOutlined />
+                        </IconButton>
+                        <IconButton
+                            size="small"
+                            onClick={handleNext}
+                            disabled={activeStep === maxSteps - 1}
+                            sx={{ bgcolor: '#fff', border: '1px solid rgba(0,0,0,0.08)', '&:hover': { bgcolor: '#FF6B6B', color: '#fff' } }}
+                        >
+                            <KeyboardArrowRightOutlined />
+                        </IconButton>
+                    </Box>
+                )}
             </Box>
 
             {maxSteps > 1 && (
-                <>
-                    <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2, mt: 2 }}>
-                        <IconButton
-                            onClick={handleBack}
-                            disabled={activeStep === 0}
+                <Stack direction="row" spacing={2} sx={{ mt: 3, overflowX: 'auto', py: 1 }}>
+                    {images.map((img, index) => (
+                        <Box
+                            key={index}
+                            onClick={() => setActiveStep(index)}
                             sx={{
-                                background: '#FF90E8',
-                                border: '2px solid #1A1A2E',
-                                boxShadow: '2px 2px 0px #1A1A2E',
-                                '&:hover': { transform: 'translate(-1px, -1px)', boxShadow: '3px 3px 0px #1A1A2E' },
-                                '&.Mui-disabled': { opacity: 0.3 },
+                                width: 70,
+                                height: 70,
+                                borderRadius: 3,
+                                overflow: 'hidden',
+                                cursor: 'pointer',
+                                flexShrink: 0,
+                                border: activeStep === index ? '2.5px solid #FF6B6B' : '1px solid rgba(0,0,0,0.1)',
+                                opacity: activeStep === index ? 1 : 0.6,
+                                transition: 'all 0.2s ease',
+                                p: 0.5,
+                                bgcolor: '#fff'
                             }}
                         >
-                            <KeyboardArrowLeft />
-                        </IconButton>
-                        <Typography sx={{ display: 'flex', alignItems: 'center', fontWeight: 700 }}>
-                            {activeStep + 1} / {maxSteps}
-                        </Typography>
-                        <IconButton
-                            onClick={handleNext}
-                            disabled={activeStep === maxSteps - 1}
-                            sx={{
-                                background: '#90F6D7',
-                                border: '2px solid #1A1A2E',
-                                boxShadow: '2px 2px 0px #1A1A2E',
-                                '&:hover': { transform: 'translate(-1px, -1px)', boxShadow: '3px 3px 0px #1A1A2E' },
-                                '&.Mui-disabled': { opacity: 0.3 },
-                            }}
-                        >
-                            <KeyboardArrowRight />
-                        </IconButton>
-                    </Box>
-
-                    <Box sx={{ display: 'flex', gap: 1, mt: 2, overflowX: 'auto', pb: 1 }}>
-                        {images.map((img, index) => (
-                            <Box
-                                key={index}
-                                onClick={() => setActiveStep(index)}
-                                sx={{
-                                    width: 60,
-                                    height: 60,
-                                    borderRadius: 2,
-                                    overflow: 'hidden',
-                                    cursor: 'pointer',
-                                    flexShrink: 0,
-                                    border: activeStep === index ? '3px solid #FF90E8' : '2px solid #E0E0E0',
-                                    opacity: activeStep === index ? 1 : 0.6,
-                                    transition: 'all 0.2s ease',
-                                    '&:hover': { opacity: 1 },
-                                }}
-                            >
-                                <Box component="img" src={img} alt={`Thumbnail ${index + 1}`} sx={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                            </Box>
-                        ))}
-                    </Box>
-                </>
+                            <Box component="img" src={img} sx={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+                        </Box>
+                    ))}
+                </Stack>
             )}
         </Box>
     );
 };
 
-const SpecItem = ({ emoji, label, value }) => (
-    <Box sx={{ display: 'flex', justifyContent: 'space-between', py: 1.5, borderBottom: '1px dashed #E0E0E0', '&:last-child': { borderBottom: 'none' } }}>
-        <Typography variant="body2" color="text.secondary">{emoji} {label}</Typography>
-        <Typography variant="body2" sx={{ fontWeight: 600 }}>{value || 'N/A'}</Typography>
+const SpecRow = ({ label, value, index }) => (
+    <Box
+        className={`animate-slideInRight stagger-${index + 1}`}
+        sx={{ display: 'flex', justifyContent: 'space-between', py: 2, borderBottom: '1px solid rgba(0,0,0,0.04)' }}
+    >
+        <Typography variant="body2" sx={{ color: 'text.secondary', fontWeight: 600 }}>{label}</Typography>
+        <Typography variant="body2" sx={{ fontWeight: 800, color: '#2D3436' }}>{value || 'N/A'}</Typography>
     </Box>
 );
 
@@ -143,23 +145,24 @@ export default function ProductDetailPage() {
 
     if (error) {
         return (
-            <Box>
-                <Button startIcon={<ArrowBack />} onClick={() => router.push('/dashboard/products')} sx={{ mb: 3 }}>Back to Products</Button>
-                <Alert severity="error" sx={{ borderRadius: 3, border: '2px solid #FF6B6B' }}>{error}</Alert>
+            <Box sx={{ maxWidth: 800, mx: 'auto' }}>
+                <Button startIcon={<ArrowBackOutlined />} onClick={() => router.push('/dashboard/products')} sx={{ mb: 3 }}>Back to Catalog</Button>
+                <Alert severity="error" sx={{ borderRadius: 4 }}>{error}</Alert>
             </Box>
         );
     }
 
     if (isLoading || !currentProduct) {
         return (
-            <Box>
-                <Skeleton width={150} height={40} sx={{ mb: 3 }} />
-                <Grid container spacing={4}>
-                    <Grid item xs={12} md={6}><Skeleton variant="rounded" height={400} sx={{ borderRadius: 3 }} /></Grid>
+            <Box sx={{ maxWidth: 1200, mx: 'auto' }}>
+                <Skeleton width={200} height={40} sx={{ mb: 4 }} />
+                <Grid container spacing={6}>
+                    <Grid item xs={12} md={6}><Skeleton variant="rounded" height={500} sx={{ borderRadius: 6 }} /></Grid>
                     <Grid item xs={12} md={6}>
-                        <Skeleton width={100} height={32} sx={{ mb: 2 }} />
-                        <Skeleton width="80%" height={48} sx={{ mb: 1 }} />
-                        <Skeleton width="100%" height={100} />
+                        <Skeleton width={120} height={32} sx={{ mb: 2 }} />
+                        <Skeleton width="90%" height={60} sx={{ mb: 2 }} />
+                        <Skeleton width="100%" height={120} sx={{ mb: 4 }} />
+                        <Skeleton variant="rounded" height={60} sx={{ borderRadius: 3 }} />
                     </Grid>
                 </Grid>
             </Box>
@@ -169,145 +172,148 @@ export default function ProductDetailPage() {
     const product = currentProduct;
 
     return (
-        <Box>
+        <Box className="animate-fadeIn" sx={{ maxWidth: 1200, mx: 'auto' }}>
             <Button
-                startIcon={<ArrowBack />}
+                startIcon={<ArrowBackOutlined />}
                 onClick={() => router.push('/dashboard/products')}
-                variant="outlined"
-                sx={{ mb: 3, border: '2px solid #1A1A2E', color: '#1A1A2E', fontWeight: 700, '&:hover': { border: '2px solid #1A1A2E', background: '#1A1A2E', color: '#fff' } }}
+                sx={{ mb: 5, color: 'text.secondary', fontWeight: 700 }}
             >
-                ← Back to Products
+                Back to Catalog
             </Button>
 
-            <Grid container spacing={4}>
+            <Grid container spacing={8}>
                 <Grid item xs={12} md={6}>
                     <ImageCarousel images={product.images} title={product.title} />
                 </Grid>
 
                 <Grid item xs={12} md={6}>
-                    <Box sx={{ display: 'flex', gap: 1, mb: 2, flexWrap: 'wrap' }}>
-                        <Chip label={product.category} sx={{ fontWeight: 700, background: '#FFC900', color: '#1A1A2E', textTransform: 'capitalize' }} />
-                        <Chip label={product.brand} sx={{ fontWeight: 700, background: '#FF90E8', color: '#1A1A2E' }} />
-                        <Chip
-                            label={product.stock > 0 ? `${product.stock} in stock ✅` : 'Sold out ❌'}
-                            sx={{ fontWeight: 700, background: product.stock > 0 ? '#90F6D7' : '#FF6B6B', color: '#1A1A2E' }}
-                        />
-                    </Box>
-
-                    <Typography variant="h3" sx={{ fontWeight: 800, mb: 2, color: '#1A1A2E' }}>
-                        {product.title}
-                    </Typography>
-
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 3 }}>
-                        <Rating value={product.rating} precision={0.1} readOnly sx={{ '& .MuiRating-iconFilled': { color: '#FFC900' } }} />
-                        <Typography sx={{ fontWeight: 600 }}>({product.rating?.toFixed(1)}) ⭐</Typography>
-                    </Box>
-
-                    <Box sx={{ mb: 3 }}>
-                        <Box sx={{ display: 'flex', alignItems: 'baseline', gap: 2 }}>
-                            <Typography variant="h2" sx={{ fontWeight: 800, color: '#1A1A2E' }}>
-                                ${product.price}
-                            </Typography>
-                            {originalPrice && (
-                                <Typography variant="h5" sx={{ textDecoration: 'line-through', color: 'text.secondary' }}>
-                                    ${originalPrice}
-                                </Typography>
-                            )}
-                        </Box>
-                        {product.discountPercentage > 0 && (
+                    <Box sx={{ mb: 4 }}>
+                        <Stack direction="row" spacing={1.5} sx={{ mb: 3 }}>
+                            <Chip label={product.category} sx={{ fontWeight: 800, bgcolor: 'rgba(0,0,0,0.03)', textTransform: 'uppercase', fontSize: '0.7rem' }} />
+                            <Chip label={product.brand} sx={{ fontWeight: 800, bgcolor: 'rgba(78, 205, 196, 0.1)', color: '#4ECDC4', fontSize: '0.7rem' }} />
                             <Chip
-                                label={`🔥 ${Math.round(product.discountPercentage)}% OFF`}
-                                sx={{ mt: 1, fontWeight: 700, background: '#FF90E8', color: '#1A1A2E', border: '2px solid #1A1A2E' }}
+                                label={product.stock > 10 ? 'In Stock' : `Only ${product.stock} left`}
+                                sx={{ fontWeight: 800, bgcolor: product.stock > 10 ? 'rgba(107, 203, 119, 0.1)' : 'rgba(255, 107, 107, 0.1)', color: product.stock > 10 ? '#6BCB77' : '#FF6B6B', fontSize: '0.7rem' }}
                             />
-                        )}
-                    </Box>
+                        </Stack>
 
-                    <Typography variant="body1" color="text.secondary" sx={{ mb: 4, lineHeight: 1.8 }}>
-                        {product.description}
-                    </Typography>
+                        <Typography variant="h1" sx={{ mb: 2, fontSize: { xs: '2.5rem', md: '3.2rem' } }}>
+                            {product.title}
+                        </Typography>
 
-                    <Box sx={{ display: 'flex', gap: 2, mb: 4 }}>
-                        <Button
-                            variant="contained"
-                            size="large"
-                            startIcon={<ShoppingCart />}
-                            disabled={product.stock === 0}
-                            sx={{
-                                flex: 1,
-                                py: 1.8,
-                                fontSize: '1.1rem',
-                                fontWeight: 800,
-                                background: 'linear-gradient(135deg, #FF90E8 0%, #FFC900 100%)',
-                                border: '3px solid #1A1A2E',
-                                boxShadow: '4px 4px 0px #1A1A2E',
-                                color: '#1A1A2E',
-                                '&:hover': { transform: 'translate(-2px, -2px)', boxShadow: '6px 6px 0px #1A1A2E' },
-                            }}
-                        >
-                            Add to Cart 🛒
-                        </Button>
-                        <IconButton sx={{ border: '2px solid #1A1A2E', color: '#FF6B6B', background: '#FFF5F5', '&:hover': { background: '#FFE5E5' } }}>
-                            <Favorite />
-                        </IconButton>
-                        <IconButton sx={{ border: '2px solid #1A1A2E', color: '#6C5CE7', background: '#F5F3FF', '&:hover': { background: '#EDE9FE' } }}>
-                            <Share />
-                        </IconButton>
-                    </Box>
+                        <Stack direction="row" alignItems="center" spacing={2} sx={{ mb: 4 }}>
+                            <Rating value={product.rating} precision={0.5} readOnly sx={{ color: '#FFD93D' }} />
+                            <Typography variant="body1" sx={{ fontWeight: 700, color: 'text.secondary' }}>({product.rating} ratings)</Typography>
+                            <Divider orientation="vertical" flexItem />
+                            <Typography variant="body2" sx={{ color: '#6BCB77', fontWeight: 800 }}>Verified Purchase ✓</Typography>
+                        </Stack>
 
-                    <Box sx={{ display: 'flex', gap: 3, flexWrap: 'wrap' }}>
-                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                            <LocalShipping sx={{ color: '#90F6D7' }} />
-                            <Typography variant="body2" sx={{ fontWeight: 600 }}>Free Shipping 🚚</Typography>
+                        <Box sx={{ mb: 5 }}>
+                            <Stack direction="row" alignItems="baseline" spacing={2.5}>
+                                <Typography variant="h1" sx={{ color: '#2D3436', fontSize: '3rem' }}>
+                                    ${product.price}
+                                </Typography>
+                                {originalPrice && (
+                                    <Typography variant="h3" sx={{ textDecoration: 'line-through', color: 'text.disabled', opacity: 0.6 }}>
+                                        ${originalPrice}
+                                    </Typography>
+                                )}
+                                {product.discountPercentage > 0 && (
+                                    <Chip
+                                        label={`${Math.round(product.discountPercentage)}% OFF`}
+                                        sx={{ fontWeight: 800, bgcolor: '#FF6B6B', color: '#fff' }}
+                                    />
+                                )}
+                            </Stack>
                         </Box>
-                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                            <Verified sx={{ color: '#FFC900' }} />
-                            <Typography variant="body2" sx={{ fontWeight: 600 }}>Verified ✓</Typography>
-                        </Box>
+
+                        <Typography variant="body1" color="text.secondary" sx={{ mb: 6, lineHeight: 1.8 }}>
+                            {product.description}
+                        </Typography>
+
+                        <Stack direction="row" spacing={2} sx={{ mb: 6 }}>
+                            <Button
+                                variant="contained"
+                                fullWidth
+                                size="large"
+                                startIcon={<ShoppingCartOutlined />}
+                                disabled={product.stock === 0}
+                                sx={{ py: 2, fontSize: '1.05rem', borderRadius: 4 }}
+                            >
+                                Add to Cart
+                            </Button>
+                            <IconButton sx={{ border: '1.5px solid rgba(0,0,0,0.1)', color: '#FF6B6B', p: 2 }}>
+                                <FavoriteBorderOutlined />
+                            </IconButton>
+                            <IconButton sx={{ border: '1.5px solid rgba(0,0,0,0.1)', color: '#636E72', p: 2 }}>
+                                <ShareOutlined />
+                            </IconButton>
+                        </Stack>
+
+                        <Grid container spacing={3}>
+                            <Grid item xs={6}>
+                                <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                                    <LocalShippingOutlined sx={{ color: '#4ECDC4' }} />
+                                    <Box>
+                                        <Typography variant="caption" display="block" sx={{ fontWeight: 800, color: 'text.disabled' }}>SHIPPING</Typography>
+                                        <Typography variant="body2" sx={{ fontWeight: 700 }}>Free Express</Typography>
+                                    </Box>
+                                </Box>
+                            </Grid>
+                            <Grid item xs={6}>
+                                <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                                    <VerifiedOutlined sx={{ color: '#FFD93D' }} />
+                                    <Box>
+                                        <Typography variant="caption" display="block" sx={{ fontWeight: 800, color: 'text.disabled' }}>WARRANTY</Typography>
+                                        <Typography variant="body2" sx={{ fontWeight: 700 }}>2 Years Policy</Typography>
+                                    </Box>
+                                </Box>
+                            </Grid>
+                        </Grid>
                     </Box>
                 </Grid>
             </Grid>
 
-            {/* Specs */}
-            <Grid container spacing={3} sx={{ mt: 4 }}>
-                <Grid item xs={12} md={6}>
-                    <Card sx={{ border: '2px solid #1A1A2E', boxShadow: '4px 4px 0px #1A1A2E' }}>
-                        <CardContent sx={{ p: 3 }}>
-                            <Typography variant="h6" sx={{ fontWeight: 700, mb: 2 }}>📋 Specifications</Typography>
-                            <SpecItem emoji="🏷️" label="Brand" value={product.brand} />
-                            <SpecItem emoji="📦" label="Category" value={product.category} />
-                            <SpecItem emoji="🔢" label="SKU" value={product.sku} />
-                            <SpecItem emoji="⚖️" label="Weight" value={product.weight ? `${product.weight} g` : null} />
-                            <SpecItem emoji="🛡️" label="Warranty" value={product.warrantyInformation} />
-                            <SpecItem emoji="↩️" label="Return Policy" value={product.returnPolicy} />
-                        </CardContent>
-                    </Card>
-                </Grid>
-                <Grid item xs={12} md={6}>
-                    <Card sx={{ border: '2px solid #1A1A2E', boxShadow: '4px 4px 0px #1A1A2E' }}>
-                        <CardContent sx={{ p: 3, textAlign: 'center' }}>
-                            <Typography variant="h6" sx={{ fontWeight: 700, mb: 2 }}>⭐ Customer Rating</Typography>
-                            <Typography variant="h1" sx={{ fontWeight: 800, color: '#FFC900' }}>{product.rating?.toFixed(1)}</Typography>
-                            <Rating value={product.rating} precision={0.1} readOnly size="large" sx={{ '& .MuiRating-iconFilled': { color: '#FFC900' } }} />
-                            <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>Based on customer reviews</Typography>
-                        </CardContent>
-                    </Card>
-                </Grid>
-
-                {product.tags && product.tags.length > 0 && (
-                    <Grid item xs={12}>
-                        <Card sx={{ border: '2px solid #1A1A2E', boxShadow: '4px 4px 0px #1A1A2E' }}>
-                            <CardContent sx={{ p: 3 }}>
-                                <Typography variant="h6" sx={{ fontWeight: 700, mb: 2 }}>🏷️ Tags</Typography>
-                                <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
-                                    {product.tags.map((tag, index) => (
-                                        <Chip key={index} label={tag} sx={{ fontWeight: 600, background: '#F0F0F0', '&:hover': { background: '#FF90E8' } }} />
-                                    ))}
-                                </Box>
+            <Box sx={{ mt: 10 }}>
+                <Typography variant="h3" sx={{ mb: 4 }}>Product Specifications ✨</Typography>
+                <Grid container spacing={6}>
+                    <Grid item xs={12} md={7}>
+                        <Card sx={{ p: 2 }}>
+                            <CardContent>
+                                <SpecRow label="Full Product SKU" value={product.sku} index={0} />
+                                <SpecRow label="Brand Name" value={product.brand} index={1} />
+                                <SpecRow label="Product Categories" value={product.category} index={2} />
+                                <SpecRow label="Item Weight" value={product.weight ? `${product.weight}g` : null} index={3} />
+                                <SpecRow label="Warranty Status" value={product.warrantyInformation} index={4} />
+                                <SpecRow label="Return Policy" value={product.returnPolicy} index={5} />
                             </CardContent>
                         </Card>
                     </Grid>
-                )}
-            </Grid>
+                    <Grid item xs={12} md={5}>
+                        <Box sx={{ p: 4, borderRadius: 6, bgcolor: '#FFFFFF', border: '1px solid rgba(0,0,0,0.03)', boxShadow: '0 10px 40px rgba(0,0,0,0.02)' }}>
+                            <Typography variant="h4" sx={{ mb: 2 }}>Reviews & Metadata</Typography>
+                            <Stack spacing={3}>
+                                <Box>
+                                    <Typography variant="caption" color="text.disabled" fontWeight={800}>AVERAGE RATING</Typography>
+                                    <Stack direction="row" alignItems="center" spacing={1.5} sx={{ mt: 0.5 }}>
+                                        <Typography variant="h2" sx={{ color: '#FFD93D' }}>{product.rating}</Typography>
+                                        <Rating value={product.rating} precision={0.1} readOnly />
+                                    </Stack>
+                                </Box>
+                                <Divider />
+                                <Box>
+                                    <Typography variant="caption" color="text.disabled" fontWeight={800}>PRODUCT TAGS</Typography>
+                                    <Stack direction="row" spacing={1} flexWrap="wrap" sx={{ mt: 1.5 }}>
+                                        {product.tags?.map((tag, i) => (
+                                            <Chip key={i} label={tag} size="small" variant="outlined" sx={{ fontWeight: 700 }} />
+                                        ))}
+                                    </Stack>
+                                </Box>
+                            </Stack>
+                        </Box>
+                    </Grid>
+                </Grid>
+            </Box>
         </Box>
     );
 }
