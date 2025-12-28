@@ -301,18 +301,23 @@ export default function DashboardLayout({ children }) {
                     flexGrow: 1,
                     minHeight: '100vh',
                     width: { md: `calc(100% - ${drawerWidth}px)` },
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
+                    bgcolor: 'background.default',
+                    p: 0, // Reset padding
                 }}
             >
-                <Toolbar sx={{ minHeight: { xs: 70, md: 80 }, width: '100%' }} />
+                <Toolbar sx={{ minHeight: { xs: 70, md: 80 } }} />
+
+                {/* Content Container */}
                 <Box
                     sx={{
-                        width: '94%', // Fluid width - fills almost everything!
-                        maxWidth: '2000px', // Cap it only on ultra-wide screens
-                        px: { xs: 0, md: 2 },
+                        width: '100%',
+                        maxWidth: '1800px', // Large max-width
+                        mx: 'auto', // Centering magic
+                        px: { xs: 2.5, sm: 4, md: 6 }, // Consistent padding
                         py: { xs: 3, md: 5 },
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: 3,
                     }}
                     className="animate-slide-up"
                 >
