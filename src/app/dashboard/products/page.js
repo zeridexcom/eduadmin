@@ -191,7 +191,7 @@ export default function ProductsPage() {
     const totalPages = Math.ceil(total / limit);
 
     return (
-        <Box className="animate-fade-in">
+        <Box className="animate-fade-in" sx={{ width: '100%', flexGrow: 1 }}>
             {/* Header */}
             <Box sx={{ mb: 4, display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 2 }}>
                 <Box>

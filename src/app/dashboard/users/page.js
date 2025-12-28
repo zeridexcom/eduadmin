@@ -176,7 +176,7 @@ export default function UsersPage() {
     const currentPage = Math.floor(skip / limit);
 
     return (
-        <Box className="animate-fade-in">
+        <Box className="animate-fade-in" sx={{ width: '100%', flexGrow: 1 }}>
             {/* Header */}
             <Box sx={{ mb: 4, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <Box>
