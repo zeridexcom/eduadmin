@@ -355,9 +355,9 @@ export default function DashboardLayout({ children }) {
                 component="main"
                 sx={{
                     flexGrow: 1,
-                    width: { xs: '100%', md: `calc(100% - ${drawerWidth}px)` },
-                    minHeight: '100vh',
                     p: 0,
+                    minWidth: 0, // Critical for Flexbox text truncation/grid
+                    width: 'auto', // Let Flexbox handle it
                     overflowX: 'hidden',
                 }}
             >
