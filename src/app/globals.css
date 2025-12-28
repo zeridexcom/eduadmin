@@ -11,8 +11,8 @@
 
 html {
   scroll-behavior: smooth;
-  font-size: 110%;
-  /* Keeping the 110% preference */
+  font-size: 115%;
+  /* User requested 110%+ zoom feel */
 }
 
 body {
