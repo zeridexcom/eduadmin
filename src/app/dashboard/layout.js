@@ -268,17 +268,21 @@ export default function DashboardLayout({ children }) {
                             <Search size={16} color="#A1A1AA" />
                             <InputBase
                                 placeholder="Search anything..."
+                                onKeyDown={(e) => e.key === 'Enter' && alert(`Searching for: ${e.target.value}`)}
                                 sx={{ ml: 1.5, fontSize: '0.875rem', width: '100%' }}
                             />
                         </Box>
 
-                        <IconButton sx={{
-                            color: 'text.secondary',
-                            border: '1px solid',
-                            borderColor: 'divider',
-                            borderRadius: '8px',
-                            '&:hover': { bgcolor: 'background.paper', color: 'primary.main' }
-                        }}>
+                        <IconButton
+                            onClick={() => alert('No new notifications')}
+                            sx={{
+                                color: 'text.secondary',
+                                border: '1px solid',
+                                borderColor: 'divider',
+                                borderRadius: '8px',
+                                '&:hover': { bgcolor: 'background.paper', color: 'primary.main' }
+                            }}
+                        >
                             <Bell size={20} />
                         </IconButton>
                     </Stack>

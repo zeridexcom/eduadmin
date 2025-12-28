@@ -87,7 +87,7 @@ const StatCard = ({ title, value, icon: Icon, color, trend, trendLabel, onClick,
 );
 
 // Modern Activity Item
-const ActivityItem = ({ icon: Icon, title, time, user, index }) => (
+const ActivityItem = ({ icon: Icon, title, time, user, index, onClick }) => (
     <Box
         className={`stagger-${index + 1} animate-fade-in`}
         sx={{
@@ -111,7 +111,7 @@ const ActivityItem = ({ icon: Icon, title, time, user, index }) => (
                 {time} • {user}
             </Typography>
         </Box>
-        <Button size="small" variant="text" sx={{ color: 'primary.main', minWidth: 'auto' }}>
+        <Button size="small" variant="text" onClick={onClick} sx={{ color: 'primary.main', minWidth: 'auto' }}>
             View
         </Button>
     </Box>
@@ -239,7 +239,14 @@ export default function DashboardPage() {
                         <CardContent sx={{ p: 3 }}>
                             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 4 }}>
                                 <Typography variant="h6" fontWeight={700}>Revenue Overview</Typography>
-                                <Button size="small" endIcon={<ArrowDownIcon size={14} />} sx={{ color: 'text.secondary' }}>Last 30 Days</Button>
+                                <Button
+                                    size="small"
+                                    endIcon={<ChevronDown size={14} />}
+                                    onClick={handleOpenMenu}
+                                    sx={{ color: 'text.secondary' }}
+                                >
+                                    {timeRange}
+                                </Button>
                             </Box>
 
                             {/* Simple CSS Chart Placeholder */}
@@ -257,7 +264,7 @@ export default function DashboardPage() {
                                         key={i}
                                         sx={{
                                             width: '100%',
-                                            height: `${h}%`,
+                                            height: `${h * (timeRange === 'Today' ? 0.3 : timeRange === 'Last 7 Days' ? 0.6 : 1)}%`,
                                             bgcolor: i === 11 ? 'primary.main' : 'rgba(0,0,0,0.05)',
                                             borderRadius: '4px 4px 0 0',
                                             transition: 'height 1s ease',
@@ -282,10 +289,15 @@ export default function DashboardPage() {
                             <Typography variant="h6" fontWeight={700} sx={{ mb: 3 }}>Recent Activity</Typography>
                             <Stack spacing={0}>
                                 {activities.map((item, i) => (
-                                    <ActivityItem key={i} {...item} index={i} />
+                                    <ActivityItem key={i} {...item} index={i} onClick={() => alert(`View details for: ${item.title}`)} />
                                 ))}
                             </Stack>
-                            <Button fullWidth variant="outlined" sx={{ mt: 3, borderColor: 'divider', color: 'text.primary' }}>
+                            <Button
+                                fullWidth
+                                variant="outlined"
+                                onClick={() => alert('Full activity history coming in v2.1!')}
+                                sx={{ mt: 3, borderColor: 'divider', color: 'text.primary' }}
+                            >
                                 View All History
                             </Button>
                         </CardContent>
