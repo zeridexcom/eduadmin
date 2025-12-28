@@ -11,100 +11,106 @@ import {
     CardContent,
     Typography,
     Button,
-    LinearProgress,
     Stack,
     IconButton,
+    Chip,
+    Avatar,
+    Divider
 } from '@mui/material';
 import {
     Users,
     Package,
     TrendingUp,
     ShoppingCart,
-    ArrowRight,
     MoreHorizontal,
-    Sparkles,
-    Mail,
-    PartyPopper,
-    Palette,
-    Gem,
+    ArrowUpRight,
+    ArrowRight,
+    Search,
+    Filter
 } from 'lucide-react';
 
-const StatCard = ({ title, value, icon: Icon, color, onClick, index }) => (
+// Modern Stat Card
+const StatCard = ({ title, value, icon: Icon, color, trend, trendLabel, onClick, index }) => (
     <Card
-        className={`animate-slide-up stagger-${index + 1}`}
+        className={`modern-card stagger-${index + 1} animate-fade-in`}
         onClick={onClick}
-        sx={{ cursor: onClick ? 'pointer' : 'default' }}
+        sx={{
+            cursor: onClick ? 'pointer' : 'default',
+            height: '100%',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'space-between'
+        }}
     >
-        <CardContent sx={{ p: 2.5 }}>
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 2 }}>
+        <CardContent sx={{ p: 3 }}>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 3 }}>
                 <Box sx={{
-                    width: 40,
-                    height: 40,
-                    bgcolor: color,
-                    border: '2px solid #000',
-                    boxShadow: '2px 2px 0 #000',
+                    p: 1.5,
+                    borderRadius: '12px',
+                    bgcolor: `${color}10`, // 10% opacity
+                    color: color,
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
                 }}>
-                    <Icon size={20} />
+                    <Icon size={22} />
                 </Box>
-                <IconButton size="small" sx={{ bgcolor: 'transparent', border: 'none', p: 0.5, '&:hover': { bgcolor: 'rgba(0,0,0,0.05)' } }}>
-                    <MoreHorizontal size={16} />
-                </IconButton>
+                {trend && (
+                    <Chip
+                        label={trend}
+                        size="small"
+                        icon={<ArrowUpRight size={14} />}
+                        sx={{
+                            bgcolor: '#ECFDF5',
+                            color: '#059669',
+                            fontWeight: 600,
+                            fontSize: '0.75rem',
+                            height: 24,
+                            '& .lucide': { color: '#059669' }
+                        }}
+                    />
+                )}
             </Box>
-            <Typography variant="h2" sx={{ mb: 0.5, fontSize: '1.8rem' }}>
-                {value}
-            </Typography>
-            <Typography variant="body2" sx={{ fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', fontSize: '0.7rem' }}>
-                {title}
-            </Typography>
-            <Box sx={{ mt: 1.5, display: 'flex', alignItems: 'center', gap: 1 }}>
-                <Box sx={{ px: 1, py: 0.25, bgcolor: '#00D4AA', border: '1.5px solid #000', fontSize: '0.6rem', fontWeight: 800 }}>+12.5%</Box>
-                <Typography variant="caption" sx={{ fontWeight: 600, fontSize: '0.65rem' }}>VS LAST MONTH</Typography>
+            <Box>
+                <Typography variant="h4" sx={{ fontWeight: 700, fontSize: '2rem', mb: 0.5, letterSpacing: '-0.02em' }}>
+                    {value}
+                </Typography>
+                <Typography variant="body2" color="text.secondary" sx={{ fontWeight: 500 }}>
+                    {title}
+                </Typography>
             </Box>
         </CardContent>
     </Card>
 );
 
-const ActivityItem = ({ icon: Icon, title, time, index }) => (
+// Modern Activity Item
+const ActivityItem = ({ icon: Icon, title, time, user, index }) => (
     <Box
-        className={`animate-slide-left stagger-${index + 1}`}
+        className={`stagger-${index + 1} animate-fade-in`}
         sx={{
             display: 'flex',
             alignItems: 'center',
-            gap: 1.5,
-            p: 1.5,
-            border: '2px solid #000',
-            bgcolor: '#FFFFFF',
-            boxShadow: '3px 3px 0 #000',
-            cursor: 'pointer',
-            transition: 'all 0.15s ease',
-            '&:hover': {
-                transform: 'translate(-2px, -2px)',
-                boxShadow: '5px 5px 0 #000',
-                bgcolor: '#FFC900',
-            },
+            gap: 2,
+            py: 2,
+            borderBottom: '1px solid',
+            borderColor: 'divider',
+            '&:last-child': { borderBottom: 'none' }
         }}
     >
-        <Box sx={{
-            width: 36,
-            height: 36,
-            bgcolor: '#FFC900',
-            border: '2px solid #000',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-        }}>
-            <Icon size={16} />
-        </Box>
+        <Avatar sx={{ width: 40, height: 40, bgcolor: 'background.paper', border: '1px solid', borderColor: 'divider' }}>
+            <Icon size={18} color="#52525B" />
+        </Avatar>
         <Box sx={{ flex: 1 }}>
-            <Typography variant="body2" sx={{ fontWeight: 800, fontSize: '0.8rem' }}>{title}</Typography>
-            <Typography variant="caption" sx={{ fontWeight: 600, fontSize: '0.65rem' }}>{time}</Typography>
+            <Typography variant="body2" sx={{ fontWeight: 600, color: 'text.primary' }}>
+                {title}
+            </Typography>
+            <Typography variant="caption" sx={{ color: 'text.secondary' }}>
+                {time} • {user}
+            </Typography>
         </Box>
-        <IconButton size="small" sx={{ border: 'none', bgcolor: 'transparent', p: 0.5 }}>
-            <ArrowRight size={14} />
-        </IconButton>
+        <Button size="small" variant="text" sx={{ color: 'primary.main', minWidth: 'auto' }}>
+            View
+        </Button>
     </Box>
 );
 
@@ -114,58 +120,82 @@ export default function DashboardPage() {
     const { user } = useAuthStore();
 
     const currentUser = session?.user || user;
-    const firstName = currentUser?.name?.split(' ')[0] || 'ADMIN';
+    const firstName = currentUser?.name?.split(' ')[0] || 'Admin';
 
     const stats = useMemo(() => [
         {
             title: 'Total Users',
             value: '2,847',
             icon: Users,
-            color: '#FFC900',
+            color: '#2563EB', // Blue
+            trend: '+12.5%',
             onClick: () => router.push('/dashboard/users'),
         },
         {
-            title: 'Products',
+            title: 'Total Revenue',
+            value: '$48,294',
+            icon: TrendingUp,
+            color: '#10B981', // Emerald
+            trend: '+8.2%',
+        },
+        {
+            title: 'Active Products',
             value: '1,234',
             icon: Package,
-            color: '#00D4AA',
+            color: '#F59E0B', // Amber
+            trend: '+2.4%',
             onClick: () => router.push('/dashboard/products'),
         },
         {
-            title: 'Revenue',
-            value: '$48K',
-            icon: TrendingUp,
-            color: '#FF6B6B',
-        },
-        {
-            title: 'Orders',
+            title: 'New Orders',
             value: '892',
             icon: ShoppingCart,
-            color: '#A855F7',
+            color: '#7C3AED', // Violet
+            trend: '+18%',
         },
     ], [router]);
 
     const activities = useMemo(() => [
-        { icon: Palette, title: 'NEW COURSE PUBLISHED', time: '12 MINS AGO' },
-        { icon: Gem, title: 'PREMIUM SUBSCRIPTION SOLD', time: '45 MINS AGO' },
-        { icon: Mail, title: 'SUPPORT TICKET FROM MIKE', time: '2 HOURS AGO' },
-        { icon: PartyPopper, title: 'MILESTONE: 2K USERS!', time: '5 HOURS AGO' },
+        { icon: Package, title: 'New course "Advanced React" published', time: '12 mins ago', user: 'Emily Smith' },
+        { icon: Users, title: 'New user registration: Michael Chen', time: '45 mins ago', user: 'System' },
+        { icon: ShoppingCart, title: 'Subscription upgrade #4920', time: '2 hours ago', user: 'Sales Bot' },
+        { icon: Users, title: 'User milestone reached: 2,000 active', time: '5 hours ago', user: 'System' },
     ], []);
 
     return (
         <Box>
-            {/* Welcome Header */}
-            <Box sx={{ mb: 4 }}>
-                <Typography variant="h1" sx={{ mb: 1, fontSize: '1.4rem' }}>
-                    YO {firstName}! 👋
-                </Typography>
-                <Typography variant="body1" sx={{ fontWeight: 600, fontSize: '0.85rem' }}>
-                    HERE&apos;S YOUR DASHBOARD. LOOKING GOOD TODAY!
-                </Typography>
+            {/* Header Section */}
+            <Box sx={{ mb: 5, display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
+                <Box>
+                    <Typography variant="h4" sx={{ fontWeight: 700, letterSpacing: '-0.02em', mb: 1 }}>
+                        Welcome back, {firstName}
+                    </Typography>
+                    <Typography variant="body1" color="text.secondary">
+                        Here's what's happening with your projects today.
+                    </Typography>
+                </Box>
+                <Stack direction="row" spacing={2}>
+                    <Button
+                        variant="outlined"
+                        startIcon={<Filter size={16} />}
+                        sx={{ bgcolor: 'background.paper', borderColor: 'divider', color: 'text.primary' }}
+                    >
+                        Filter
+                    </Button>
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        disableElevation
+                        startIcon={<ArrowRight size={16} />}
+                        sx={{ borderRadius: '8px', fontWeight: 600 }}
+                    >
+                        View Reports
+                    </Button>
+                </Stack>
             </Box>
 
             {/* Stats Grid */}
-            <Grid container spacing={4} sx={{ mb: 6 }}>
+            <Grid container spacing={3} sx={{ mb: 4 }}>
                 {stats.map((stat, index) => (
                     <Grid item xs={12} sm={6} lg={3} key={index}>
                         <StatCard {...stat} index={index} />
@@ -173,59 +203,63 @@ export default function DashboardPage() {
                 ))}
             </Grid>
 
-            <Grid container spacing={4}>
-                {/* Activity Feed */}
-                <Grid item xs={12} lg={7}>
-                    <Box sx={{ mb: 3, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                        <Typography variant="h3" sx={{ fontSize: '1.4rem' }}>RECENT ACTIVITY</Typography>
-                        <Button variant="outlined" size="medium" sx={{ bgcolor: '#FFC900', py: 1 }}>VIEW ALL</Button>
-                    </Box>
-                    <Stack spacing={2.5}>
-                        {activities.map((item, i) => (
-                            <ActivityItem key={i} {...item} index={i} />
-                        ))}
-                    </Stack>
+            {/* Content Grid */}
+            <Grid container spacing={3}>
+                {/* Chart Section (Placeholder for now) */}
+                <Grid item xs={12} lg={8}>
+                    <Card sx={{ height: '100%', minHeight: 400 }}>
+                        <CardContent sx={{ p: 3 }}>
+                            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 4 }}>
+                                <Typography variant="h6" fontWeight={700}>Revenue Overview</Typography>
+                                <Button size="small" endIcon={<ArrowDownIcon size={14} />} sx={{ color: 'text.secondary' }}>Last 30 Days</Button>
+                            </Box>
+
+                            {/* Simple CSS Chart Placeholder */}
+                            <Box sx={{
+                                height: 300,
+                                display: 'flex',
+                                alignItems: 'flex-end',
+                                gap: 2,
+                                px: 2,
+                                borderBottom: '1px solid',
+                                borderColor: 'divider'
+                            }}>
+                                {[40, 65, 45, 80, 55, 90, 70, 85, 60, 75, 50, 95].map((h, i) => (
+                                    <Box
+                                        key={i}
+                                        sx={{
+                                            width: '100%',
+                                            height: `${h}%`,
+                                            bgcolor: i === 11 ? 'primary.main' : 'rgba(0,0,0,0.05)',
+                                            borderRadius: '4px 4px 0 0',
+                                            transition: 'height 1s ease',
+                                            '&:hover': { bgcolor: 'primary.light' }
+                                        }}
+                                    />
+                                ))}
+                            </Box>
+                            <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 2, px: 2 }}>
+                                {['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'].map(m => (
+                                    <Typography key={m} variant="caption" color="text.secondary">{m}</Typography>
+                                ))}
+                            </Box>
+                        </CardContent>
+                    </Card>
                 </Grid>
 
-                {/* Goals Section */}
-                <Grid item xs={12} lg={5}>
-                    <Card>
-                        <CardContent sx={{ p: 4 }}>
-                            <Typography variant="h3" sx={{ mb: 4, fontSize: '1.4rem' }}>GOAL TRACKING 🎯</Typography>
-                            <Stack spacing={4}>
-                                {[
-                                    { label: 'REVENUE TARGET', value: 72, color: '#00D4AA' },
-                                    { label: 'USER RETENTION', value: 85, color: '#FFC900' },
-                                    { label: 'SUPPORT SPEED', value: 46, color: '#FF6B6B' },
-                                ].map((target, i) => (
-                                    <Box key={i}>
-                                        <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1.5 }}>
-                                            <Typography variant="caption" sx={{ fontSize: '0.85rem' }}>{target.label}</Typography>
-                                            <Typography variant="caption" sx={{ fontWeight: 900, fontSize: '1rem' }}>{target.value}%</Typography>
-                                        </Box>
-                                        <LinearProgress
-                                            variant="determinate"
-                                            value={target.value}
-                                            sx={{
-                                                height: 12, // Bigger progress bar
-                                                '& .MuiLinearProgress-bar': {
-                                                    bgcolor: target.color,
-                                                },
-                                            }}
-                                        />
-                                    </Box>
+                {/* Activity Feed */}
+                <Grid item xs={12} lg={4}>
+                    <Card sx={{ height: '100%' }}>
+                        <CardContent sx={{ p: 3 }}>
+                            <Typography variant="h6" fontWeight={700} sx={{ mb: 3 }}>Recent Activity</Typography>
+                            <Stack spacing={0}>
+                                {activities.map((item, i) => (
+                                    <ActivityItem key={i} {...item} index={i} />
                                 ))}
                             </Stack>
-
-                            <Box sx={{ mt: 5, p: 3, border: '3px dashed #000', bgcolor: '#FFC900' }}>
-                                <Stack direction="row" spacing={1.5} alignItems="center" sx={{ mb: 1 }}>
-                                    <Sparkles size={20} />
-                                    <Typography variant="body2" sx={{ fontWeight: 900, fontSize: '0.95rem' }}>PRO TIP</Typography>
-                                </Stack>
-                                <Typography variant="caption" sx={{ fontWeight: 600, display: 'block', fontSize: '0.85rem' }}>
-                                    HIGHER USER RETENTION = 3X MORE REVENUE!
-                                </Typography>
-                            </Box>
+                            <Button fullWidth variant="outlined" sx={{ mt: 3, borderColor: 'divider', color: 'text.primary' }}>
+                                View All History
+                            </Button>
                         </CardContent>
                     </Card>
                 </Grid>
@@ -233,3 +267,10 @@ export default function DashboardPage() {
         </Box>
     );
 }
+
+// Helper for the chart dropdown
+const ArrowDownIcon = ({ size }) => (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="m6 9 6 6 6-6" />
+    </svg>
+);

@@ -16,14 +16,12 @@ import {
     IconButton,
     CircularProgress,
     Stack,
+    Link,
 } from '@mui/material';
 import {
     Visibility,
     VisibilityOff,
-    PersonOutline,
-    LockOutlined,
     ArrowForward,
-    AutoAwesome,
 } from '@mui/icons-material';
 
 export default function LoginPage() {
@@ -60,7 +58,7 @@ export default function LoginPage() {
         setLocalError('');
 
         if (!formData.username.trim() || !formData.password.trim()) {
-            setLocalError('FILL IN BOTH FIELDS! 🙄');
+            setLocalError('Please fill in both fields.');
             return;
         }
 
@@ -71,7 +69,7 @@ export default function LoginPage() {
         });
 
         if (result?.error) {
-            setLocalError('WRONG CREDENTIALS! TRY AGAIN 💀');
+            setLocalError('Invalid credentials. Please try again.');
         } else if (result?.ok) {
             await login(formData.username, formData.password);
             router.push('/dashboard');
@@ -87,8 +85,8 @@ export default function LoginPage() {
 
     if (status === 'loading') {
         return (
-            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh', bgcolor: '#F8F9FA' }}>
-                <Box className="brutal-loader" />
+            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh', bgcolor: 'background.default' }}>
+                <Box className="modern-loader" />
             </Box>
         );
     }
@@ -101,93 +99,115 @@ export default function LoginPage() {
                 alignItems: 'center',
                 justifyContent: 'center',
                 p: 3,
-                bgcolor: '#F8F9FA',
+                bgcolor: '#FAFAFA',
                 position: 'relative',
+                overflow: 'hidden',
             }}
         >
-            {/* Decorative Pattern */}
-            <Box className="pattern-dots" sx={{ position: 'absolute', inset: 0, opacity: 0.3 }} />
+            {/* Subtle Gradient Background */}
+            <Box sx={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                right: 0,
+                height: '100%',
+                background: 'radial-gradient(circle at 50% 0%, rgba(37, 99, 235, 0.05) 0%, transparent 50%)',
+                zIndex: 0
+            }} />
 
             <Card
-                className="animate-bounce-in"
+                elevation={0}
+                className="animate-fade-in"
                 sx={{
-                    maxWidth: 440,
+                    maxWidth: 400,
                     width: '100%',
                     position: 'relative',
                     zIndex: 1,
+                    border: '1px solid',
+                    borderColor: 'divider',
+                    boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01)',
+                    borderRadius: '16px'
                 }}
             >
                 <CardContent sx={{ p: { xs: 4, md: 5 } }}>
-                    {/* Logo & Header */}
-                    <Box sx={{ textAlign: 'center', mb: 5 }}>
-                        <Box
-                            className="emoji-icon-lg animate-wiggle"
-                            sx={{
-                                mx: 'auto',
-                                mb: 3,
-                                width: 80,
-                                height: 80,
-                                fontSize: '2.5rem',
-                            }}
-                        >
-                            🏫
+                    {/* Header */}
+                    <Box sx={{ textAlign: 'center', mb: 4 }}>
+                        <Box sx={{
+                            width: 48,
+                            height: 48,
+                            borderRadius: '12px',
+                            background: 'linear-gradient(135deg, #18181B 0%, #3F3F46 100%)',
+                            color: 'white',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            fontWeight: 800,
+                            fontSize: '1.5rem',
+                            mx: 'auto',
+                            mb: 2
+                        }}>
+                            E
                         </Box>
-                        <Typography variant="h1" sx={{ mb: 1.5, fontSize: '2rem' }}>
-                            EDUADMIN
+                        <Typography variant="h5" sx={{ fontWeight: 700, mb: 0.5 }}>
+                            Welcome back
                         </Typography>
-                        <Typography variant="body1" sx={{ fontWeight: 700 }}>
-                            THE ADMIN PANEL THAT SLAPS 🔥
+                        <Typography variant="body2" color="text.secondary">
+                            Enter your credentials to access your account
                         </Typography>
                     </Box>
 
                     {/* Error Alert */}
                     {(error || localError) && (
-                        <Alert severity="error" sx={{ mb: 3 }}>
+                        <Alert severity="error" sx={{ mb: 3, borderRadius: '8px' }}>
                             {error || localError}
                         </Alert>
                     )}
 
                     {/* Login Form */}
-                    <Stack component="form" onSubmit={handleSubmit} spacing={3}>
-                        <TextField
-                            fullWidth
-                            name="username"
-                            label="USERNAME"
-                            placeholder="Enter your username"
-                            value={formData.username}
-                            onChange={handleInputChange}
-                            InputProps={{
-                                startAdornment: (
-                                    <InputAdornment position="start">
-                                        <PersonOutline sx={{ color: '#000' }} />
-                                    </InputAdornment>
-                                ),
-                            }}
-                        />
+                    <Stack component="form" onSubmit={handleSubmit} spacing={2.5}>
+                        <Box>
+                            <Typography variant="caption" sx={{ fontWeight: 600, color: 'text.secondary', mb: 0.5, display: 'block' }}>
+                                Username
+                            </Typography>
+                            <TextField
+                                fullWidth
+                                name="username"
+                                placeholder="Enter your username"
+                                value={formData.username}
+                                onChange={handleInputChange}
+                                size="small"
+                                sx={{
+                                    '& .MuiOutlinedInput-root': { bgcolor: 'background.default' }
+                                }}
+                            />
+                        </Box>
 
-                        <TextField
-                            fullWidth
-                            name="password"
-                            label="PASSWORD"
-                            type={showPassword ? 'text' : 'password'}
-                            placeholder="••••••••"
-                            value={formData.password}
-                            onChange={handleInputChange}
-                            InputProps={{
-                                startAdornment: (
-                                    <InputAdornment position="start">
-                                        <LockOutlined sx={{ color: '#000' }} />
-                                    </InputAdornment>
-                                ),
-                                endAdornment: (
-                                    <InputAdornment position="end">
-                                        <IconButton onClick={handleTogglePassword} edge="end" size="small">
-                                            {showPassword ? <VisibilityOff /> : <Visibility />}
-                                        </IconButton>
-                                    </InputAdornment>
-                                ),
-                            }}
-                        />
+                        <Box>
+                            <Typography variant="caption" sx={{ fontWeight: 600, color: 'text.secondary', mb: 0.5, display: 'block' }}>
+                                Password
+                            </Typography>
+                            <TextField
+                                fullWidth
+                                name="password"
+                                type={showPassword ? 'text' : 'password'}
+                                placeholder="••••••••"
+                                value={formData.password}
+                                onChange={handleInputChange}
+                                size="small"
+                                sx={{
+                                    '& .MuiOutlinedInput-root': { bgcolor: 'background.default' }
+                                }}
+                                InputProps={{
+                                    endAdornment: (
+                                        <InputAdornment position="end">
+                                            <IconButton onClick={handleTogglePassword} edge="end" size="small">
+                                                {showPassword ? <VisibilityOff fontSize="small" /> : <Visibility fontSize="small" />}
+                                            </IconButton>
+                                        </InputAdornment>
+                                    ),
+                                }}
+                            />
+                        </Box>
 
                         <Button
                             type="submit"
@@ -195,51 +215,29 @@ export default function LoginPage() {
                             variant="contained"
                             size="large"
                             disabled={isLoading}
-                            endIcon={isLoading ? <CircularProgress size={20} color="inherit" /> : <ArrowForward />}
+                            sx={{ mt: 1, borderRadius: '8px', py: 1.2, fontWeight: 600 }}
                         >
-                            {isLoading ? 'SIGNING IN...' : 'LET ME IN →'}
+                            {isLoading ? <CircularProgress size={24} color="inherit" /> : 'Sign In'}
                         </Button>
 
-                        {/* Divider */}
-                        <Box sx={{ position: 'relative', textAlign: 'center', py: 2 }}>
-                            <Box sx={{ position: 'absolute', top: '50%', left: 0, right: 0, height: 3, bgcolor: '#000' }} />
-                            <Typography
-                                variant="caption"
-                                sx={{
-                                    position: 'relative',
-                                    zIndex: 1,
-                                    px: 2,
-                                    bgcolor: '#fff',
-                                    display: 'inline-block',
-                                }}
-                            >
-                                OR BE LAZY
-                            </Typography>
-                        </Box>
-
-                        {/* Demo Button */}
                         <Button
-                            variant="outlined"
+                            variant="text"
                             fullWidth
                             onClick={fillDemoCredentials}
-                            startIcon={<AutoAwesome />}
-                            sx={{
-                                bgcolor: '#FFC900',
-                                '&:hover': { bgcolor: '#FFD633' },
-                            }}
+                            size="small"
+                            sx={{ color: 'text.secondary', fontSize: '0.8rem' }}
                         >
-                            AUTOFILL DEMO CREDS ⚡
+                            Use Demo Credentials
                         </Button>
                     </Stack>
-
-                    {/* Footer */}
-                    <Box sx={{ mt: 4, pt: 3, borderTop: '3px solid #000', textAlign: 'center' }}>
-                        <Typography variant="caption" sx={{ color: '#666' }}>
-                            BUILT WITH NEXT.JS + MUI + ZUSTAND
-                        </Typography>
-                    </Box>
                 </CardContent>
             </Card>
+
+            <Box sx={{ position: 'absolute', bottom: 24, textAlign: 'center', width: '100%' }}>
+                <Typography variant="caption" color="text.secondary">
+                    © 2024 EduAdmin Inc. • <Link href="#" color="inherit" underline="hover">Privacy</Link> • <Link href="#" color="inherit" underline="hover">Terms</Link>
+                </Typography>
+            </Box>
         </Box>
     );
 }
