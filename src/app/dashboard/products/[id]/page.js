@@ -14,7 +14,6 @@ import {
     Skeleton,
     Alert,
     Rating,
-    Divider,
     IconButton,
     MobileStepper,
 } from '@mui/material';
@@ -27,209 +26,101 @@ import {
     Verified,
     KeyboardArrowLeft,
     KeyboardArrowRight,
-    Category,
-    Inventory,
-    Star,
-    Info,
 } from '@mui/icons-material';
 
-/**
- * Image Carousel Component
- * Displays product images with navigation controls
- */
+// Image Carousel
 const ImageCarousel = ({ images = [], title }) => {
     const [activeStep, setActiveStep] = useState(0);
     const maxSteps = images.length || 1;
 
-    const handleNext = useCallback(() => {
-        setActiveStep((prev) => prev + 1);
-    }, []);
-
-    const handleBack = useCallback(() => {
-        setActiveStep((prev) => prev - 1);
-    }, []);
+    const handleNext = useCallback(() => setActiveStep((prev) => prev + 1), []);
+    const handleBack = useCallback(() => setActiveStep((prev) => prev - 1), []);
 
     if (images.length === 0) {
         return (
-            <Box
-                sx={{
-                    height: 400,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    background: 'rgba(255, 255, 255, 0.05)',
-                    borderRadius: 3,
-                }}
-            >
-                <Typography color="text.secondary">No images available</Typography>
+            <Box sx={{ height: 400, display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#FAFAFA', borderRadius: 3, border: '2px solid #E0E0E0' }}>
+                <Typography color="text.secondary">📷 No images available</Typography>
             </Box>
         );
     }
 
     return (
-        <Box sx={{ position: 'relative' }}>
-            <Box
-                sx={{
-                    height: { xs: 300, md: 400 },
-                    borderRadius: 3,
-                    overflow: 'hidden',
-                    position: 'relative',
-                    background: 'rgba(255, 255, 255, 0.05)',
-                }}
-            >
+        <Box>
+            <Box sx={{ height: { xs: 300, md: 400 }, borderRadius: 4, overflow: 'hidden', position: 'relative', background: '#FAFAFA', border: '3px solid #1A1A2E', boxShadow: '6px 6px 0px #1A1A2E' }}>
                 <Box
                     component="img"
                     src={images[activeStep]}
                     alt={`${title} - Image ${activeStep + 1}`}
-                    sx={{
-                        width: '100%',
-                        height: '100%',
-                        objectFit: 'contain',
-                        transition: 'opacity 0.3s ease',
-                    }}
+                    sx={{ width: '100%', height: '100%', objectFit: 'contain' }}
                 />
             </Box>
 
-            {/* Navigation Controls */}
             {maxSteps > 1 && (
                 <>
-                    <IconButton
-                        onClick={handleBack}
-                        disabled={activeStep === 0}
-                        sx={{
-                            position: 'absolute',
-                            left: 8,
-                            top: '50%',
-                            transform: 'translateY(-50%)',
-                            background: 'rgba(0, 0, 0, 0.5)',
-                            backdropFilter: 'blur(10px)',
-                            '&:hover': {
-                                background: 'rgba(0, 0, 0, 0.7)',
-                            },
-                            '&.Mui-disabled': {
-                                opacity: 0.3,
-                            },
-                        }}
-                    >
-                        <KeyboardArrowLeft />
-                    </IconButton>
-                    <IconButton
-                        onClick={handleNext}
-                        disabled={activeStep === maxSteps - 1}
-                        sx={{
-                            position: 'absolute',
-                            right: 8,
-                            top: '50%',
-                            transform: 'translateY(-50%)',
-                            background: 'rgba(0, 0, 0, 0.5)',
-                            backdropFilter: 'blur(10px)',
-                            '&:hover': {
-                                background: 'rgba(0, 0, 0, 0.7)',
-                            },
-                            '&.Mui-disabled': {
-                                opacity: 0.3,
-                            },
-                        }}
-                    >
-                        <KeyboardArrowRight />
-                    </IconButton>
-                </>
-            )}
-
-            {/* Dots Indicator */}
-            {maxSteps > 1 && (
-                <MobileStepper
-                    steps={maxSteps}
-                    position="static"
-                    activeStep={activeStep}
-                    sx={{
-                        background: 'transparent',
-                        justifyContent: 'center',
-                        mt: 2,
-                        '& .MuiMobileStepper-dot': {
-                            width: 10,
-                            height: 10,
-                            mx: 0.5,
-                            background: 'rgba(255, 255, 255, 0.3)',
-                        },
-                        '& .MuiMobileStepper-dotActive': {
-                            background: '#6366f1',
-                        },
-                    }}
-                    nextButton={null}
-                    backButton={null}
-                />
-            )}
-
-            {/* Thumbnail Strip */}
-            {maxSteps > 1 && (
-                <Box
-                    sx={{
-                        display: 'flex',
-                        gap: 1,
-                        mt: 2,
-                        overflowX: 'auto',
-                        pb: 1,
-                    }}
-                >
-                    {images.map((img, index) => (
-                        <Box
-                            key={index}
-                            onClick={() => setActiveStep(index)}
+                    <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2, mt: 2 }}>
+                        <IconButton
+                            onClick={handleBack}
+                            disabled={activeStep === 0}
                             sx={{
-                                width: 60,
-                                height: 60,
-                                borderRadius: 1.5,
-                                overflow: 'hidden',
-                                cursor: 'pointer',
-                                flexShrink: 0,
-                                border: activeStep === index
-                                    ? '2px solid #6366f1'
-                                    : '2px solid transparent',
-                                opacity: activeStep === index ? 1 : 0.6,
-                                transition: 'all 0.2s ease',
-                                '&:hover': {
-                                    opacity: 1,
-                                },
+                                background: '#FF90E8',
+                                border: '2px solid #1A1A2E',
+                                boxShadow: '2px 2px 0px #1A1A2E',
+                                '&:hover': { transform: 'translate(-1px, -1px)', boxShadow: '3px 3px 0px #1A1A2E' },
+                                '&.Mui-disabled': { opacity: 0.3 },
                             }}
                         >
+                            <KeyboardArrowLeft />
+                        </IconButton>
+                        <Typography sx={{ display: 'flex', alignItems: 'center', fontWeight: 700 }}>
+                            {activeStep + 1} / {maxSteps}
+                        </Typography>
+                        <IconButton
+                            onClick={handleNext}
+                            disabled={activeStep === maxSteps - 1}
+                            sx={{
+                                background: '#90F6D7',
+                                border: '2px solid #1A1A2E',
+                                boxShadow: '2px 2px 0px #1A1A2E',
+                                '&:hover': { transform: 'translate(-1px, -1px)', boxShadow: '3px 3px 0px #1A1A2E' },
+                                '&.Mui-disabled': { opacity: 0.3 },
+                            }}
+                        >
+                            <KeyboardArrowRight />
+                        </IconButton>
+                    </Box>
+
+                    <Box sx={{ display: 'flex', gap: 1, mt: 2, overflowX: 'auto', pb: 1 }}>
+                        {images.map((img, index) => (
                             <Box
-                                component="img"
-                                src={img}
-                                alt={`Thumbnail ${index + 1}`}
+                                key={index}
+                                onClick={() => setActiveStep(index)}
                                 sx={{
-                                    width: '100%',
-                                    height: '100%',
-                                    objectFit: 'cover',
+                                    width: 60,
+                                    height: 60,
+                                    borderRadius: 2,
+                                    overflow: 'hidden',
+                                    cursor: 'pointer',
+                                    flexShrink: 0,
+                                    border: activeStep === index ? '3px solid #FF90E8' : '2px solid #E0E0E0',
+                                    opacity: activeStep === index ? 1 : 0.6,
+                                    transition: 'all 0.2s ease',
+                                    '&:hover': { opacity: 1 },
                                 }}
-                            />
-                        </Box>
-                    ))}
-                </Box>
+                            >
+                                <Box component="img" src={img} alt={`Thumbnail ${index + 1}`} sx={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                            </Box>
+                        ))}
+                    </Box>
+                </>
             )}
         </Box>
     );
 };
 
-// Spec item component
-const SpecItem = ({ label, value }) => (
-    <Box
-        sx={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            py: 1.5,
-            borderBottom: '1px solid rgba(255, 255, 255, 0.05)',
-            '&:last-child': {
-                borderBottom: 'none',
-            },
-        }}
-    >
-        <Typography variant="body2" color="text.secondary">
-            {label}
-        </Typography>
-        <Typography variant="body2" sx={{ fontWeight: 500 }}>
-            {value || 'N/A'}
-        </Typography>
+const SpecItem = ({ emoji, label, value }) => (
+    <Box sx={{ display: 'flex', justifyContent: 'space-between', py: 1.5, borderBottom: '1px dashed #E0E0E0', '&:last-child': { borderBottom: 'none' } }}>
+        <Typography variant="body2" color="text.secondary">{emoji} {label}</Typography>
+        <Typography variant="body2" sx={{ fontWeight: 600 }}>{value || 'N/A'}</Typography>
     </Box>
 );
 
@@ -241,14 +132,10 @@ export default function ProductDetailPage() {
     const { currentProduct, isLoading, error, fetchProductById, clearCurrentProduct } = useProductsStore();
 
     useEffect(() => {
-        if (productId) {
-            fetchProductById(productId);
-        }
-
+        if (productId) fetchProductById(productId);
         return () => clearCurrentProduct();
     }, [productId, fetchProductById, clearCurrentProduct]);
 
-    // Memoized discount calculations
     const originalPrice = useMemo(() => {
         if (!currentProduct || !currentProduct.discountPercentage) return null;
         return (currentProduct.price / (1 - currentProduct.discountPercentage / 100)).toFixed(2);
@@ -257,16 +144,8 @@ export default function ProductDetailPage() {
     if (error) {
         return (
             <Box>
-                <Button
-                    startIcon={<ArrowBack />}
-                    onClick={() => router.push('/dashboard/products')}
-                    sx={{ mb: 3 }}
-                >
-                    Back to Products
-                </Button>
-                <Alert severity="error" sx={{ borderRadius: 2 }}>
-                    {error}
-                </Alert>
+                <Button startIcon={<ArrowBack />} onClick={() => router.push('/dashboard/products')} sx={{ mb: 3 }}>Back to Products</Button>
+                <Alert severity="error" sx={{ borderRadius: 3, border: '2px solid #FF6B6B' }}>{error}</Alert>
             </Box>
         );
     }
@@ -276,16 +155,11 @@ export default function ProductDetailPage() {
             <Box>
                 <Skeleton width={150} height={40} sx={{ mb: 3 }} />
                 <Grid container spacing={4}>
-                    <Grid item xs={12} md={6}>
-                        <Skeleton variant="rounded" height={400} sx={{ borderRadius: 3 }} />
-                    </Grid>
+                    <Grid item xs={12} md={6}><Skeleton variant="rounded" height={400} sx={{ borderRadius: 3 }} /></Grid>
                     <Grid item xs={12} md={6}>
                         <Skeleton width={100} height={32} sx={{ mb: 2 }} />
                         <Skeleton width="80%" height={48} sx={{ mb: 1 }} />
-                        <Skeleton width={150} height={32} sx={{ mb: 2 }} />
-                        <Skeleton width="100%" height={100} sx={{ mb: 3 }} />
-                        <Skeleton width={200} height={56} sx={{ mb: 2 }} />
-                        <Skeleton width="100%" height={48} />
+                        <Skeleton width="100%" height={100} />
                     </Grid>
                 </Grid>
             </Box>
@@ -296,142 +170,62 @@ export default function ProductDetailPage() {
 
     return (
         <Box>
-            {/* Back Button */}
             <Button
                 startIcon={<ArrowBack />}
                 onClick={() => router.push('/dashboard/products')}
-                sx={{
-                    mb: 3,
-                    color: 'text.secondary',
-                    '&:hover': {
-                        background: 'rgba(99, 102, 241, 0.1)',
-                        color: '#6366f1',
-                    },
-                }}
+                variant="outlined"
+                sx={{ mb: 3, border: '2px solid #1A1A2E', color: '#1A1A2E', fontWeight: 700, '&:hover': { border: '2px solid #1A1A2E', background: '#1A1A2E', color: '#fff' } }}
             >
-                Back to Products
+                ← Back to Products
             </Button>
 
             <Grid container spacing={4}>
-                {/* Image Section */}
                 <Grid item xs={12} md={6}>
                     <ImageCarousel images={product.images} title={product.title} />
                 </Grid>
 
-                {/* Product Info Section */}
                 <Grid item xs={12} md={6}>
                     <Box sx={{ display: 'flex', gap: 1, mb: 2, flexWrap: 'wrap' }}>
+                        <Chip label={product.category} sx={{ fontWeight: 700, background: '#FFC900', color: '#1A1A2E', textTransform: 'capitalize' }} />
+                        <Chip label={product.brand} sx={{ fontWeight: 700, background: '#FF90E8', color: '#1A1A2E' }} />
                         <Chip
-                            icon={<Category sx={{ fontSize: 14 }} />}
-                            label={product.category}
-                            size="small"
-                            sx={{
-                                background: 'rgba(99, 102, 241, 0.1)',
-                                color: '#6366f1',
-                                textTransform: 'capitalize',
-                                '& .MuiChip-icon': { color: 'inherit' },
-                            }}
+                            label={product.stock > 0 ? `${product.stock} in stock ✅` : 'Sold out ❌'}
+                            sx={{ fontWeight: 700, background: product.stock > 0 ? '#90F6D7' : '#FF6B6B', color: '#1A1A2E' }}
                         />
-                        <Chip
-                            label={product.brand}
-                            size="small"
-                            sx={{
-                                background: 'rgba(244, 63, 94, 0.1)',
-                                color: '#f43f5e',
-                            }}
-                        />
-                        {product.stock > 0 ? (
-                            <Chip
-                                icon={<Inventory sx={{ fontSize: 14 }} />}
-                                label={`${product.stock} in stock`}
-                                size="small"
-                                sx={{
-                                    background: 'rgba(16, 185, 129, 0.1)',
-                                    color: '#10b981',
-                                    '& .MuiChip-icon': { color: 'inherit' },
-                                }}
-                            />
-                        ) : (
-                            <Chip
-                                label="Out of Stock"
-                                size="small"
-                                sx={{
-                                    background: 'rgba(239, 68, 68, 0.1)',
-                                    color: '#ef4444',
-                                }}
-                            />
-                        )}
                     </Box>
 
-                    <Typography variant="h4" sx={{ fontWeight: 700, mb: 2 }}>
+                    <Typography variant="h3" sx={{ fontWeight: 800, mb: 2, color: '#1A1A2E' }}>
                         {product.title}
                     </Typography>
 
-                    {/* Rating */}
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 3 }}>
-                        <Rating
-                            value={product.rating}
-                            precision={0.1}
-                            readOnly
-                            sx={{
-                                '& .MuiRating-iconFilled': { color: '#f59e0b' },
-                            }}
-                        />
-                        <Typography variant="body2" color="text.secondary">
-                            {product.rating?.toFixed(1)} rating
-                        </Typography>
+                        <Rating value={product.rating} precision={0.1} readOnly sx={{ '& .MuiRating-iconFilled': { color: '#FFC900' } }} />
+                        <Typography sx={{ fontWeight: 600 }}>({product.rating?.toFixed(1)}) ⭐</Typography>
                     </Box>
 
-                    {/* Price */}
                     <Box sx={{ mb: 3 }}>
                         <Box sx={{ display: 'flex', alignItems: 'baseline', gap: 2 }}>
-                            <Typography
-                                variant="h3"
-                                sx={{
-                                    fontWeight: 700,
-                                    background: 'linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%)',
-                                    WebkitBackgroundClip: 'text',
-                                    WebkitTextFillColor: 'transparent',
-                                }}
-                            >
+                            <Typography variant="h2" sx={{ fontWeight: 800, color: '#1A1A2E' }}>
                                 ${product.price}
                             </Typography>
                             {originalPrice && (
-                                <Typography
-                                    variant="h5"
-                                    sx={{
-                                        textDecoration: 'line-through',
-                                        color: 'text.secondary',
-                                    }}
-                                >
+                                <Typography variant="h5" sx={{ textDecoration: 'line-through', color: 'text.secondary' }}>
                                     ${originalPrice}
                                 </Typography>
                             )}
                         </Box>
                         {product.discountPercentage > 0 && (
                             <Chip
-                                label={`${Math.round(product.discountPercentage)}% OFF`}
-                                size="small"
-                                sx={{
-                                    mt: 1,
-                                    fontWeight: 700,
-                                    background: 'linear-gradient(135deg, #f43f5e 0%, #ec4899 100%)',
-                                    color: '#fff',
-                                }}
+                                label={`🔥 ${Math.round(product.discountPercentage)}% OFF`}
+                                sx={{ mt: 1, fontWeight: 700, background: '#FF90E8', color: '#1A1A2E', border: '2px solid #1A1A2E' }}
                             />
                         )}
                     </Box>
 
-                    {/* Description */}
-                    <Typography
-                        variant="body1"
-                        color="text.secondary"
-                        sx={{ mb: 4, lineHeight: 1.8 }}
-                    >
+                    <Typography variant="body1" color="text.secondary" sx={{ mb: 4, lineHeight: 1.8 }}>
                         {product.description}
                     </Typography>
 
-                    {/* Action Buttons */}
                     <Box sx={{ display: 'flex', gap: 2, mb: 4 }}>
                         <Button
                             variant="contained"
@@ -440,119 +234,73 @@ export default function ProductDetailPage() {
                             disabled={product.stock === 0}
                             sx={{
                                 flex: 1,
-                                py: 1.5,
-                                fontSize: '1rem',
+                                py: 1.8,
+                                fontSize: '1.1rem',
+                                fontWeight: 800,
+                                background: 'linear-gradient(135deg, #FF90E8 0%, #FFC900 100%)',
+                                border: '3px solid #1A1A2E',
+                                boxShadow: '4px 4px 0px #1A1A2E',
+                                color: '#1A1A2E',
+                                '&:hover': { transform: 'translate(-2px, -2px)', boxShadow: '6px 6px 0px #1A1A2E' },
                             }}
                         >
-                            Add to Cart
+                            Add to Cart 🛒
                         </Button>
-                        <IconButton
-                            sx={{
-                                border: '1px solid rgba(244, 63, 94, 0.3)',
-                                color: '#f43f5e',
-                                '&:hover': {
-                                    background: 'rgba(244, 63, 94, 0.1)',
-                                },
-                            }}
-                        >
+                        <IconButton sx={{ border: '2px solid #1A1A2E', color: '#FF6B6B', background: '#FFF5F5', '&:hover': { background: '#FFE5E5' } }}>
                             <Favorite />
                         </IconButton>
-                        <IconButton
-                            sx={{
-                                border: '1px solid rgba(99, 102, 241, 0.3)',
-                                color: '#6366f1',
-                                '&:hover': {
-                                    background: 'rgba(99, 102, 241, 0.1)',
-                                },
-                            }}
-                        >
+                        <IconButton sx={{ border: '2px solid #1A1A2E', color: '#6C5CE7', background: '#F5F3FF', '&:hover': { background: '#EDE9FE' } }}>
                             <Share />
                         </IconButton>
                     </Box>
 
-                    {/* Features */}
                     <Box sx={{ display: 'flex', gap: 3, flexWrap: 'wrap' }}>
                         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                            <LocalShipping sx={{ color: '#6366f1' }} />
-                            <Typography variant="body2">Free Shipping</Typography>
+                            <LocalShipping sx={{ color: '#90F6D7' }} />
+                            <Typography variant="body2" sx={{ fontWeight: 600 }}>Free Shipping 🚚</Typography>
                         </Box>
                         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                            <Verified sx={{ color: '#10b981' }} />
-                            <Typography variant="body2">Verified Product</Typography>
+                            <Verified sx={{ color: '#FFC900' }} />
+                            <Typography variant="body2" sx={{ fontWeight: 600 }}>Verified ✓</Typography>
                         </Box>
                     </Box>
                 </Grid>
             </Grid>
 
-            {/* Product Specifications */}
+            {/* Specs */}
             <Grid container spacing={3} sx={{ mt: 4 }}>
                 <Grid item xs={12} md={6}>
-                    <Card>
+                    <Card sx={{ border: '2px solid #1A1A2E', boxShadow: '4px 4px 0px #1A1A2E' }}>
                         <CardContent sx={{ p: 3 }}>
-                            <Typography variant="h6" sx={{ fontWeight: 600, mb: 2 }}>
-                                <Info sx={{ fontSize: 20, mr: 1, verticalAlign: 'middle', color: '#6366f1' }} />
-                                Product Specifications
-                            </Typography>
-                            <SpecItem label="Brand" value={product.brand} />
-                            <SpecItem label="Category" value={product.category} />
-                            <SpecItem label="SKU" value={product.sku} />
-                            <SpecItem label="Weight" value={product.weight ? `${product.weight} g` : null} />
-                            <SpecItem label="Warranty" value={product.warrantyInformation} />
-                            <SpecItem label="Return Policy" value={product.returnPolicy} />
+                            <Typography variant="h6" sx={{ fontWeight: 700, mb: 2 }}>📋 Specifications</Typography>
+                            <SpecItem emoji="🏷️" label="Brand" value={product.brand} />
+                            <SpecItem emoji="📦" label="Category" value={product.category} />
+                            <SpecItem emoji="🔢" label="SKU" value={product.sku} />
+                            <SpecItem emoji="⚖️" label="Weight" value={product.weight ? `${product.weight} g` : null} />
+                            <SpecItem emoji="🛡️" label="Warranty" value={product.warrantyInformation} />
+                            <SpecItem emoji="↩️" label="Return Policy" value={product.returnPolicy} />
                         </CardContent>
                     </Card>
                 </Grid>
-
                 <Grid item xs={12} md={6}>
-                    <Card>
-                        <CardContent sx={{ p: 3 }}>
-                            <Typography variant="h6" sx={{ fontWeight: 600, mb: 2 }}>
-                                <Star sx={{ fontSize: 20, mr: 1, verticalAlign: 'middle', color: '#f59e0b' }} />
-                                Reviews & Ratings
-                            </Typography>
-                            <Box sx={{ textAlign: 'center', py: 3 }}>
-                                <Typography variant="h2" sx={{ fontWeight: 700, mb: 1 }}>
-                                    {product.rating?.toFixed(1)}
-                                </Typography>
-                                <Rating
-                                    value={product.rating}
-                                    precision={0.1}
-                                    readOnly
-                                    size="large"
-                                    sx={{
-                                        '& .MuiRating-iconFilled': { color: '#f59e0b' },
-                                    }}
-                                />
-                                <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
-                                    Based on customer reviews
-                                </Typography>
-                            </Box>
+                    <Card sx={{ border: '2px solid #1A1A2E', boxShadow: '4px 4px 0px #1A1A2E' }}>
+                        <CardContent sx={{ p: 3, textAlign: 'center' }}>
+                            <Typography variant="h6" sx={{ fontWeight: 700, mb: 2 }}>⭐ Customer Rating</Typography>
+                            <Typography variant="h1" sx={{ fontWeight: 800, color: '#FFC900' }}>{product.rating?.toFixed(1)}</Typography>
+                            <Rating value={product.rating} precision={0.1} readOnly size="large" sx={{ '& .MuiRating-iconFilled': { color: '#FFC900' } }} />
+                            <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>Based on customer reviews</Typography>
                         </CardContent>
                     </Card>
                 </Grid>
 
-                {/* Tags */}
                 {product.tags && product.tags.length > 0 && (
                     <Grid item xs={12}>
-                        <Card>
+                        <Card sx={{ border: '2px solid #1A1A2E', boxShadow: '4px 4px 0px #1A1A2E' }}>
                             <CardContent sx={{ p: 3 }}>
-                                <Typography variant="h6" sx={{ fontWeight: 600, mb: 2 }}>
-                                    Tags
-                                </Typography>
+                                <Typography variant="h6" sx={{ fontWeight: 700, mb: 2 }}>🏷️ Tags</Typography>
                                 <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
                                     {product.tags.map((tag, index) => (
-                                        <Chip
-                                            key={index}
-                                            label={tag}
-                                            size="small"
-                                            sx={{
-                                                background: 'rgba(99, 102, 241, 0.1)',
-                                                color: '#6366f1',
-                                                '&:hover': {
-                                                    background: 'rgba(99, 102, 241, 0.2)',
-                                                },
-                                            }}
-                                        />
+                                        <Chip key={index} label={tag} sx={{ fontWeight: 600, background: '#F0F0F0', '&:hover': { background: '#FF90E8' } }} />
                                     ))}
                                 </Box>
                             </CardContent>

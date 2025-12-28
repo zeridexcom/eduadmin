@@ -2,6 +2,7 @@
 
 import { useMemo } from 'react';
 import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 import useAuthStore from '@/store/authStore';
 import {
     Box,
@@ -10,7 +11,7 @@ import {
     CardContent,
     Typography,
     Avatar,
-    Chip,
+    Button,
     LinearProgress,
 } from '@mui/material';
 import {
@@ -18,126 +19,142 @@ import {
     Inventory2,
     TrendingUp,
     ShoppingCart,
-    ArrowUpward,
-    ArrowDownward,
+    East,
 } from '@mui/icons-material';
 
-// Memoized stat card for performance
-const StatCard = ({ title, value, change, trend, icon, color, gradient }) => {
-    const isPositive = trend === 'up';
-
-    return (
-        <Card
-            sx={{
-                height: '100%',
-                position: 'relative',
-                overflow: 'hidden',
-                transition: 'transform 0.3s ease, box-shadow 0.3s ease',
-                '&:hover': {
-                    transform: 'translateY(-4px)',
-                    boxShadow: `0 20px 40px ${color}30`,
-                },
-            }}
-        >
-            <CardContent sx={{ p: 3 }}>
-                <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2 }}>
-                    <Box
-                        sx={{
-                            width: 56,
-                            height: 56,
-                            borderRadius: 3,
-                            background: gradient,
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            boxShadow: `0 8px 24px ${color}40`,
-                        }}
-                    >
-                        {icon}
-                    </Box>
-                    <Chip
-                        size="small"
-                        icon={isPositive ? <ArrowUpward sx={{ fontSize: 14 }} /> : <ArrowDownward sx={{ fontSize: 14 }} />}
-                        label={`${change}%`}
-                        sx={{
-                            height: 26,
-                            fontWeight: 600,
-                            background: isPositive ? 'rgba(16, 185, 129, 0.1)' : 'rgba(239, 68, 68, 0.1)',
-                            color: isPositive ? '#10b981' : '#ef4444',
-                            border: `1px solid ${isPositive ? 'rgba(16, 185, 129, 0.3)' : 'rgba(239, 68, 68, 0.3)'}`,
-                            '& .MuiChip-icon': {
-                                color: 'inherit',
-                            },
-                        }}
-                    />
+// Fun stat card with Gumroad style
+const StatCard = ({ title, value, icon, emoji, color, gradient, onClick }) => (
+    <Card
+        onClick={onClick}
+        sx={{
+            height: '100%',
+            cursor: onClick ? 'pointer' : 'default',
+            border: '2px solid #1A1A2E',
+            boxShadow: '4px 4px 0px #1A1A2E',
+            transition: 'all 0.2s ease',
+            '&:hover': {
+                transform: 'translate(-2px, -2px)',
+                boxShadow: '8px 8px 0px #1A1A2E',
+            },
+            '&:active': onClick ? {
+                transform: 'translate(2px, 2px)',
+                boxShadow: '2px 2px 0px #1A1A2E',
+            } : {},
+        }}
+    >
+        <CardContent sx={{ p: 3 }}>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 2 }}>
+                <Box
+                    sx={{
+                        width: 56,
+                        height: 56,
+                        borderRadius: 3,
+                        background: gradient,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        border: '2px solid #1A1A2E',
+                        fontSize: '1.5rem',
+                    }}
+                >
+                    {emoji}
                 </Box>
-                <Typography variant="h4" sx={{ fontWeight: 700, mb: 0.5 }}>
-                    {value}
+                <Typography variant="caption" sx={{
+                    background: 'rgba(144, 246, 215, 0.3)',
+                    px: 1.5,
+                    py: 0.5,
+                    borderRadius: 2,
+                    fontWeight: 700,
+                }}>
+                    +12% ↑
                 </Typography>
-                <Typography variant="body2" color="text.secondary">
-                    {title}
-                </Typography>
-            </CardContent>
-            {/* Decorative gradient */}
+            </Box>
+            <Typography variant="h3" sx={{ fontWeight: 800, mb: 0.5, color: '#1A1A2E' }}>
+                {value}
+            </Typography>
+            <Typography variant="body2" color="text.secondary" sx={{ fontWeight: 600 }}>
+                {title}
+            </Typography>
+        </CardContent>
+    </Card>
+);
+
+// Quick action button
+const QuickAction = ({ emoji, title, subtitle, onClick, gradient }) => (
+    <Card
+        onClick={onClick}
+        sx={{
+            cursor: 'pointer',
+            border: '2px solid #1A1A2E',
+            boxShadow: '4px 4px 0px #1A1A2E',
+            transition: 'all 0.2s ease',
+            '&:hover': {
+                transform: 'translate(-2px, -2px)',
+                boxShadow: '8px 8px 0px #1A1A2E',
+            },
+        }}
+    >
+        <CardContent sx={{ p: 3, display: 'flex', alignItems: 'center', gap: 2 }}>
             <Box
                 sx={{
-                    position: 'absolute',
-                    bottom: 0,
-                    left: 0,
-                    right: 0,
-                    height: 3,
+                    width: 50,
+                    height: 50,
+                    borderRadius: 3,
                     background: gradient,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontSize: '1.5rem',
+                    border: '2px solid #1A1A2E',
                 }}
-            />
-        </Card>
-    );
-};
+            >
+                {emoji}
+            </Box>
+            <Box sx={{ flex: 1 }}>
+                <Typography variant="body1" sx={{ fontWeight: 700 }}>{title}</Typography>
+                <Typography variant="caption" color="text.secondary">{subtitle}</Typography>
+            </Box>
+            <East sx={{ color: 'text.secondary' }} />
+        </CardContent>
+    </Card>
+);
 
 export default function DashboardPage() {
+    const router = useRouter();
     const { data: session } = useSession();
     const { user } = useAuthStore();
 
     const currentUser = session?.user || user;
+    const firstName = currentUser?.name?.split(' ')[0] || 'Friend';
 
-    // Memoized stats to prevent unnecessary recalculations
     const stats = useMemo(() => [
         {
             title: 'Total Users',
             value: '2,847',
-            change: '12.5',
-            trend: 'up',
-            icon: <People sx={{ fontSize: 28, color: '#fff' }} />,
-            color: '#6366f1',
-            gradient: 'linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%)',
+            emoji: '👥',
+            gradient: 'linear-gradient(135deg, #FF90E8 0%, #FFB8F0 100%)',
+            onClick: () => router.push('/dashboard/users'),
         },
         {
-            title: 'Total Products',
+            title: 'Products',
             value: '1,234',
-            change: '8.2',
-            trend: 'up',
-            icon: <Inventory2 sx={{ fontSize: 28, color: '#fff' }} />,
-            color: '#f43f5e',
-            gradient: 'linear-gradient(135deg, #f43f5e 0%, #ec4899 100%)',
+            emoji: '📦',
+            gradient: 'linear-gradient(135deg, #90F6D7 0%, #B8FFE8 100%)',
+            onClick: () => router.push('/dashboard/products'),
         },
         {
             title: 'Revenue',
             value: '$48.2K',
-            change: '23.1',
-            trend: 'up',
-            icon: <TrendingUp sx={{ fontSize: 28, color: '#fff' }} />,
-            color: '#10b981',
-            gradient: 'linear-gradient(135deg, #10b981 0%, #14b8a6 100%)',
+            emoji: '💰',
+            gradient: 'linear-gradient(135deg, #FFC900 0%, #FFD740 100%)',
         },
         {
             title: 'Orders',
             value: '892',
-            change: '4.3',
-            trend: 'down',
-            icon: <ShoppingCart sx={{ fontSize: 28, color: '#fff' }} />,
-            color: '#f59e0b',
-            gradient: 'linear-gradient(135deg, #f59e0b 0%, #eab308 100%)',
+            emoji: '🛒',
+            gradient: 'linear-gradient(135deg, #A29BFE 0%, #C4BAFF 100%)',
         },
-    ], []);
+    ], [router]);
 
     return (
         <Box>
@@ -145,10 +162,10 @@ export default function DashboardPage() {
             <Card
                 sx={{
                     mb: 4,
-                    background: 'linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%)',
-                    border: '1px solid rgba(99, 102, 241, 0.2)',
-                    position: 'relative',
-                    overflow: 'hidden',
+                    background: 'linear-gradient(135deg, #FF90E8 0%, #FFC900 50%, #90F6D7 100%)',
+                    border: '3px solid #1A1A2E',
+                    boxShadow: '6px 6px 0px #1A1A2E',
+                    overflow: 'visible',
                 }}
             >
                 <CardContent sx={{ py: 4, px: { xs: 3, md: 4 } }}>
@@ -157,38 +174,35 @@ export default function DashboardPage() {
                             src={currentUser?.image}
                             alt={currentUser?.name}
                             sx={{
-                                width: 80,
-                                height: 80,
-                                border: '3px solid rgba(99, 102, 241, 0.5)',
-                                boxShadow: '0 8px 32px rgba(99, 102, 241, 0.3)',
+                                width: 90,
+                                height: 90,
+                                border: '4px solid #1A1A2E',
+                                boxShadow: '4px 4px 0px #1A1A2E',
                             }}
                         />
                         <Box>
-                            <Typography variant="h4" sx={{ fontWeight: 700, mb: 0.5 }}>
-                                Welcome back, {currentUser?.name?.split(' ')[0] || 'Admin'}! 👋
+                            <Typography
+                                variant="h3"
+                                sx={{
+                                    fontWeight: 800,
+                                    color: '#1A1A2E',
+                                    mb: 0.5,
+                                }}
+                            >
+                                Hey {firstName}! 👋
                             </Typography>
-                            <Typography color="text.secondary">
-                                Here&apos;s what&apos;s happening with your store today.
+                            <Typography sx={{ color: '#1A1A2E', fontWeight: 500, opacity: 0.8 }}>
+                                Welcome back! Here&apos;s what&apos;s happening today ✨
                             </Typography>
                         </Box>
                     </Box>
                 </CardContent>
-                {/* Background decoration */}
-                <Box
-                    sx={{
-                        position: 'absolute',
-                        top: -50,
-                        right: -50,
-                        width: 200,
-                        height: 200,
-                        borderRadius: '50%',
-                        background: 'radial-gradient(circle, rgba(99, 102, 241, 0.1) 0%, transparent 70%)',
-                        pointerEvents: 'none',
-                    }}
-                />
             </Card>
 
             {/* Stats Grid */}
+            <Typography variant="h5" sx={{ fontWeight: 800, mb: 3, color: '#1A1A2E' }}>
+                📊 Overview
+            </Typography>
             <Grid container spacing={3} sx={{ mb: 4 }}>
                 {stats.map((stat, index) => (
                     <Grid item xs={12} sm={6} lg={3} key={index}>
@@ -198,19 +212,48 @@ export default function DashboardPage() {
             </Grid>
 
             {/* Quick Actions */}
+            <Typography variant="h5" sx={{ fontWeight: 800, mb: 3, color: '#1A1A2E' }}>
+                ⚡ Quick Actions
+            </Typography>
+            <Grid container spacing={3} sx={{ mb: 4 }}>
+                <Grid item xs={12} md={6}>
+                    <QuickAction
+                        emoji="👥"
+                        title="Browse Users"
+                        subtitle="View and manage all registered users"
+                        onClick={() => router.push('/dashboard/users')}
+                        gradient="linear-gradient(135deg, #FF90E8 0%, #FFB8F0 100%)"
+                    />
+                </Grid>
+                <Grid item xs={12} md={6}>
+                    <QuickAction
+                        emoji="📦"
+                        title="Explore Products"
+                        subtitle="Check out the product catalog"
+                        onClick={() => router.push('/dashboard/products')}
+                        gradient="linear-gradient(135deg, #90F6D7 0%, #B8FFE8 100%)"
+                    />
+                </Grid>
+            </Grid>
+
+            {/* Recent Activity & Performance */}
             <Grid container spacing={3}>
-                <Grid item xs={12} md={8}>
-                    <Card sx={{ height: '100%' }}>
+                <Grid item xs={12} md={7}>
+                    <Card sx={{
+                        height: '100%',
+                        border: '2px solid #1A1A2E',
+                        boxShadow: '4px 4px 0px #1A1A2E',
+                    }}>
                         <CardContent sx={{ p: 3 }}>
-                            <Typography variant="h6" sx={{ fontWeight: 600, mb: 3 }}>
-                                Recent Activity
+                            <Typography variant="h6" sx={{ fontWeight: 700, mb: 3 }}>
+                                📝 Recent Activity
                             </Typography>
                             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
                                 {[
-                                    { text: 'New user registration: John Doe', time: '2 minutes ago', color: '#6366f1' },
-                                    { text: 'Product "iPhone 15" updated', time: '15 minutes ago', color: '#f43f5e' },
-                                    { text: 'New order #1234 placed', time: '1 hour ago', color: '#10b981' },
-                                    { text: 'User "jane_smith" logged in', time: '2 hours ago', color: '#f59e0b' },
+                                    { emoji: '🆕', text: 'New user joined: John Doe', time: '2 min ago', color: '#FF90E8' },
+                                    { emoji: '📦', text: 'Product updated: iPhone 15', time: '15 min ago', color: '#90F6D7' },
+                                    { emoji: '🛒', text: 'New order #1234 placed', time: '1 hour ago', color: '#FFC900' },
+                                    { emoji: '👋', text: 'User logged in: jane_smith', time: '2 hours ago', color: '#A29BFE' },
                                 ].map((activity, index) => (
                                     <Box
                                         key={index}
@@ -219,23 +262,23 @@ export default function DashboardPage() {
                                             alignItems: 'center',
                                             gap: 2,
                                             p: 2,
-                                            borderRadius: 2,
-                                            background: 'rgba(255, 255, 255, 0.02)',
-                                            border: '1px solid rgba(255, 255, 255, 0.05)',
+                                            borderRadius: 3,
+                                            background: '#FAFAFA',
+                                            border: '1px solid #F0F0F0',
+                                            transition: 'all 0.2s ease',
+                                            '&:hover': {
+                                                background: `${activity.color}20`,
+                                                transform: 'translateX(4px)',
+                                            },
                                         }}
                                     >
-                                        <Box
-                                            sx={{
-                                                width: 10,
-                                                height: 10,
-                                                borderRadius: '50%',
-                                                background: activity.color,
-                                            }}
-                                        />
+                                        <Box sx={{ fontSize: '1.5rem' }}>{activity.emoji}</Box>
                                         <Box sx={{ flex: 1 }}>
-                                            <Typography variant="body2">{activity.text}</Typography>
+                                            <Typography variant="body2" sx={{ fontWeight: 600 }}>
+                                                {activity.text}
+                                            </Typography>
                                         </Box>
-                                        <Typography variant="caption" color="text.secondary">
+                                        <Typography variant="caption" color="text.secondary" sx={{ fontWeight: 500 }}>
                                             {activity.time}
                                         </Typography>
                                     </Box>
@@ -245,24 +288,28 @@ export default function DashboardPage() {
                     </Card>
                 </Grid>
 
-                <Grid item xs={12} md={4}>
-                    <Card sx={{ height: '100%' }}>
+                <Grid item xs={12} md={5}>
+                    <Card sx={{
+                        height: '100%',
+                        border: '2px solid #1A1A2E',
+                        boxShadow: '4px 4px 0px #1A1A2E',
+                    }}>
                         <CardContent sx={{ p: 3 }}>
-                            <Typography variant="h6" sx={{ fontWeight: 600, mb: 3 }}>
-                                Performance
+                            <Typography variant="h6" sx={{ fontWeight: 700, mb: 3 }}>
+                                📈 Performance
                             </Typography>
                             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
                                 {[
-                                    { label: 'User Growth', value: 78, color: '#6366f1' },
-                                    { label: 'Sales Target', value: 65, color: '#10b981' },
-                                    { label: 'Product Views', value: 92, color: '#f43f5e' },
+                                    { label: 'User Growth', value: 78, emoji: '👥', color: '#FF90E8' },
+                                    { label: 'Sales Target', value: 65, emoji: '💰', color: '#90F6D7' },
+                                    { label: 'Product Views', value: 92, emoji: '👀', color: '#FFC900' },
                                 ].map((metric, index) => (
                                     <Box key={index}>
                                         <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
-                                            <Typography variant="body2" color="text.secondary">
-                                                {metric.label}
-                                            </Typography>
                                             <Typography variant="body2" sx={{ fontWeight: 600 }}>
+                                                {metric.emoji} {metric.label}
+                                            </Typography>
+                                            <Typography variant="body2" sx={{ fontWeight: 700 }}>
                                                 {metric.value}%
                                             </Typography>
                                         </Box>
@@ -270,12 +317,13 @@ export default function DashboardPage() {
                                             variant="determinate"
                                             value={metric.value}
                                             sx={{
-                                                height: 8,
-                                                borderRadius: 4,
-                                                backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                                                height: 12,
+                                                borderRadius: 6,
+                                                backgroundColor: '#F0F0F0',
+                                                border: '1px solid #E0E0E0',
                                                 '& .MuiLinearProgress-bar': {
-                                                    borderRadius: 4,
-                                                    background: `linear-gradient(90deg, ${metric.color} 0%, ${metric.color}80 100%)`,
+                                                    borderRadius: 6,
+                                                    background: metric.color,
                                                 },
                                             }}
                                         />
