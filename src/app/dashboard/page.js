@@ -165,22 +165,22 @@ export default function DashboardPage() {
             </Box>
 
             {/* Stats Grid */}
-            <Grid container spacing={2.5} sx={{ mb: 4 }}>
+            <Grid container spacing={4} sx={{ mb: 6 }}>
                 {stats.map((stat, index) => (
-                    <Grid item xs={6} lg={3} key={index}>
+                    <Grid item xs={12} sm={6} lg={3} key={index}>
                         <StatCard {...stat} index={index} />
                     </Grid>
                 ))}
             </Grid>
 
-            <Grid container spacing={3}>
+            <Grid container spacing={4}>
                 {/* Activity Feed */}
                 <Grid item xs={12} lg={7}>
-                    <Box sx={{ mb: 2, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                        <Typography variant="h3" sx={{ fontSize: '1rem' }}>RECENT ACTIVITY</Typography>
-                        <Button variant="outlined" size="small" sx={{ bgcolor: '#FFC900', fontSize: '0.7rem', py: 0.5 }}>VIEW ALL</Button>
+                    <Box sx={{ mb: 3, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                        <Typography variant="h3" sx={{ fontSize: '1.4rem' }}>RECENT ACTIVITY</Typography>
+                        <Button variant="outlined" size="medium" sx={{ bgcolor: '#FFC900', py: 1 }}>VIEW ALL</Button>
                     </Box>
-                    <Stack spacing={1.5}>
+                    <Stack spacing={2.5}>
                         {activities.map((item, i) => (
                             <ActivityItem key={i} {...item} index={i} />
                         ))}
@@ -190,24 +190,24 @@ export default function DashboardPage() {
                 {/* Goals Section */}
                 <Grid item xs={12} lg={5}>
                     <Card>
-                        <CardContent sx={{ p: 2.5 }}>
-                            <Typography variant="h3" sx={{ mb: 3, fontSize: '1rem' }}>GOAL TRACKING 🎯</Typography>
-                            <Stack spacing={3}>
+                        <CardContent sx={{ p: 4 }}>
+                            <Typography variant="h3" sx={{ mb: 4, fontSize: '1.4rem' }}>GOAL TRACKING 🎯</Typography>
+                            <Stack spacing={4}>
                                 {[
                                     { label: 'REVENUE TARGET', value: 72, color: '#00D4AA' },
                                     { label: 'USER RETENTION', value: 85, color: '#FFC900' },
                                     { label: 'SUPPORT SPEED', value: 46, color: '#FF6B6B' },
                                 ].map((target, i) => (
                                     <Box key={i}>
-                                        <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
-                                            <Typography variant="caption" sx={{ fontSize: '0.65rem' }}>{target.label}</Typography>
-                                            <Typography variant="caption" sx={{ fontWeight: 900, fontSize: '0.7rem' }}>{target.value}%</Typography>
+                                        <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1.5 }}>
+                                            <Typography variant="caption" sx={{ fontSize: '0.85rem' }}>{target.label}</Typography>
+                                            <Typography variant="caption" sx={{ fontWeight: 900, fontSize: '1rem' }}>{target.value}%</Typography>
                                         </Box>
                                         <LinearProgress
                                             variant="determinate"
                                             value={target.value}
                                             sx={{
-                                                height: 8,
+                                                height: 12, // Bigger progress bar
                                                 '& .MuiLinearProgress-bar': {
                                                     bgcolor: target.color,
                                                 },
@@ -217,12 +217,12 @@ export default function DashboardPage() {
                                 ))}
                             </Stack>
 
-                            <Box sx={{ mt: 4, p: 2, border: '2px dashed #000', bgcolor: '#FFC900' }}>
-                                <Stack direction="row" spacing={1} alignItems="center" sx={{ mb: 0.5 }}>
-                                    <Sparkles size={14} />
-                                    <Typography variant="body2" sx={{ fontWeight: 900, fontSize: '0.75rem' }}>PRO TIP</Typography>
+                            <Box sx={{ mt: 5, p: 3, border: '3px dashed #000', bgcolor: '#FFC900' }}>
+                                <Stack direction="row" spacing={1.5} alignItems="center" sx={{ mb: 1 }}>
+                                    <Sparkles size={20} />
+                                    <Typography variant="body2" sx={{ fontWeight: 900, fontSize: '0.95rem' }}>PRO TIP</Typography>
                                 </Stack>
-                                <Typography variant="caption" sx={{ fontWeight: 600, display: 'block', fontSize: '0.7rem' }}>
+                                <Typography variant="caption" sx={{ fontWeight: 600, display: 'block', fontSize: '0.85rem' }}>
                                     HIGHER USER RETENTION = 3X MORE REVENUE!
                                 </Typography>
                             </Box>

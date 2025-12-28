@@ -306,13 +306,13 @@ export default function DashboardLayout({ children }) {
                     alignItems: 'center',
                 }}
             >
-                <Toolbar sx={{ minHeight: { xs: 56, md: 64 }, width: '100%' }} />
+                <Toolbar sx={{ minHeight: { xs: 70, md: 80 }, width: '100%' }} />
                 <Box
                     sx={{
                         width: '100%',
-                        maxWidth: 1000,
-                        px: { xs: 2, sm: 3, md: 4 },
-                        py: { xs: 2, md: 3 },
+                        maxWidth: 1600, // Massive width for big screens
+                        px: { xs: 2.5, sm: 4, md: 6 }, // Bigger horizontal padding
+                        py: { xs: 3, md: 5 }, // Bigger vertical padding
                     }}
                     className="animate-slide-up"
                 >

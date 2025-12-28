@@ -162,36 +162,36 @@ export default function UsersPage() {
     return (
         <Box>
             {/* Header */}
-            <Box sx={{ mb: 3, display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', gap: 2, flexWrap: 'wrap' }}>
+            <Box sx={{ mb: 5, display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', gap: 3, flexWrap: 'wrap' }}>
                 <Box>
-                    <Typography variant="h2" sx={{ mb: 0.5, fontSize: '1.2rem' }}>USER DIRECTORY</Typography>
-                    <Typography variant="body1" sx={{ fontWeight: 600, fontSize: '0.8rem' }}>
+                    <Typography variant="h2" sx={{ mb: 1, fontSize: '1.8rem' }}>USER DIRECTORY</Typography>
+                    <Typography variant="body1" sx={{ fontWeight: 600, fontSize: '1rem' }}>
                         MANAGING <Box component="span" sx={{ color: '#FF6B6B', fontWeight: 900 }}>{total}</Box> MEMBERS
                     </Typography>
                 </Box>
-                <Stack direction="row" spacing={1.5}>
+                <Stack direction="row" spacing={2}>
                     <TextField
-                        size="small"
+                        size="medium"
                         placeholder="SEARCH..."
                         value={localSearch}
                         onChange={(e) => handleSearch(e.target.value)}
-                        sx={{ minWidth: 180, '& .MuiOutlinedInput-root': { py: 0 } }}
+                        sx={{ minWidth: 220, '& .MuiOutlinedInput-root': { py: 0.5, fontSize: '1rem' } }}
                         InputProps={{
                             startAdornment: (
                                 <InputAdornment position="start">
-                                    <Search size={16} />
+                                    <Search size={20} />
                                 </InputAdornment>
                             ),
                         }}
                     />
                     <Tooltip title="FILTER">
-                        <IconButton sx={{ bgcolor: '#A855F7', width: 36, height: 36 }}>
-                            <Filter size={16} />
+                        <IconButton sx={{ bgcolor: '#A855F7', width: 44, height: 44 }}>
+                            <Filter size={20} />
                         </IconButton>
                     </Tooltip>
                     <Tooltip title="REFRESH">
-                        <IconButton onClick={handleRefresh} sx={{ bgcolor: '#00D4AA', width: 36, height: 36 }}>
-                            <RefreshCw size={16} />
+                        <IconButton onClick={handleRefresh} sx={{ bgcolor: '#00D4AA', width: 44, height: 44 }}>
+                            <RefreshCw size={20} />
                         </IconButton>
                     </Tooltip>
                 </Stack>

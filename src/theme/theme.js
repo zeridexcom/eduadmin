@@ -55,54 +55,55 @@ const theme = createTheme({
   typography: {
     fontFamily: '"Inter", "Helvetica Neue", Arial, sans-serif',
     h1: {
-      fontSize: '1.6rem',
+      fontSize: '2.25rem',
       fontWeight: 900,
       letterSpacing: '-0.02em',
       textTransform: 'uppercase',
     },
     h2: {
-      fontSize: '1.3rem',
+      fontSize: '1.75rem',
       fontWeight: 900,
       letterSpacing: '-0.01em',
       textTransform: 'uppercase',
     },
     h3: {
-      fontSize: '1.1rem',
+      fontSize: '1.4rem',
       fontWeight: 800,
       letterSpacing: '-0.01em',
     },
     h4: {
-      fontSize: '0.95rem',
+      fontSize: '1.15rem',
       fontWeight: 800,
     },
     h5: {
-      fontSize: '0.85rem',
+      fontSize: '1rem',
       fontWeight: 700,
     },
     h6: {
-      fontSize: '0.8rem',
+      fontSize: '0.95rem',
       fontWeight: 700,
     },
     body1: {
-      fontSize: '0.85rem',
+      fontSize: '1rem',
+      fontWeight: 500,
+      lineHeight: 1.6,
+    },
+    body2: {
+      fontSize: '0.95rem',
       fontWeight: 500,
       lineHeight: 1.5,
     },
-    body2: {
-      fontSize: '0.8rem',
-      fontWeight: 500,
-      lineHeight: 1.4,
-    },
     caption: {
-      fontSize: '0.75rem',
+      fontSize: '0.8rem',
       fontWeight: 700,
       textTransform: 'uppercase',
-      letterSpacing: '0.1em',
+      letterSpacing: '0.08em',
     },
     button: {
       fontWeight: 800,
       textTransform: 'uppercase',
       letterSpacing: '0.05em',
+      fontSize: '0.95rem',
     },
   },
   shape: {
@@ -148,15 +149,16 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           borderRadius: 0,
-          padding: '8px 16px',
-          fontSize: '0.8rem',
+          padding: '12px 28px', // Bigger padding
+          fontSize: '1rem', // Bigger font
           fontWeight: 800,
-          border: '2px solid #000',
-          boxShadow: '3px 3px 0 #000',
+          border: '3px solid #000', // Thicker border
+          boxShadow: '4px 4px 0 #000', // Bigger shadow
+          textTransform: 'uppercase',
           transition: 'all 0.15s ease',
           '&:hover': {
             transform: 'translate(-2px, -2px)',
-            boxShadow: '6px 6px 0 #000',
+            boxShadow: '8px 8px 0 #000', // Bigger hover shadow
           },
           '&:active': {
             transform: 'translate(2px, 2px)',
@@ -177,19 +179,27 @@ const theme = createTheme({
             backgroundColor: '#FFD633',
           },
         },
+        sizeLarge: {
+          padding: '16px 36px',
+          fontSize: '1.2rem',
+        },
+        sizeSmall: {
+          padding: '8px 20px',
+          fontSize: '0.85rem',
+        }
       },
     },
     MuiCard: {
       styleOverrides: {
         root: {
           borderRadius: 0,
-          border: '2px solid #000',
-          boxShadow: '4px 4px 0 #000',
+          border: '3px solid #000', // Thicker border
+          boxShadow: '6px 6px 0 #000', // Bigger shadow
           backgroundColor: '#FFFFFF',
-          transition: 'all 0.15s ease',
+          transition: 'all 0.2s ease',
           '&:hover': {
-            transform: 'translate(-2px, -2px)',
-            boxShadow: '6px 6px 0 #000',
+            transform: 'translate(-3px, -3px)',
+            boxShadow: '10px 10px 0 #000',
           },
         },
       },

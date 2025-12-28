@@ -159,38 +159,38 @@ export default function ProductsPage() {
     return (
         <Box>
             {/* Header */}
-            <Box sx={{ mb: 3, display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', gap: 2, flexWrap: 'wrap' }}>
+            <Box sx={{ mb: 5, display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', gap: 3, flexWrap: 'wrap' }}>
                 <Box>
-                    <Typography variant="h2" sx={{ mb: 0.5, fontSize: '1.2rem' }}>PRODUCT CATALOG</Typography>
-                    <Typography variant="body1" sx={{ fontWeight: 600, fontSize: '0.8rem' }}>
+                    <Typography variant="h2" sx={{ mb: 1, fontSize: '1.8rem' }}>PRODUCT CATALOG</Typography>
+                    <Typography variant="body1" sx={{ fontWeight: 600, fontSize: '1rem' }}>
                         <Box component="span" sx={{ color: '#00D4AA', fontWeight: 900 }}>{total}</Box> PRODUCTS
                     </Typography>
                 </Box>
-                <Stack direction="row" spacing={1.5}>
+                <Stack direction="row" spacing={2} alignItems="center">
                     <TextField
-                        size="small"
+                        size="medium"
                         placeholder="SEARCH..."
                         value={localSearch}
                         onChange={(e) => handleSearch(e.target.value)}
-                        sx={{ minWidth: 160, '& .MuiOutlinedInput-root': { py: 0 } }}
+                        sx={{ minWidth: 200, '& .MuiOutlinedInput-root': { py: 0.5, fontSize: '1rem' } }}
                         InputProps={{
-                            startAdornment: <InputAdornment position="start"><Search size={16} /></InputAdornment>,
+                            startAdornment: <InputAdornment position="start"><Search size={20} /></InputAdornment>,
                         }}
                     />
-                    <FormControl size="small" sx={{ minWidth: 120 }}>
-                        <InputLabel sx={{ fontSize: '0.75rem' }}>CATEGORY</InputLabel>
-                        <Select value={selectedCategory} label="CATEGORY" onChange={handleCategoryChange} sx={{ fontSize: '0.75rem' }}>
+                    <FormControl size="medium" sx={{ minWidth: 160 }}>
+                        <InputLabel sx={{ fontSize: '0.9rem' }}>CATEGORY</InputLabel>
+                        <Select value={selectedCategory} label="CATEGORY" onChange={handleCategoryChange} sx={{ fontSize: '0.9rem' }}>
                             <MenuItem value="">ALL</MenuItem>
                             {categories.map((cat) => (
-                                <MenuItem key={cat.slug || cat} value={cat.slug || cat} sx={{ textTransform: 'uppercase', fontSize: '0.75rem' }}>
+                                <MenuItem key={cat.slug || cat} value={cat.slug || cat} sx={{ textTransform: 'uppercase', fontSize: '0.85rem' }}>
                                     {(cat.name || cat).toUpperCase()}
                                 </MenuItem>
                             ))}
                         </Select>
                     </FormControl>
                     <Tooltip title="REFRESH">
-                        <IconButton onClick={handleRefresh} sx={{ bgcolor: '#A855F7', width: 36, height: 36 }}>
-                            <RefreshCw size={16} />
+                        <IconButton onClick={handleRefresh} sx={{ bgcolor: '#A855F7', width: 44, height: 44 }}>
+                            <RefreshCw size={20} />
                         </IconButton>
                     </Tooltip>
                 </Stack>
