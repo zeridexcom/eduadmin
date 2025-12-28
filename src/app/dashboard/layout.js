@@ -294,16 +294,18 @@ export default function DashboardLayout({ children }) {
                 </Drawer>
             </Box>
 
-            {/* Main Content - CENTERED */}
+            {/* Main Content - STANDARD FLEX LAYOUT */}
             <Box
                 component="main"
                 sx={{
                     flexGrow: 1,
+                    // Critical: No margin left needed because sidebar is RELATIVE in flex!
+                    // Critical: No width calc needed, flexGrow handles it!
+                    width: '100%',
                     minHeight: '100vh',
-                    width: { md: `calc(100% - ${drawerWidth}px)` },
-                    ml: { md: `${drawerWidth}px` }, // Explicit margin left for desktop
                     bgcolor: 'background.default',
-                    p: 0, // Reset padding
+                    p: 0,
+                    overflowX: 'hidden', // Prevent horizontal scroll
                 }}
             >
                 <Toolbar sx={{ minHeight: { xs: 70, md: 80 } }} />
