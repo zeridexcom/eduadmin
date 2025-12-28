@@ -6,8 +6,8 @@ import './globals.css';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata = {
-  title: 'Help Study Abroad - Admin Dashboard',
-  description: 'Admin dashboard for managing users and products',
+  title: 'EduAdmin - Dashboard',
+  description: 'Modern admin dashboard for managing users and products',
 };
 
 export default function RootLayout({ children }) {

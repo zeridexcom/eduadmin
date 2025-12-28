@@ -195,13 +195,14 @@ export default function DashboardLayout({ children }) {
                     <School sx={{ fontSize: 28, color: '#fff' }} />
                 </Box>
                 <Box>
-                    <Typography variant="h6" sx={{ fontWeight: 700, lineHeight: 1.2 }}>
-                        Help Study
-                    </Typography>
-                    <Typography variant="caption" color="text.secondary">
-                        Admin Panel
-                    </Typography>
-                </Box>
+                    <Box>
+                        <Typography variant="h6" sx={{ fontWeight: 700, lineHeight: 1.2 }}>
+                            EduAdmin
+                        </Typography>
+                        <Typography variant="caption" color="text.secondary">
+                            Dashboard
+                        </Typography>
+                    </Box>        </Box>
                 {isMobile && (
                     <IconButton
                         onClick={handleDrawerToggle}

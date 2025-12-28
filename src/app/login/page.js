@@ -201,10 +201,10 @@ export default function LoginPage() {
                                 mb: 1,
                             }}
                         >
-                            Help Study Abroad
+                            EduAdmin
                         </Typography>
                         <Typography color="text.secondary" variant="body2">
-                            Admin Dashboard • Sign in to continue
+                            Dashboard • Sign in to continue
                         </Typography>
                     </Box>
 

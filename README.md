@@ -1,4 +1,4 @@
-# Help Study Abroad - Admin Dashboard
+# EduAdmin - Dashboard
 
 A modern, responsive admin dashboard built with Next.js 14, Material-UI, Zustand, and NextAuth.js for the Help Study Abroad frontend assessment.
 
