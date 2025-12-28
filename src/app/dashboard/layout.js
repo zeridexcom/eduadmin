@@ -25,6 +25,8 @@ import {
     Chip,
     Stack,
     Button,
+    InputBase,
+    alpha,
 } from '@mui/material';
 import {
     LayoutDashboard,
@@ -34,41 +36,45 @@ import {
     Settings,
     Bell,
     Menu as MenuIcon,
-    GraduationCap,
+    Search,
+    ChevronDown,
 } from 'lucide-react';
 
 const drawerWidth = 260;
 
-// Navigation Item Component
+// Modern Navigation Item
 const NavItem = memo(function NavItem({ item, isActive, onClick }) {
+    const theme = useTheme();
     return (
-        <ListItem disablePadding sx={{ mb: 1 }}>
+        <ListItem disablePadding sx={{ mb: 0.5 }}>
             <ListItemButton
                 onClick={onClick}
                 sx={{
                     mx: 2,
-                    py: 1.2,
-                    border: '2px solid #000',
-                    bgcolor: isActive ? '#FFC900' : '#FFFFFF',
-                    boxShadow: isActive ? '3px 3px 0 #000' : 'none',
+                    borderRadius: '8px',
+                    py: 1,
+                    bgcolor: isActive ? alpha(theme.palette.primary.main, 0.05) : 'transparent',
+                    color: isActive ? 'primary.main' : 'text.secondary',
                     '&:hover': {
-                        bgcolor: '#FFC900',
-                        transform: 'translate(-2px, -2px)',
-                        boxShadow: '3px 3px 0 #000',
+                        bgcolor: alpha(theme.palette.primary.main, 0.03),
+                        color: 'primary.main',
                     },
-                    transition: 'all 0.15s ease',
+                    transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
                 }}
             >
-                <ListItemIcon sx={{ minWidth: 36, color: '#000' }}>
+                <ListItemIcon sx={{
+                    minWidth: 36,
+                    color: isActive ? 'primary.main' : 'inherit',
+                    transition: 'color 0.2s ease',
+                }}>
                     {item.icon}
                 </ListItemIcon>
                 <ListItemText
                     primary={item.label}
                     primaryTypographyProps={{
-                        fontWeight: 700,
-                        fontSize: '0.85rem',
-                        textTransform: 'uppercase',
-                        letterSpacing: '0.03em',
+                        fontSize: '0.875rem',
+                        fontWeight: isActive ? 600 : 500,
+                        letterSpacing: '0.01em',
                     }}
                 />
             </ListItemButton>
@@ -77,7 +83,7 @@ const NavItem = memo(function NavItem({ item, isActive, onClick }) {
 });
 
 const navItems = [
-    { label: 'Dashboard', icon: <LayoutDashboard size={20} />, path: '/dashboard' },
+    { label: 'Overview', icon: <LayoutDashboard size={20} />, path: '/dashboard' },
     { label: 'Users', icon: <Users size={20} />, path: '/dashboard/users' },
     { label: 'Products', icon: <Package size={20} />, path: '/dashboard/products' },
 ];
@@ -127,8 +133,8 @@ export default function DashboardLayout({ children }) {
 
     if (status === 'loading') {
         return (
-            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh', bgcolor: '#F8F9FA' }}>
-                <Box className="brutal-loader" />
+            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh', bgcolor: 'background.default' }}>
+                <Box className="modern-loader" />
             </Box>
         );
     }
@@ -138,33 +144,34 @@ export default function DashboardLayout({ children }) {
     const currentUser = session?.user || user;
 
     const drawer = (
-        <Box sx={{ height: '100%', display: 'flex', flexDirection: 'column', py: 3, bgcolor: '#FFFFFF' }}>
-            {/* Logo */}
-            <Box sx={{ px: 3, mb: 4, display: 'flex', alignItems: 'center', gap: 1.5 }}>
+        <Box sx={{ height: '100%', display: 'flex', flexDirection: 'column', bgcolor: 'rgba(255,255,255,0.8)', backdropFilter: 'blur(12px)' }}>
+            {/* Logo Area */}
+            <Box sx={{ p: 3, mb: 1, display: 'flex', alignItems: 'center', gap: 1.5 }}>
                 <Box sx={{
-                    width: 40,
-                    height: 40,
-                    bgcolor: '#FFC900',
-                    border: '2px solid #000',
-                    boxShadow: '2px 2px 0 #000',
+                    width: 32,
+                    height: 32,
+                    borderRadius: '8px',
+                    background: 'linear-gradient(135deg, #18181B 0%, #3F3F46 100%)',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
+                    color: 'white'
                 }}>
-                    <GraduationCap size={22} />
+                    <Typography fontWeight="800" sx={{ fontSize: '1.2rem', lineHeight: 1 }}>E</Typography>
                 </Box>
-                <Typography variant="h4" sx={{ fontWeight: 900, textTransform: 'uppercase', fontSize: '1.1rem' }}>
+                <Typography variant="h6" sx={{ fontWeight: 700, letterSpacing: '-0.02em', color: '#18181B' }}>
                     EduAdmin
                 </Typography>
+                <Chip label="v2.0" size="small" sx={{ height: 20, bgcolor: 'rgba(0,0,0,0.05)', fontSize: '0.65rem', fontWeight: 600 }} />
             </Box>
 
             {/* Navigation */}
-            <List sx={{ flex: 1 }}>
+            <List sx={{ flex: 1, px: 0 }}>
                 <Typography
                     variant="caption"
-                    sx={{ px: 3, mb: 1.5, display: 'block', fontWeight: 700, letterSpacing: '0.15em', fontSize: '0.65rem' }}
+                    sx={{ px: 3, mb: 1, display: 'block', color: 'text.secondary', fontWeight: 600, fontSize: '0.75rem' }}
                 >
-                    MENU
+                    MAIN MENU
                 </Typography>
                 {navItems.map((item) => (
                     <NavItem
@@ -176,56 +183,58 @@ export default function DashboardLayout({ children }) {
                 ))}
             </List>
 
-            {/* User Profile */}
-            <Box sx={{ px: 2, mt: 'auto' }}>
-                <Box
+            {/* User Profile - Bottom */}
+            <Box sx={{ p: 2, borderTop: '1px solid', borderColor: 'divider' }}>
+                <Button
+                    fullWidth
+                    onClick={handleMenuOpen}
                     sx={{
-                        p: 2,
-                        border: '2px solid #000',
-                        boxShadow: '3px 3px 0 #000',
-                        bgcolor: '#FFC900',
+                        p: 1,
+                        justifyContent: 'flex-start',
+                        color: 'text.primary',
+                        borderRadius: '10px',
+                        '&:hover': { bgcolor: 'rgba(0,0,0,0.03)' }
                     }}
                 >
-                    <Stack spacing={1.5}>
-                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
-                            <Avatar src={currentUser?.image} sx={{ width: 36, height: 36, border: '2px solid #000' }} />
-                            <Box sx={{ minWidth: 0 }}>
-                                <Typography variant="body2" sx={{ fontWeight: 800, fontSize: '0.8rem' }} noWrap>
-                                    {currentUser?.name || 'ADMIN'}
-                                </Typography>
-                                <Typography variant="caption" noWrap sx={{ display: 'block', fontWeight: 600, fontSize: '0.65rem' }}>
-                                    {currentUser?.email}
-                                </Typography>
-                            </Box>
+                    <Stack direction="row" spacing={1.5} alignItems="center" width="100%">
+                        <Avatar
+                            src={currentUser?.image}
+                            sx={{ width: 36, height: 36, bgcolor: 'primary.main', border: '1px solid rgba(0,0,0,0.1)' }}
+                        />
+                        <Box sx={{ minWidth: 0, flex: 1, textAlign: 'left' }}>
+                            <Typography variant="body2" fontWeight={600} noWrap>
+                                {currentUser?.name || 'Administrator'}
+                            </Typography>
+                            <Typography variant="caption" color="text.secondary" noWrap display="block">
+                                {currentUser?.email}
+                            </Typography>
                         </Box>
-                        <Button
-                            fullWidth
-                            size="small"
-                            variant="outlined"
-                            onClick={handleLogout}
-                            startIcon={<LogOut size={16} />}
-                            sx={{ bgcolor: '#FFFFFF', py: 0.8, fontSize: '0.75rem' }}
-                        >
-                            LOG OUT
-                        </Button>
+                        <ChevronDown size={14} color="#71717A" />
                     </Stack>
-                </Box>
+                </Button>
             </Box>
         </Box>
     );
 
     return (
-        <Box sx={{ display: 'flex', minHeight: '100vh', bgcolor: '#F8F9FA' }}>
-            {/* AppBar */}
+        <Box sx={{ display: 'flex', minHeight: '100vh', bgcolor: 'background.default' }}>
+            {/* Glass Header */}
             <AppBar
                 position="fixed"
+                color="inherit"
+                elevation={0}
                 sx={{
                     width: { md: `calc(100% - ${drawerWidth}px)` },
                     ml: { md: `${drawerWidth}px` },
+                    bgcolor: 'rgba(250, 250, 250, 0.8)', // Semi-transparent based on bg
+                    backdropFilter: 'blur(8px)',
+                    borderBottom: '1px solid',
+                    borderColor: 'divider',
                 }}
             >
-                <Toolbar sx={{ px: { xs: 2, md: 3 }, minHeight: { xs: 56, md: 64 } }}>
+                <Toolbar sx={{ px: { xs: 2, md: 4 }, minHeight: { xs: 64, md: 72 } }}>
                     <IconButton
+                        color="inherit"
                         edge="start"
                         onClick={handleDrawerToggle}
                         sx={{ mr: 2, display: { md: 'none' } }}
@@ -233,42 +242,79 @@ export default function DashboardLayout({ children }) {
                         <MenuIcon size={20} />
                     </IconButton>
 
-                    <Typography variant="h5" sx={{ flexGrow: 1, fontWeight: 800, textTransform: 'uppercase', fontSize: '0.95rem' }}>
-                        {navItems.find(i => i.path === pathname)?.label || 'OVERVIEW'}
-                    </Typography>
+                    {/* Header Slogan/Breadcrumb */}
+                    <Box sx={{ flexGrow: 1 }}>
+                        <Typography variant="h6" fontWeight={600} color="text.primary">
+                            {navItems.find(i => i.path === pathname)?.label || 'Overview'}
+                        </Typography>
+                    </Box>
 
-                    <Stack direction="row" spacing={1.5} alignItems="center">
-                        <IconButton sx={{ bgcolor: '#FFFFFF', width: 36, height: 36 }}>
-                            <Bell size={18} />
-                        </IconButton>
-                        <IconButton onClick={handleMenuOpen} sx={{ p: 0 }}>
-                            <Avatar src={currentUser?.image} sx={{ width: 36, height: 36, border: '2px solid #000' }} />
+                    {/* Actions */}
+                    <Stack direction="row" spacing={2} alignItems="center">
+                        {/* Search Dropdown Placeholder - Visual Only */}
+                        <Box sx={{
+                            display: { xs: 'none', md: 'flex' },
+                            alignItems: 'center',
+                            bgcolor: 'white',
+                            border: '1px solid',
+                            borderColor: 'divider',
+                            borderRadius: '8px',
+                            px: 1.5,
+                            py: 0.5,
+                            width: 240,
+                            transition: 'all 0.2s',
+                            '&:hover': { borderColor: 'primary.main', boxShadow: '0 0 0 2px rgba(37, 99, 235, 0.1)' }
+                        }}>
+                            <Search size={16} color="#A1A1AA" />
+                            <InputBase
+                                placeholder="Search anything..."
+                                sx={{ ml: 1.5, fontSize: '0.875rem', width: '100%' }}
+                            />
+                        </Box>
+
+                        <IconButton sx={{
+                            color: 'text.secondary',
+                            border: '1px solid',
+                            borderColor: 'divider',
+                            borderRadius: '8px',
+                            '&:hover': { bgcolor: 'background.paper', color: 'primary.main' }
+                        }}>
+                            <Bell size={20} />
                         </IconButton>
                     </Stack>
                 </Toolbar>
             </AppBar>
 
-            {/* User Menu */}
+            {/* Quick Menu */}
             <Menu
                 anchorEl={anchorEl}
                 open={Boolean(anchorEl)}
                 onClose={handleMenuClose}
-                transformOrigin={{ horizontal: 'right', vertical: 'top' }}
-                anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
-                PaperProps={{ sx: { mt: 1.5, minWidth: 180 } }}
+                transformOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+                anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
+                PaperProps={{
+                    sx: {
+                        mt: 1,
+                        minWidth: 200,
+                        boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1)',
+                        borderRadius: '12px',
+                        border: '1px solid #E4E4E7',
+                        p: 1
+                    }
+                }}
             >
-                <MenuItem onClick={handleMenuClose}>
-                    <ListItemIcon><Settings size={16} /></ListItemIcon>
-                    <Typography sx={{ fontWeight: 700, fontSize: '0.85rem' }}>SETTINGS</Typography>
+                <MenuItem onClick={handleMenuClose} sx={{ borderRadius: '6px' }}>
+                    <ListItemIcon><Settings size={18} /></ListItemIcon>
+                    <Typography fontSize="0.9rem">Account Settings</Typography>
                 </MenuItem>
-                <Divider sx={{ my: 1, borderColor: '#000', borderWidth: 1 }} />
-                <MenuItem onClick={handleLogout} sx={{ color: '#FF3B3B' }}>
-                    <ListItemIcon><LogOut size={16} /></ListItemIcon>
-                    <Typography sx={{ fontWeight: 800, fontSize: '0.85rem' }}>LOG OUT</Typography>
+                <Divider sx={{ my: 0.5 }} />
+                <MenuItem onClick={handleLogout} sx={{ borderRadius: '6px', color: 'error.main' }}>
+                    <ListItemIcon><LogOut size={18} color="#EF4444" /></ListItemIcon>
+                    <Typography fontSize="0.9rem" fontWeight={500}>Sign Out</Typography>
                 </MenuItem>
             </Menu>
 
-            {/* Sidebar Drawer */}
+            {/* Sidebar */}
             <Box component="nav" sx={{ width: { md: drawerWidth }, flexShrink: { md: 0 } }}>
                 <Drawer
                     variant="temporary"
@@ -277,7 +323,7 @@ export default function DashboardLayout({ children }) {
                     ModalProps={{ keepMounted: true }}
                     sx={{
                         display: { xs: 'block', md: 'none' },
-                        '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+                        '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth, borderRight: 'none' },
                     }}
                 >
                     {drawer}
@@ -286,7 +332,13 @@ export default function DashboardLayout({ children }) {
                     variant="permanent"
                     sx={{
                         display: { xs: 'none', md: 'block' },
-                        '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+                        '& .MuiDrawer-paper': {
+                            boxSizing: 'border-box',
+                            width: drawerWidth,
+                            borderRight: '1px solid',
+                            borderColor: 'divider',
+                            bgcolor: 'background.default'
+                        },
                     }}
                     open
                 >
@@ -294,36 +346,30 @@ export default function DashboardLayout({ children }) {
                 </Drawer>
             </Box>
 
-            {/* Main Content - STANDARD FLEX LAYOUT */}
+            {/* Main Content Area */}
             <Box
                 component="main"
                 sx={{
                     flexGrow: 1,
-                    // Critical: No margin left needed because sidebar is RELATIVE in flex!
-                    // Critical: No width calc needed, flexGrow handles it!
                     width: '100%',
                     minHeight: '100vh',
-                    bgcolor: 'background.default',
                     p: 0,
-                    overflowX: 'hidden', // Prevent horizontal scroll
+                    overflowX: 'hidden',
                 }}
             >
-                <Toolbar sx={{ minHeight: { xs: 70, md: 80 } }} />
+                <Toolbar sx={{ minHeight: { xs: 64, md: 72 } }} />
 
-                {/* Content Container */}
-                <Box
-                    sx={{
-                        width: '100%',
-                        maxWidth: '1800px', // Large max-width
-                        mx: 'auto', // Centering magic
-                        px: { xs: 2.5, sm: 4, md: 6 }, // Consistent padding
-                        py: { xs: 3, md: 5 },
-                        display: 'flex',
-                        flexDirection: 'column',
-                        gap: 3,
-                    }}
-                    className="animate-slide-up"
-                >
+                {/* Scrollable container with max-width content */}
+                <Box sx={{
+                    width: '100%',
+                    maxWidth: '1600px',
+                    mx: 'auto',
+                    px: { xs: 2, md: 4 },
+                    py: 4,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: 3,
+                }} className="animate-fade-in">
                     {children}
                 </Box>
             </Box>
