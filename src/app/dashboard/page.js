@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import useAuthStore from '@/store/authStore';
@@ -15,7 +15,9 @@ import {
     IconButton,
     Chip,
     Avatar,
-    Divider
+    Divider,
+    Menu,
+    MenuItem
 } from '@mui/material';
 import {
     Users,
@@ -26,7 +28,8 @@ import {
     ArrowUpRight,
     ArrowRight,
     Search,
-    Filter
+    Filter,
+    ChevronDown
 } from 'lucide-react';
 
 // Modern Stat Card
@@ -122,38 +125,51 @@ export default function DashboardPage() {
     const currentUser = session?.user || user;
     const firstName = currentUser?.name?.split(' ')[0] || 'Admin';
 
-    const stats = useMemo(() => [
-        {
-            title: 'Total Users',
-            value: '2,847',
-            icon: Users,
-            color: '#2563EB', // Blue
-            trend: '+12.5%',
-            onClick: () => router.push('/dashboard/users'),
-        },
-        {
-            title: 'Total Revenue',
-            value: '$48,294',
-            icon: TrendingUp,
-            color: '#10B981', // Emerald
-            trend: '+8.2%',
-        },
-        {
-            title: 'Active Products',
-            value: '1,234',
-            icon: Package,
-            color: '#F59E0B', // Amber
-            trend: '+2.4%',
-            onClick: () => router.push('/dashboard/products'),
-        },
-        {
-            title: 'New Orders',
-            value: '892',
-            icon: ShoppingCart,
-            color: '#7C3AED', // Violet
-            trend: '+18%',
-        },
-    ], [router]);
+    const [timeRange, setTimeRange] = useState('Last 30 Days');
+    const [anchorEl, setAnchorEl] = useState(null);
+
+    const handleOpenMenu = (event) => setAnchorEl(event.currentTarget);
+    const handleCloseMenu = (range) => {
+        if (range) setTimeRange(range);
+        setAnchorEl(null);
+    };
+
+    const stats = useMemo(() => {
+        const multiplier = timeRange === 'Last 7 Days' ? 0.25 : timeRange === 'Today' ? 0.05 : 1;
+
+        return [
+            {
+                title: 'Total Users',
+                value: Math.floor(2847 * multiplier).toLocaleString(),
+                icon: Users,
+                color: '#2563EB', // Blue
+                trend: '+12.5%',
+                onClick: () => router.push('/dashboard/users'),
+            },
+            {
+                title: 'Total Revenue',
+                value: '$' + Math.floor(48294 * multiplier).toLocaleString(),
+                icon: TrendingUp,
+                color: '#10B981', // Emerald
+                trend: '+8.2%',
+            },
+            {
+                title: 'Active Products',
+                value: '1,234', // Products usually don't change by date range like this, but kept static or we can vary it
+                icon: Package,
+                color: '#F59E0B', // Amber
+                trend: '+2.4%',
+                onClick: () => router.push('/dashboard/products'),
+            },
+            {
+                title: 'New Orders',
+                value: Math.floor(892 * multiplier).toString(),
+                icon: ShoppingCart,
+                color: '#7C3AED', // Violet
+                trend: '+18%',
+            },
+        ]
+    }, [router, timeRange]);
 
     const activities = useMemo(() => [
         { icon: Package, title: 'New course "Advanced React" published', time: '12 mins ago', user: 'Emily Smith' },
@@ -178,10 +194,22 @@ export default function DashboardPage() {
                     <Button
                         variant="outlined"
                         startIcon={<Filter size={16} />}
+                        onClick={handleOpenMenu}
+                        endIcon={<ChevronDown size={14} />}
                         sx={{ bgcolor: 'background.paper', borderColor: 'divider', color: 'text.primary' }}
                     >
-                        Filter
+                        {timeRange}
                     </Button>
+                    <Menu
+                        anchorEl={anchorEl}
+                        open={Boolean(anchorEl)}
+                        onClose={() => handleCloseMenu()}
+                    >
+                        <MenuItem onClick={() => handleCloseMenu('Today')}>Today</MenuItem>
+                        <MenuItem onClick={() => handleCloseMenu('Last 7 Days')}>Last 7 Days</MenuItem>
+                        <MenuItem onClick={() => handleCloseMenu('Last 30 Days')}>Last 30 Days</MenuItem>
+                    </Menu>
+
                     <Button
                         variant="contained"
                         color="primary"

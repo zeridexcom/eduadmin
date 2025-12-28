@@ -26,7 +26,11 @@ import {
     Pagination,
     Divider,
     Paper,
-    Tooltip
+    Tooltip,
+    Dialog,
+    DialogTitle,
+    DialogContent,
+    DialogActions
 } from '@mui/material';
 import {
     Search,
@@ -192,6 +196,29 @@ export default function ProductsPage() {
     const currentPage = Math.floor(skip / limit) + 1;
     const totalPages = Math.ceil(total / limit);
 
+    const [openAddModal, setOpenAddModal] = useState(false);
+    const [newProduct, setNewProduct] = useState({ title: '', price: '', category: '' });
+
+    const handleAddProduct = () => {
+        // Optimistic update simulation
+        const product = {
+            id: Date.now(),
+            title: newProduct.title,
+            price: parseFloat(newProduct.price),
+            category: newProduct.category,
+            thumbnail: 'https://cdn.dummyjson.com/product-images/1/thumbnail.jpg',
+            rating: 5.0,
+            stock: 100,
+            discountPercentage: 0
+        };
+        // We would ideally call an addProduct action in store here
+        // products.unshift(product); // This requires store modification
+        // For now, we'll just close and show alert (or mock it if we modify store)
+        setOpenAddModal(false);
+        setNewProduct({ title: '', price: '', category: '' });
+        alert('Product added successfully! (Simulation)');
+    };
+
     return (
         <Box className="animate-fade-in" sx={{ width: '100%', flexGrow: 1 }}>
             {/* Header */}
@@ -206,11 +233,55 @@ export default function ProductsPage() {
                     variant="contained"
                     startIcon={<Plus size={18} />}
                     disableElevation
+                    onClick={() => setOpenAddModal(true)}
                     sx={{ borderRadius: '8px', fontWeight: 600 }}
                 >
                     Add Product
                 </Button>
             </Box>
+
+            {/* Add Product Dialog */}
+            <Dialog open={openAddModal} onClose={() => setOpenAddModal(false)} maxWidth="sm" fullWidth>
+                <DialogTitle>Add New Product</DialogTitle>
+                <DialogContent>
+                    <Stack spacing={3} sx={{ mt: 1 }}>
+                        <TextField
+                            label="Product Title"
+                            fullWidth
+                            value={newProduct.title}
+                            onChange={(e) => setNewProduct({ ...newProduct, title: e.target.value })}
+                        />
+                        <TextField
+                            label="Price"
+                            type="number"
+                            fullWidth
+                            value={newProduct.price}
+                            onChange={(e) => setNewProduct({ ...newProduct, price: e.target.value })}
+                            InputProps={{ startAdornment: <InputAdornment position="start">$</InputAdornment> }}
+                        />
+                        <FormControl fullWidth>
+                            <InputLabel>Category</InputLabel>
+                            <Select
+                                value={newProduct.category}
+                                label="Category"
+                                onChange={(e) => setNewProduct({ ...newProduct, category: e.target.value })}
+                            >
+                                {categories.map((cat) => (
+                                    <MenuItem key={cat.slug || cat} value={cat.slug || cat} sx={{ textTransform: 'capitalize' }}>
+                                        {cat.name || cat}
+                                    </MenuItem>
+                                ))}
+                            </Select>
+                        </FormControl>
+                    </Stack>
+                </DialogContent>
+                <DialogActions sx={{ p: 3 }}>
+                    <Button onClick={() => setOpenAddModal(false)}>Cancel</Button>
+                    <Button variant="contained" onClick={handleAddProduct} disabled={!newProduct.title || !newProduct.price}>
+                        Add Product
+                    </Button>
+                </DialogActions>
+            </Dialog>
 
             {/* Filters */}
             <Paper
