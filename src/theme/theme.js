@@ -42,7 +42,7 @@ const theme = createTheme({
       contrastText: '#FFFFFF',
     },
     background: {
-      default: '#FFC900', // BOLD YELLOW BACKGROUND
+      default: '#FFFFFF', // Clean white background
       paper: '#FFFFFF',
     },
     text: {
@@ -55,43 +55,43 @@ const theme = createTheme({
   typography: {
     fontFamily: '"Inter", "Helvetica Neue", Arial, sans-serif',
     h1: {
-      fontSize: '2.5rem',
+      fontSize: '1.6rem',
       fontWeight: 900,
       letterSpacing: '-0.02em',
       textTransform: 'uppercase',
     },
     h2: {
-      fontSize: '2rem',
+      fontSize: '1.3rem',
       fontWeight: 900,
       letterSpacing: '-0.01em',
       textTransform: 'uppercase',
     },
     h3: {
-      fontSize: '1.5rem',
+      fontSize: '1.1rem',
       fontWeight: 800,
       letterSpacing: '-0.01em',
     },
     h4: {
-      fontSize: '1.25rem',
+      fontSize: '0.95rem',
       fontWeight: 800,
     },
     h5: {
-      fontSize: '1.1rem',
+      fontSize: '0.85rem',
       fontWeight: 700,
     },
     h6: {
-      fontSize: '1rem',
+      fontSize: '0.8rem',
       fontWeight: 700,
     },
     body1: {
-      fontSize: '1rem',
-      fontWeight: 500,
-      lineHeight: 1.6,
-    },
-    body2: {
-      fontSize: '0.9rem',
+      fontSize: '0.85rem',
       fontWeight: 500,
       lineHeight: 1.5,
+    },
+    body2: {
+      fontSize: '0.8rem',
+      fontWeight: 500,
+      lineHeight: 1.4,
     },
     caption: {
       fontSize: '0.75rem',
@@ -139,7 +139,7 @@ const theme = createTheme({
     MuiCssBaseline: {
       styleOverrides: {
         body: {
-          backgroundColor: '#FFC900',
+          backgroundColor: '#FFFFFF',
           color: '#000000',
         },
       },
@@ -148,11 +148,11 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           borderRadius: 0,
-          padding: '12px 24px',
-          fontSize: '0.95rem',
+          padding: '8px 16px',
+          fontSize: '0.8rem',
           fontWeight: 800,
-          border: '3px solid #000',
-          boxShadow: '4px 4px 0 #000',
+          border: '2px solid #000',
+          boxShadow: '3px 3px 0 #000',
           transition: 'all 0.15s ease',
           '&:hover': {
             transform: 'translate(-2px, -2px)',
@@ -183,13 +183,13 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           borderRadius: 0,
-          border: '3px solid #000',
-          boxShadow: '6px 6px 0 #000',
+          border: '2px solid #000',
+          boxShadow: '4px 4px 0 #000',
           backgroundColor: '#FFFFFF',
           transition: 'all 0.15s ease',
           '&:hover': {
-            transform: 'translate(-3px, -3px)',
-            boxShadow: '9px 9px 0 #000',
+            transform: 'translate(-2px, -2px)',
+            boxShadow: '6px 6px 0 #000',
           },
         },
       },

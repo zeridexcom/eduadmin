@@ -87,7 +87,7 @@ export default function LoginPage() {
 
     if (status === 'loading') {
         return (
-            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh', bgcolor: '#FFC900' }}>
+            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh', bgcolor: '#F8F9FA' }}>
                 <Box className="brutal-loader" />
             </Box>
         );
@@ -101,7 +101,7 @@ export default function LoginPage() {
                 alignItems: 'center',
                 justifyContent: 'center',
                 p: 3,
-                bgcolor: '#FFC900',
+                bgcolor: '#F8F9FA',
                 position: 'relative',
             }}
         >

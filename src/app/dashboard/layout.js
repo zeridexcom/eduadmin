@@ -215,7 +215,7 @@ export default function DashboardLayout({ children }) {
     );
 
     return (
-        <Box sx={{ display: 'flex', minHeight: '100vh', bgcolor: '#FFC900' }}>
+        <Box sx={{ display: 'flex', minHeight: '100vh', bgcolor: '#F8F9FA' }}>
             {/* AppBar */}
             <AppBar
                 position="fixed"
