@@ -1,6 +1,6 @@
 /* 
- * GUMROAD / TRENDLLLY STYLE CSS
- * Bold, Brutalist, Playful, FUN! 🎉
+ * MODERN SAAS STYLE CSS
+ * Clean, Premium, Glassmorphism, Linear-style
  */
 
 * {
@@ -11,429 +11,177 @@
 
 html {
   scroll-behavior: smooth;
-  font-size: 20px;
-  /* Force 125% Scale (16px * 1.25) */
+  font-size: 110%;
+  /* Keeping the 110% preference */
 }
 
 body {
-  background-color: #FFC900;
-  color: #000000;
-  font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+  background-color: #FAFAFA;
+  color: #18181B;
+  /* Zinc 900 */
+  font-family: 'Inter', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* === SCROLLBAR - BRUTALIST STYLE === */
+/* === MODIFIED SCROLLBAR === */
 ::-webkit-scrollbar {
-  width: 12px;
-  height: 12px;
+  width: 8px;
+  height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #000;
+  background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #FFC900;
-  border: 2px solid #000;
+  background: #D4D4D8;
+  /* Zinc 300 */
+  border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #FFD633;
+  background: #A1A1AA;
+  /* Zinc 400 */
 }
 
 /* === SELECTION === */
 ::selection {
-  background: #000;
-  color: #FFC900;
-}
-
-/* === ANIMATIONS === */
-@keyframes shake {
-
-  0%,
-  100% {
-    transform: translateX(0);
-  }
-
-  10%,
-  30%,
-  50%,
-  70%,
-  90% {
-    transform: translateX(-4px);
-  }
-
-  20%,
-  40%,
-  60%,
-  80% {
-    transform: translateX(4px);
-  }
-}
-
-@keyframes bounce-in {
-  0% {
-    transform: scale(0.3);
-    opacity: 0;
-  }
-
-  50% {
-    transform: scale(1.05);
-  }
-
-  70% {
-    transform: scale(0.9);
-  }
-
-  100% {
-    transform: scale(1);
-    opacity: 1;
-  }
-}
-
-@keyframes slide-up {
-  from {
-    transform: translateY(30px);
-    opacity: 0;
-  }
-
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
-
-@keyframes slide-in-left {
-  from {
-    transform: translateX(-30px);
-    opacity: 0;
-  }
-
-  to {
-    transform: translateX(0);
-    opacity: 1;
-  }
-}
-
-@keyframes pop {
-  0% {
-    transform: scale(1);
-  }
-
-  50% {
-    transform: scale(1.1);
-  }
-
-  100% {
-    transform: scale(1);
-  }
-}
-
-@keyframes wiggle {
-
-  0%,
-  100% {
-    transform: rotate(0deg);
-  }
-
-  25% {
-    transform: rotate(-5deg);
-  }
-
-  75% {
-    transform: rotate(5deg);
-  }
-}
-
-@keyframes pulse-shadow {
-
-  0%,
-  100% {
-    box-shadow: 4px 4px 0 #000;
-  }
-
-  50% {
-    box-shadow: 8px 8px 0 #000;
-  }
-}
-
-/* === ANIMATION CLASSES === */
-.animate-bounce-in {
-  animation: bounce-in 0.6s ease forwards;
-}
-
-.animate-slide-up {
-  animation: slide-up 0.4s ease forwards;
-}
-
-.animate-slide-left {
-  animation: slide-in-left 0.4s ease forwards;
-}
-
-.animate-pop {
-  animation: pop 0.3s ease;
-}
-
-.animate-wiggle {
-  animation: wiggle 0.5s ease infinite;
-}
-
-.animate-shake {
-  animation: shake 0.5s ease;
-}
-
-/* Staggered animations */
-.stagger-1 {
-  animation-delay: 0.05s;
-}
-
-.stagger-2 {
-  animation-delay: 0.1s;
-}
-
-.stagger-3 {
-  animation-delay: 0.15s;
-}
-
-.stagger-4 {
-  animation-delay: 0.2s;
-}
-
-.stagger-5 {
-  animation-delay: 0.25s;
-}
-
-.stagger-6 {
-  animation-delay: 0.3s;
-}
-
-.stagger-7 {
-  animation-delay: 0.35s;
-}
-
-.stagger-8 {
-  animation-delay: 0.4s;
-}
-
-/* === BRUTALIST CARD STYLES === */
-.brutal-card {
-  background: #FFFFFF;
-  border: 3px solid #000;
-  box-shadow: 6px 6px 0 #000;
-  transition: all 0.15s ease;
-}
-
-.brutal-card:hover {
-  transform: translate(-3px, -3px);
-  box-shadow: 9px 9px 0 #000;
-}
-
-.brutal-card:active {
-  transform: translate(3px, 3px);
-  box-shadow: 3px 3px 0 #000;
-}
-
-/* === BRUTALIST BUTTON STYLES === */
-.brutal-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  padding: 12px 24px;
-  background: #000;
-  color: #FFC900;
-  border: 3px solid #000;
-  box-shadow: 4px 4px 0 #000;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  cursor: pointer;
-  transition: all 0.15s ease;
-}
-
-.brutal-btn:hover {
-  transform: translate(-2px, -2px);
-  box-shadow: 6px 6px 0 #000;
-}
-
-.brutal-btn:active {
-  transform: translate(2px, 2px);
-  box-shadow: 2px 2px 0 #000;
-}
-
-.brutal-btn-outline {
-  background: #FFC900;
-  color: #000;
-}
-
-.brutal-btn-white {
-  background: #FFFFFF;
-  color: #000;
-}
-
-/* === EMOJI ICON CONTAINER === */
-.emoji-icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 48px;
-  height: 48px;
-  background: #FFC900;
-  border: 3px solid #000;
-  box-shadow: 3px 3px 0 #000;
-  font-size: 1.5rem;
-}
-
-.emoji-icon-lg {
-  width: 64px;
-  height: 64px;
-  font-size: 2rem;
-}
-
-/* === TAG / BADGE STYLES === */
-.brutal-tag {
-  display: inline-block;
-  padding: 4px 12px;
-  background: #FFC900;
-  border: 2px solid #000;
-  font-weight: 800;
-  font-size: 0.7rem;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-.brutal-tag-dark {
-  background: #000;
-  color: #FFC900;
-}
-
-.brutal-tag-success {
-  background: #00D4AA;
-}
-
-.brutal-tag-error {
-  background: #FF6B6B;
-}
-
-.brutal-tag-purple {
-  background: #A855F7;
+  background: #2563EB;
+  /* Blue 600 */
   color: #FFFFFF;
 }
 
-/* === INPUT STYLES === */
-.brutal-input {
-  width: 100%;
-  padding: 12px 16px;
-  background: #FFFFFF;
-  border: 3px solid #000;
+/* === UTILITIES & ANIMATIONS === */
+
+/* Glass Effect */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+/* Gradient Text */
+.gradient-text {
+  background: linear-gradient(135deg, #18181B 0%, #52525B 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.gradient-text-blue {
+  background: linear-gradient(135deg, #2563EB 0%, #7C3AED 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Subtle Fade In */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.5s ease-out forwards;
+}
+
+/* Stagger delays */
+.stagger-1 {
+  animation-delay: 0.1s;
+}
+
+.stagger-2 {
+  animation-delay: 0.2s;
+}
+
+.stagger-3 {
+  animation-delay: 0.3s;
+}
+
+/* === COMPONENT OVERRIDES === */
+
+/* Clean Card Hover */
+.modern-card {
+  transition: all 0.2s ease-in-out;
+}
+
+.modern-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+}
+
+/* Status Badges */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 9999px;
+  /* Pill shape */
+  font-size: 0.75rem;
   font-weight: 600;
-  font-size: 1rem;
-  transition: all 0.15s ease;
+  letter-spacing: 0.02em;
 }
 
-.brutal-input:focus {
-  outline: none;
-  box-shadow: 4px 4px 0 #000;
+.badge-success {
+  background-color: #ECFDF5;
+  color: #059669;
+  /* Emerald 600 */
+  border: 1px solid #D1FAE5;
 }
 
-.brutal-input::placeholder {
-  color: #666;
-  font-weight: 500;
+.badge-warning {
+  background-color: #FFFBEB;
+  color: #D97706;
+  /* Amber 600 */
+  border: 1px solid #FEF3C7;
 }
 
-/* === AVATAR STYLES === */
-.brutal-avatar {
-  border: 3px solid #000;
-  box-shadow: 3px 3px 0 #000;
+.badge-error {
+  background-color: #FEF2F2;
+  color: #DC2626;
+  /* Red 600 */
+  border: 1px solid #FEE2E2;
 }
 
-/* === DIVIDER === */
-.brutal-divider {
-  height: 3px;
-  background: #000;
-  margin: 24px 0;
+.badge-neutral {
+  background-color: #F4F4F5;
+  color: #52525B;
+  /* Zinc 600 */
+  border: 1px solid #E4E4E7;
 }
 
 /* === LOADING SPINNER === */
-.brutal-loader {
-  width: 40px;
-  height: 40px;
-  background: #000;
-  animation: pop 0.5s ease infinite;
+.modern-loader {
+  width: 32px;
+  height: 32px;
+  border: 3px solid #E4E4E7;
+  border-bottom-color: #2563EB;
+  border-radius: 50%;
+  display: inline-block;
+  animation: rotation 1s linear infinite;
 }
 
-/* === FUN PATTERN BACKGROUNDS === */
-.pattern-dots {
-  background-image: radial-gradient(#000 1.5px, transparent 1.5px);
-  background-size: 20px 20px;
+@keyframes rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
-.pattern-lines {
-  background-image: repeating-linear-gradient(45deg,
-      transparent,
-      transparent 10px,
-      rgba(0, 0, 0, 0.05) 10px,
-      rgba(0, 0, 0, 0.05) 20px);
-}
-
-/* === HOVER EFFECTS === */
-.hover-grow:hover {
-  transform: scale(1.05);
-}
-
-.hover-shake:hover {
-  animation: shake 0.5s ease;
-}
-
-.hover-pop:hover {
-  animation: pop 0.3s ease;
-}
-
-/* === RESPONSIVE TYPOGRAPHY === */
+/* === RESPONSIVE UTILITIES === */
 @media (max-width: 768px) {
-  .text-responsive-h1 {
-    font-size: 1.8rem;
+  html {
+    font-size: 100%;
+    /* Reset scale on mobile for space */
   }
-
-  .text-responsive-h2 {
-    font-size: 1.5rem;
-  }
-}
-
-/* === UTILITY CLASSES === */
-.uppercase {
-  text-transform: uppercase;
-}
-
-.bold {
-  font-weight: 800;
-}
-
-.black {
-  color: #000;
-}
-
-.yellow {
-  color: #FFC900;
-}
-
-.bg-yellow {
-  background-color: #FFC900;
-}
-
-.bg-black {
-  background-color: #000;
-}
-
-.bg-white {
-  background-color: #FFFFFF;
-}
-
-.border-black {
-  border: 3px solid #000;
-}
-
-.shadow-brutal {
-  box-shadow: 6px 6px 0 #000;
 }
