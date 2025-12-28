@@ -299,16 +299,20 @@ export default function DashboardLayout({ children }) {
                 component="main"
                 sx={{
                     flexGrow: 1,
-                    p: { xs: 2, md: 4 },
+                    minHeight: '100vh',
                     width: { md: `calc(100% - ${drawerWidth}px)` },
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
                 }}
             >
-                <Toolbar sx={{ minHeight: { xs: 56, md: 64 } }} />
+                <Toolbar sx={{ minHeight: { xs: 56, md: 64 }, width: '100%' }} />
                 <Box
                     sx={{
-                        maxWidth: 1100,
-                        mx: 'auto',
-                        px: { xs: 0, md: 2 },
+                        width: '100%',
+                        maxWidth: 1000,
+                        px: { xs: 2, sm: 3, md: 4 },
+                        py: { xs: 2, md: 3 },
                     }}
                     className="animate-slide-up"
                 >
