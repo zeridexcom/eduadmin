@@ -301,6 +301,7 @@ export default function DashboardLayout({ children }) {
                     flexGrow: 1,
                     minHeight: '100vh',
                     width: { md: `calc(100% - ${drawerWidth}px)` },
+                    ml: { md: `${drawerWidth}px` }, // Explicit margin left for desktop
                     bgcolor: 'background.default',
                     p: 0, // Reset padding
                 }}
